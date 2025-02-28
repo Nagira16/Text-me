@@ -1,0 +1,110 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum Role {
+  ADMIN
+  USER
+  GUEST
+}
+
+model User {
+  id            String   @id @default(uuid()) @db.Uuid
+  first_name    String
+  last_name     String
+  username      String   @unique
+  email         String   @unique
+  password      String
+  profile_image String   @default("https://cdn-icons-png.flaticon.com/512/8847/8847419.png")
+  role          Role     @default(USER)
+  created_at    DateTime @default(now())
+  updated_at    DateTime @updatedAt
+
+  post                   Post[]
+  comment                Comment[]
+  like                   Like[]
+  following              Follow[]       @relation("following")
+  follower               Follow[]       @relation("follower")
+  sent_conversations     Conversation[] @relation("Conversation_user1")
+  received_conversations Conversation[] @relation("Conversation_user2")
+  message                Message[]
+}
+
+model Post {
+  id          String   @id @default(uuid()) @db.Uuid
+  photo       String
+  content     String?
+  author_id   String   @db.Uuid
+  likes_count Int      @default(0)
+  created_at  DateTime @default(now())
+  updated_at  DateTime @updatedAt
+
+  author  User      @relation(fields: [author_id], references: [id])
+  comment Comment[]
+  like    Like[]
+}
+
+model Comment {
+  id         String   @id @default(uuid()) @db.Uuid
+  content    String
+  user_id    String   @db.Uuid
+  post_id    String   @db.Uuid
+  created_at DateTime @default(now())
+
+  user User @relation(fields: [user_id], references: [id])
+  post Post @relation(fields: [post_id], references: [id])
+}
+
+model Like {
+  id         String   @id @default(uuid()) @db.Uuid
+  user_id    String   @db.Uuid
+  post_id    String   @db.Uuid
+  created_at DateTime @default(now())
+
+  user User @relation(fields: [user_id], references: [id])
+  post Post @relation(fields: [post_id], references: [id])
+}
+
+model Follow {
+  id           String   @id @default(uuid()) @db.Uuid
+  follower_id  String   @db.Uuid
+  following_id String   @db.Uuid
+  created_at   DateTime @default(now())
+
+  follower  User @relation(fields: [follower_id], references: [id], name: "follower")
+  following User @relation(fields: [following_id], references: [id], name: "following")
+}
+
+model Conversation {
+  id         String   @id @default(uuid()) @db.Uuid
+  user1_id   String   @db.Uuid
+  user2_id   String   @db.Uuid
+  created_at DateTime @default(now())
+
+  user1   User      @relation(fields: [user1_id], references: [id], name: "Conversation_user1")
+  user2   User      @relation(fields: [user2_id], references: [id], name: "Conversation_user2")
+  message Message[]
+}
+
+model Message {
+  id              String   @id @default(uuid()) @db.Uuid
+  sender_id       String   @db.Uuid
+  conversation_id String   @db.Uuid
+  content         String
+  is_read         Boolean  @default(false)
+  created_at      DateTime @default(now())
+
+  sender       User         @relation(fields: [sender_id], references: [id])
+  conversation Conversation @relation(fields: [conversation_id], references: [id])
+}
