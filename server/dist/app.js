@@ -7,7 +7,10 @@ const express_1 = __importDefault(require("express"));
 const http_1 = __importDefault(require("http"));
 const socket_io_1 = require("socket.io");
 const cookie_parser_1 = __importDefault(require("cookie-parser"));
-const auth_1 = __importDefault(require("./routes/auth"));
+const authRouter_1 = __importDefault(require("./routes/authRouter"));
+const userRouter_1 = __importDefault(require("./routes/userRouter"));
+const middleware_1 = require("./middleware");
+const testController_1 = require("./controllers/testController");
 const app = (0, express_1.default)();
 const server = http_1.default.createServer(app);
 const io = new socket_io_1.Server(server, {
@@ -19,8 +22,7 @@ const io = new socket_io_1.Server(server, {
 });
 app.use(express_1.default.json());
 app.use((0, cookie_parser_1.default)());
-app.get("/", (req, res) => {
-    res.status(200).send("yukiho");
-});
-app.use("/auth", auth_1.default);
+app.get("/", testController_1.testCheckWork);
+app.use("/auth", authRouter_1.default);
+app.use("/user", middleware_1.authMiddleware, userRouter_1.default);
 exports.default = server;

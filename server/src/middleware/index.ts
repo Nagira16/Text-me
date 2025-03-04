@@ -3,7 +3,7 @@ import jwt from "jsonwebtoken";
 
 const secretKey: string | undefined = process.env.SECRET_KEY;
 
-const authMiddleware = async (
+export const authMiddleware = async (
   req: Request,
   res: Response,
   next: NextFunction
@@ -17,7 +17,6 @@ const authMiddleware = async (
 
     next();
   } catch (error) {
-    console.error(error);
-    res.status(403).json({ message: "Forbidden" });
+    res.status(403).json({ success: false, message: "Forbidden" });
   }
 };

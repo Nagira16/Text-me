@@ -8,23 +8,18 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
-var __importDefault = (this && this.__importDefault) || function (mod) {
-    return (mod && mod.__esModule) ? mod : { "default": mod };
-};
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.authMiddleware = void 0;
-const jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
-const secretKey = process.env.SECRET_KEY;
-const authMiddleware = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
-    try {
-        if (!secretKey)
-            throw new Error("Secrec Key Undefined");
-        const token = req.cookies.token;
-        jsonwebtoken_1.default.verify(token, secretKey);
-        next();
-    }
-    catch (error) {
-        res.status(403).json({ success: false, message: "Forbidden" });
-    }
+exports.testCheckWork = exports.testGetToken = void 0;
+const testGetToken = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const token = req.cookies.token;
+    res.status(200).json({ token });
 });
-exports.authMiddleware = authMiddleware;
+exports.testGetToken = testGetToken;
+const testCheckWork = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    res.status(200).json({
+        success: true,
+        path: req.path,
+        message: "Test check work successful",
+    });
+});
+exports.testCheckWork = testCheckWork;

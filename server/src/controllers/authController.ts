@@ -4,6 +4,7 @@ import { User } from "@prisma/client";
 import prisma from "../lib/prisma";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
+import { findUserByEmail, findUserByUsername } from "./userController";
 
 const secretKey: string | undefined = process.env.SECRET_KEY;
 
@@ -11,7 +12,7 @@ export const registerNewUser = async (
   req: Request,
   res: Response
 ): Promise<void> => {
-  let {
+  const {
     first_name,
     last_name,
     username,
@@ -20,20 +21,16 @@ export const registerNewUser = async (
     profile_image,
   }: RegisterInput = req.body;
 
-  first_name = first_name.trim();
-  last_name = last_name.trim();
-  username = username.trim();
-  email = email.trim();
-  password = password.trim();
-
   try {
-    const emailExist: User | null = await findUserByEmail(email);
+    const emailExist: User | null = await findUserByEmail(email.trim());
     if (emailExist) {
       res.status(409).json({ success: false, message: "User Already Exists" });
       return;
     }
 
-    const usernameExist: User | null = await findUserByUsername(username);
+    const usernameExist: User | null = await findUserByUsername(
+      username.trim()
+    );
     if (usernameExist) {
       res
         .status(409)
@@ -41,26 +38,33 @@ export const registerNewUser = async (
       return;
     }
 
-    const result: string | boolean = validatePasswordLength(password);
+    const validatePassword: boolean = validatePasswordLength(password.trim());
+    const validateUsername: boolean = validateUsernameLength(username.trim());
 
-    if (result !== true) {
+    if (!validatePassword || !validateUsername) {
       res.status(400).json({
         success: false,
-        message: result,
+        message: [
+          !validatePassword && "Password must be between 8 and 16 characters.",
+          !validateUsername && "Username must be between 4 and 16 characters.",
+        ]
+          .filter(Boolean)
+          .join(" "),
       });
+      return;
     }
 
-    const hashedPassword: string = await bcrypt.hash(password, 10);
+    const hashedPassword: string = await bcrypt.hash(password.trim(), 10);
 
     await prisma.user.create({
       data: {
-        first_name,
-        last_name,
-        username,
-        email,
+        first_name: first_name.trim(),
+        last_name: last_name.trim(),
+        username: username.trim(),
+        email: email.trim(),
         password: hashedPassword,
         profile_image:
-          profile_image ||
+          profile_image?.trim() ||
           "https://cdn-icons-png.flaticon.com/512/8847/8847419.png",
       },
     });
@@ -73,13 +77,10 @@ export const registerNewUser = async (
 };
 
 export const loginUser = async (req: Request, res: Response): Promise<void> => {
-  let { email, password }: LoginInput = req.body;
-
-  email = email.trim();
-  password = password.trim();
+  const { email, password }: LoginInput = req.body;
 
   try {
-    const user: User | null = await findUserByEmail(email);
+    const user: User | null = await findUserByEmail(email.trim());
     if (!user) {
       res.status(404).json({
         success: false,
@@ -88,7 +89,10 @@ export const loginUser = async (req: Request, res: Response): Promise<void> => {
       return;
     }
 
-    const isMatch: boolean = await bcrypt.compare(password, user.password);
+    const isMatch: boolean = await bcrypt.compare(
+      password.trim(),
+      user.password
+    );
     if (!isMatch) {
       res.status(404).json({
         success: false,
@@ -144,32 +148,18 @@ export const logout = async (_: Request, res: Response) => {
   }
 };
 
-const findUserByEmail = async (email: string): Promise<User | null> => {
-  return await prisma.user.findUnique({
-    where: {
-      email,
-    },
-  });
-};
+//Sub Function
 
-const findUserByUsername = async (username: string): Promise<User | null> => {
-  return await prisma.user.findUnique({
-    where: {
-      username,
-    },
-  });
-};
-
-const validatePasswordLength = (
-  password: string,
-  minLength: number = 8,
-  maxLength: number = 16
-): string | boolean => {
-  if (password.length <= minLength) {
-    return `Password must be at least ${minLength} characters long.`;
+export const validateUsernameLength = (username: string): boolean => {
+  if (username.length <= 4) {
+    return false;
   }
-  if (password.length >= maxLength) {
-    return `Password must not exceed ${maxLength} characters.`;
+  return true;
+};
+
+export const validatePasswordLength = (password: string): boolean => {
+  if (password.length <= 8 || password.length >= 16) {
+    return false;
   }
   return true;
 };

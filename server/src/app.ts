@@ -1,8 +1,11 @@
-import express, { Express, Request, Response } from "express";
+import express, { Express } from "express";
 import http from "http";
 import { DefaultEventsMap, Server } from "socket.io";
 import cookieParser from "cookie-parser";
-import authRouter from "./routes/auth";
+import authRouter from "./routes/authRouter";
+import userRouter from "./routes/userRouter";
+import { authMiddleware } from "./middleware";
+import { testCheckWork } from "./controllers/testController";
 
 const app: Express = express();
 
@@ -23,9 +26,9 @@ const io: Server<DefaultEventsMap, DefaultEventsMap, DefaultEventsMap, any> =
 app.use(express.json());
 app.use(cookieParser());
 
-app.get("/", (req: Request, res: Response) => {
-  res.status(200).send("yukiho");
-});
+app.get("/", testCheckWork);
 
 app.use("/auth", authRouter);
+app.use("/user", authMiddleware, userRouter);
+
 export default server;
