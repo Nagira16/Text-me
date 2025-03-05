@@ -12,40 +12,13 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.findPostByUuid = exports.deletePostByUuid = exports.updatePostByUuid = exports.createNewPost = exports.getPostByUuid = exports.getAllPosts = void 0;
+exports.deleteCommentyUuid = exports.updateCommentByUuid = exports.createNewComment = exports.getCommentByPostUuid = void 0;
 const prisma_1 = __importDefault(require("../lib/prisma"));
-const getAllPosts = (_, res) => __awaiter(void 0, void 0, void 0, function* () {
+const postRouter_1 = require("./postRouter");
+const getCommentByPostUuid = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const postUuid = req.params.postId;
     try {
-        const posts = yield prisma_1.default.post.findMany({
-            include: {
-                author: {
-                    select: {
-                        id: true,
-                        username: true,
-                        profile_image: true,
-                    },
-                },
-            },
-        });
-        res.status(200).json({
-            success: true,
-            message: "All Post Found Successfully",
-            result: posts,
-        });
-    }
-    catch (error) {
-        console.error(error);
-        res.status(500).json({
-            success: false,
-            message: "Server Error: Get All Posts",
-        });
-    }
-});
-exports.getAllPosts = getAllPosts;
-const getPostByUuid = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const uuid = req.params.id;
-    try {
-        const post = yield (0, exports.findPostByUuid)(uuid);
+        const post = yield (0, postRouter_1.findPostByUuid)(postUuid);
         if (!post) {
             res.status(404).json({
                 success: false,
@@ -53,24 +26,32 @@ const getPostByUuid = (req, res) => __awaiter(void 0, void 0, void 0, function* 
             });
             return;
         }
+        const comments = yield prisma_1.default.comment.findMany({
+            where: {
+                post_id: post.id,
+            },
+            include: {
+                user: { select: { id: true, username: true, profile_image: true } },
+            },
+        });
         res.status(200).json({
             success: true,
-            message: "Post Found Successfully",
-            result: post,
+            message: "Comment Found Successfully",
+            result: comments,
         });
     }
     catch (error) {
         console.error(error);
         res.status(500).json({
             success: false,
-            message: "Server Error: Get Post By Uuid",
+            message: "Server Error: Get Comment By Post Uuid",
         });
     }
 });
-exports.getPostByUuid = getPostByUuid;
-const createNewPost = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+exports.getCommentByPostUuid = getCommentByPostUuid;
+const createNewComment = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     var _a;
-    const { photo, content } = req.body;
+    const { post_id, content } = req.body;
     try {
         const user_id = (_a = req.user) === null || _a === void 0 ? void 0 : _a.id;
         if (!user_id) {
@@ -80,14 +61,22 @@ const createNewPost = (req, res) => __awaiter(void 0, void 0, void 0, function* 
             });
             return;
         }
-        const newPost = yield prisma_1.default.post.create({
+        const post = yield (0, postRouter_1.findPostByUuid)(post_id);
+        if (!post) {
+            res.status(404).json({
+                success: false,
+                message: "Post Not Found",
+            });
+            return;
+        }
+        const newComment = yield prisma_1.default.comment.create({
             data: {
-                photo,
-                content: content || null,
-                author_id: user_id,
+                content,
+                user_id,
+                post_id: post.id,
             },
             include: {
-                author: {
+                user: {
                     select: {
                         id: true,
                         username: true,
@@ -98,40 +87,40 @@ const createNewPost = (req, res) => __awaiter(void 0, void 0, void 0, function* 
         });
         res.status(201).json({
             success: true,
-            message: "Post Created Successfully",
-            result: newPost,
+            message: "Comment Created Successfully",
+            result: newComment,
         });
     }
     catch (error) {
         console.error(error);
         res.status(500).json({
             success: false,
-            message: "Server Error: Create New Post",
+            message: "Server Error: Create New Comment",
         });
     }
 });
-exports.createNewPost = createNewPost;
-const updatePostByUuid = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+exports.createNewComment = createNewComment;
+const updateCommentByUuid = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const uuid = req.params.id;
     const { content } = req.body;
     try {
-        const post = yield (0, exports.findPostByUuid)(uuid);
-        if (!post) {
+        const comment = yield findCommentByUuid(uuid);
+        if (!comment) {
             res.status(404).json({
                 success: false,
-                message: "Post Not Found",
+                message: "Comment Not Found",
             });
             return;
         }
-        const updatedPost = yield prisma_1.default.post.update({
+        const updatedComment = yield prisma_1.default.comment.update({
             where: {
-                id: post.id,
+                id: comment.id,
             },
             data: {
-                content: content || post.content,
+                content: content || comment.content,
             },
             include: {
-                author: {
+                user: {
                     select: {
                         id: true,
                         username: true,
@@ -142,63 +131,65 @@ const updatePostByUuid = (req, res) => __awaiter(void 0, void 0, void 0, functio
         });
         res.status(200).json({
             success: true,
-            message: "Post Updated Successfully",
-            result: updatedPost,
+            message: "Comment Updated Successfully",
+            result: updatedComment,
         });
     }
     catch (error) {
         console.error(error);
         res.status(500).json({
             success: false,
-            message: "Server Error: Update Post By Uuid",
+            message: "Server Error: Update Comment By Uuid",
         });
     }
 });
-exports.updatePostByUuid = updatePostByUuid;
-const deletePostByUuid = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+exports.updateCommentByUuid = updateCommentByUuid;
+const deleteCommentyUuid = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const uuid = req.params.id;
     try {
-        const post = yield (0, exports.findPostByUuid)(uuid);
-        if (!post) {
+        const comment = yield findCommentByUuid(uuid);
+        if (!comment) {
             res.status(404).json({
                 success: false,
-                message: "Post Not Found",
+                message: "Comment Not Found",
             });
             return;
         }
-        const deletedPost = yield prisma_1.default.post.delete({
+        const deletedComment = yield prisma_1.default.comment.delete({
             where: {
-                id: post.id,
+                id: comment.id,
             },
             include: {
-                author: {
-                    select: { id: true, username: true, profile_image: true },
+                user: {
+                    select: {
+                        id: true,
+                        username: true,
+                        profile_image: true,
+                    },
                 },
             },
         });
         res.status(200).json({
             success: true,
-            message: "Post Deleted Successfully",
-            result: deletedPost,
+            message: "Comment Deleted Successfully",
+            result: deletedComment,
         });
     }
     catch (error) {
         console.error(error);
         res.status(500).json({
             success: false,
-            message: "Server Error: Delete Post By Uuid",
+            message: "Server Error: Delete Comment By Uuid",
         });
     }
 });
-exports.deletePostByUuid = deletePostByUuid;
-//Sub Function
-const findPostByUuid = (uuid) => __awaiter(void 0, void 0, void 0, function* () {
-    return yield prisma_1.default.post.findUnique({
-        where: {
-            id: uuid,
-        },
+exports.deleteCommentyUuid = deleteCommentyUuid;
+// Sub Function
+const findCommentByUuid = (uuid) => __awaiter(void 0, void 0, void 0, function* () {
+    return yield prisma_1.default.comment.findUnique({
+        where: { id: uuid },
         include: {
-            author: {
+            user: {
                 select: {
                     id: true,
                     username: true,
@@ -208,4 +199,3 @@ const findPostByUuid = (uuid) => __awaiter(void 0, void 0, void 0, function* () 
         },
     });
 });
-exports.findPostByUuid = findPostByUuid;

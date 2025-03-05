@@ -1,12 +1,20 @@
-import e, { Request, Response } from "express";
+import { Request, Response } from "express";
 import prisma from "../lib/prisma";
-import { Post } from "@prisma/client";
-import { PostInput } from "../types";
-import { getUuidFromCookie } from "./userController";
+import { PostInput, PostWithUser } from "../types";
 
 export const getAllPosts = async (_: Request, res: Response): Promise<void> => {
   try {
-    const posts: Post[] = await prisma.post.findMany({});
+    const posts: PostWithUser[] = await prisma.post.findMany({
+      include: {
+        author: {
+          select: {
+            id: true,
+            username: true,
+            profile_image: true,
+          },
+        },
+      },
+    });
 
     res.status(200).json({
       success: true,
@@ -29,7 +37,7 @@ export const getPostByUuid = async (
   const uuid: string = req.params.id;
 
   try {
-    const post: Post | null = await findPostByUuid(uuid);
+    const post: PostWithUser | null = await findPostByUuid(uuid);
     if (!post) {
       res.status(404).json({
         success: false,
@@ -59,20 +67,29 @@ export const createNewPost = async (
   const { photo, content }: PostInput = req.body;
 
   try {
-    const uuid: string | null = await getUuidFromCookie(req);
-    if (!uuid) {
+    const user_id: string | undefined = req.user?.id;
+    if (!user_id) {
       res.status(404).json({
         success: false,
-        message: "Uuid Not Found",
+        message: "User Id Not Found",
       });
       return;
     }
 
-    const newPost: Post = await prisma.post.create({
+    const newPost: PostWithUser = await prisma.post.create({
       data: {
         photo,
         content: content || null,
-        author_id: uuid,
+        author_id: user_id,
+      },
+      include: {
+        author: {
+          select: {
+            id: true,
+            username: true,
+            profile_image: true,
+          },
+        },
       },
     });
 
@@ -95,10 +112,10 @@ export const updatePostByUuid = async (
   res: Response
 ): Promise<void> => {
   const uuid: string = req.params.id;
-  const { content }: { content: string } = req.body;
+  const { content }: { content?: string } = req.body;
 
   try {
-    const post: Post | null = await findPostByUuid(uuid);
+    const post: PostWithUser | null = await findPostByUuid(uuid);
     if (!post) {
       res.status(404).json({
         success: false,
@@ -107,12 +124,21 @@ export const updatePostByUuid = async (
       return;
     }
 
-    const updatedPost: Post = await prisma.post.update({
+    const updatedPost: PostWithUser = await prisma.post.update({
       where: {
         id: post.id,
       },
       data: {
         content: content || post.content,
+      },
+      include: {
+        author: {
+          select: {
+            id: true,
+            username: true,
+            profile_image: true,
+          },
+        },
       },
     });
 
@@ -137,7 +163,7 @@ export const deletePostByUuid = async (
   const uuid: string = req.params.id;
 
   try {
-    const post: Post | null = await findPostByUuid(uuid);
+    const post: PostWithUser | null = await findPostByUuid(uuid);
     if (!post) {
       res.status(404).json({
         success: false,
@@ -146,9 +172,14 @@ export const deletePostByUuid = async (
       return;
     }
 
-    const deletedPost: Post = await prisma.post.delete({
+    const deletedPost: PostWithUser = await prisma.post.delete({
       where: {
         id: post.id,
+      },
+      include: {
+        author: {
+          select: { id: true, username: true, profile_image: true },
+        },
       },
     });
 
@@ -168,10 +199,21 @@ export const deletePostByUuid = async (
 
 //Sub Function
 
-const findPostByUuid = async (uuid: string): Promise<Post | null> => {
+export const findPostByUuid = async (
+  uuid: string
+): Promise<PostWithUser | null> => {
   return await prisma.post.findUnique({
     where: {
       id: uuid,
+    },
+    include: {
+      author: {
+        select: {
+          id: true,
+          username: true,
+          profile_image: true,
+        },
+      },
     },
   });
 };

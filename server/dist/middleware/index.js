@@ -28,7 +28,8 @@ const authMiddleware = (req, res, next) => __awaiter(void 0, void 0, void 0, fun
             });
             return;
         }
-        jsonwebtoken_1.default.verify(token, secretKey);
+        const decode = jsonwebtoken_1.default.verify(token, secretKey);
+        req.user = decode;
         next();
     }
     catch (error) {
