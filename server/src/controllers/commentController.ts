@@ -37,7 +37,7 @@ export const getCommentByPostId = async (
     console.error(error);
     res.status(500).json({
       success: false,
-      message: "Server Error: Get Comment By Post Uuid",
+      message: "Server Error: Get Comment By Post Id",
     });
   }
 };
@@ -142,7 +142,7 @@ export const updateCommentById = async (
     console.error(error);
     res.status(500).json({
       success: false,
-      message: "Server Error: Update Comment By Uuid",
+      message: "Server Error: Update Comment By Id",
     });
   }
 };
@@ -187,7 +187,7 @@ export const deleteCommentyId = async (
     console.error(error);
     res.status(500).json({
       success: false,
-      message: "Server Error: Delete Comment By Uuid",
+      message: "Server Error: Delete Comment By Id",
     });
   }
 };

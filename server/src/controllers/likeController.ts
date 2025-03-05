@@ -44,7 +44,7 @@ export const getLikedPostByUserId = async (
     console.error(error);
     res.status(500).json({
       success: false,
-      message: "Server Error: Get Like By User Uuid",
+      message: "Server Error: Get Like By User Id",
     });
   }
 };
@@ -89,7 +89,7 @@ export const getLikedUserByPostId = async (
     console.error(error);
     res.status(500).json({
       success: false,
-      message: "Server Error: Get Liked User By Post Uuid",
+      message: "Server Error: Get Liked User By Post Id",
     });
   }
 };
@@ -162,7 +162,7 @@ export const toggleLikeByPostId = async (
     console.error(error);
     res.status(500).json({
       success: false,
-      message: "Server Error: Toggle Like By Post Uuid ",
+      message: "Server Error: Toggle Like By Post Id ",
     });
   }
 };

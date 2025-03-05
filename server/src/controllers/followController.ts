@@ -42,7 +42,7 @@ export const getAllFollowerByUserId = async (
     console.error(error);
     res.status(500).json({
       success: false,
-      message: "Server Error: Get All Follower By User Uuid",
+      message: "Server Error: Get All Follower By User Id",
     });
   }
 };
@@ -85,7 +85,7 @@ export const getAllFollowingByUserId = async (
     console.error(error);
     res.status(500).json({
       success: false,
-      message: "Server Error: Get Following By User Uuid",
+      message: "Server Error: Get Following By User Id",
     });
   }
 };
@@ -162,7 +162,7 @@ export const followUserByUserId = async (
     console.error(error);
     res.status(500).json({
       success: false,
-      message: "Server Error: Follow User By User Uuid",
+      message: "Server Error: Follow User By User Id",
     });
   }
 };

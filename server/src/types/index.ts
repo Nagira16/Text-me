@@ -1,4 +1,4 @@
-import { Comment, Follow, Like, Post } from "@prisma/client";
+import { Comment, Conversation, Follow, Like, Post } from "@prisma/client";
 
 export type RegisterInput = {
   first_name: string;
@@ -70,4 +70,9 @@ export type FollowerWithUser = Follow & {
 
 export type FollowingWithUser = Follow & {
   following: UserInfo;
+};
+
+export type ConversationWithUser = Conversation & {
+  user1: UserInfo;
+  user2: UserInfo;
 };

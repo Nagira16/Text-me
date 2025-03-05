@@ -36,7 +36,7 @@ export const getUserById = async (
     console.error(error);
     res.status(500).json({
       success: false,
-      message: "Server Error: Get User By Uuid",
+      message: "Server Error: Get User By Id",
     });
   }
 };
@@ -108,7 +108,7 @@ export const updateUserById = async (
     console.error(error);
     res.status(500).json({
       success: false,
-      message: "Server Error: Update User By Uuid",
+      message: "Server Error: Update User By Id",
     });
   }
 };
@@ -151,7 +151,7 @@ export const deleteUserById = async (
     console.error(error);
     res.status(500).json({
       success: false,
-      message: "Server Error: Delete User By Uuid",
+      message: "Server Error: Delete User By Id",
     });
   }
 };
