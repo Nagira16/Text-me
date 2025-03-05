@@ -65,7 +65,17 @@ export const createNewPost = async (
   res: Response
 ): Promise<void> => {
   try {
-    const { photo, content }: PostInput = req.body;
+    const { content }: PostInput = req.body;
+
+    const photo: Express.Multer.File | undefined = req.file;
+
+    if (!photo) {
+      res.status(400).json({
+        success: false,
+        message: "Bad Request: No image uploaded",
+      });
+      return;
+    }
 
     const user_id: string | undefined = req.user?.id;
     if (!user_id) {
@@ -76,9 +86,11 @@ export const createNewPost = async (
       return;
     }
 
+    const photoUrl = `http://localhost:5001/uploads/${photo.filename}`;
+
     const newPost: PostWithUser = await prisma.post.create({
       data: {
-        photo,
+        photo: photoUrl,
         content: content || null,
         author_id: user_id,
       },

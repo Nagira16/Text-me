@@ -1,3 +1,4 @@
+import path from "path";
 import server from "./app";
 
 const PORT: number = 5001;

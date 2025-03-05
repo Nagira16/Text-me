@@ -44,7 +44,7 @@ const getCommentByPostId = (req, res) => __awaiter(void 0, void 0, void 0, funct
         console.error(error);
         res.status(500).json({
             success: false,
-            message: "Server Error: Get Comment By Post Uuid",
+            message: "Server Error: Get Comment By Post Id",
         });
     }
 });
@@ -139,7 +139,7 @@ const updateCommentById = (req, res) => __awaiter(void 0, void 0, void 0, functi
         console.error(error);
         res.status(500).json({
             success: false,
-            message: "Server Error: Update Comment By Uuid",
+            message: "Server Error: Update Comment By Id",
         });
     }
 });
@@ -179,7 +179,7 @@ const deleteCommentyId = (req, res) => __awaiter(void 0, void 0, void 0, functio
         console.error(error);
         res.status(500).json({
             success: false,
-            message: "Server Error: Delete Comment By Uuid",
+            message: "Server Error: Delete Comment By Id",
         });
     }
 });
