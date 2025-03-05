@@ -55,7 +55,7 @@ export const getPostById = async (
     console.error(error);
     res.status(500).json({
       success: false,
-      message: "Server Error: Get Post By Uuid",
+      message: "Server Error: Get Post By Id",
     });
   }
 };
@@ -151,7 +151,7 @@ export const updatePostById = async (
     console.error(error);
     res.status(500).json({
       success: false,
-      message: "Server Error: Update Post By Uuid",
+      message: "Server Error: Update Post By Id",
     });
   }
 };
@@ -192,7 +192,7 @@ export const deletePostById = async (
     console.error(error);
     res.status(500).json({
       success: false,
-      message: "Server Error: Delete Post By Uuid",
+      message: "Server Error: Delete Post By Id",
     });
   }
 };
