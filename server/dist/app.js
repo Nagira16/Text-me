@@ -15,6 +15,7 @@ const postRouter_1 = __importDefault(require("./routes/postRouter"));
 const commentRouter_1 = __importDefault(require("./routes/commentRouter"));
 const likeRouter_1 = __importDefault(require("./routes/likeRouter"));
 const followRouter_1 = __importDefault(require("./routes/followRouter"));
+const conversationRouter_1 = __importDefault(require("./routes/conversationRouter"));
 const app = (0, express_1.default)();
 const server = http_1.default.createServer(app);
 const io = new socket_io_1.Server(server, {
@@ -33,4 +34,5 @@ app.use("/post", postRouter_1.default);
 app.use("/comment", commentRouter_1.default);
 app.use("/like", middleware_1.authMiddleware, likeRouter_1.default);
 app.use("/follow", middleware_1.authMiddleware, followRouter_1.default);
+app.use("/conversation", middleware_1.authMiddleware, conversationRouter_1.default);
 exports.default = server;

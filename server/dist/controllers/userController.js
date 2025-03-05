@@ -12,10 +12,10 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.findUserByUsername = exports.findUserByEmail = exports.findUserByUuid = exports.deleteUserByUuid = exports.updateUserByUuid = exports.getUserByUuid = void 0;
+exports.findUserByUsername = exports.findUserByEmail = exports.findUserById = exports.deleteUserById = exports.updateUserById = exports.getUserById = void 0;
 const prisma_1 = __importDefault(require("../lib/prisma"));
 const authController_1 = require("./authController");
-const getUserByUuid = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+const getUserById = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     var _a;
     try {
         const user_id = (_a = req.user) === null || _a === void 0 ? void 0 : _a.id;
@@ -26,7 +26,7 @@ const getUserByUuid = (req, res) => __awaiter(void 0, void 0, void 0, function* 
             });
             return;
         }
-        const user = yield (0, exports.findUserByUuid)(user_id);
+        const user = yield (0, exports.findUserById)(user_id);
         if (!user) {
             res.status(404).json({
                 success: false,
@@ -48,11 +48,11 @@ const getUserByUuid = (req, res) => __awaiter(void 0, void 0, void 0, function* 
         });
     }
 });
-exports.getUserByUuid = getUserByUuid;
-const updateUserByUuid = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+exports.getUserById = getUserById;
+const updateUserById = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     var _b;
-    const { first_name, last_name, profile_image, username } = req.body;
     try {
+        const { first_name, last_name, profile_image, username } = req.body;
         const user_id = (_b = req.user) === null || _b === void 0 ? void 0 : _b.id;
         if (!user_id) {
             res.status(401).json({
@@ -61,7 +61,7 @@ const updateUserByUuid = (req, res) => __awaiter(void 0, void 0, void 0, functio
             });
             return;
         }
-        const user = yield (0, exports.findUserByUuid)(user_id);
+        const user = yield (0, exports.findUserById)(user_id);
         if (!user) {
             res.status(404).json({
                 success: false,
@@ -110,8 +110,8 @@ const updateUserByUuid = (req, res) => __awaiter(void 0, void 0, void 0, functio
         });
     }
 });
-exports.updateUserByUuid = updateUserByUuid;
-const deleteUserByUuid = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+exports.updateUserById = updateUserById;
+const deleteUserById = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     var _c;
     try {
         const user_id = (_c = req.user) === null || _c === void 0 ? void 0 : _c.id;
@@ -122,7 +122,7 @@ const deleteUserByUuid = (req, res) => __awaiter(void 0, void 0, void 0, functio
             });
             return;
         }
-        const user = yield (0, exports.findUserByUuid)(user_id);
+        const user = yield (0, exports.findUserById)(user_id);
         if (!user) {
             res.status(404).json({
                 success: false,
@@ -149,16 +149,16 @@ const deleteUserByUuid = (req, res) => __awaiter(void 0, void 0, void 0, functio
         });
     }
 });
-exports.deleteUserByUuid = deleteUserByUuid;
+exports.deleteUserById = deleteUserById;
 //Sub Function
-const findUserByUuid = (uuid) => __awaiter(void 0, void 0, void 0, function* () {
+const findUserById = (uuid) => __awaiter(void 0, void 0, void 0, function* () {
     return yield prisma_1.default.user.findUnique({
         where: {
             id: uuid,
         },
     });
 });
-exports.findUserByUuid = findUserByUuid;
+exports.findUserById = findUserById;
 const findUserByEmail = (email) => __awaiter(void 0, void 0, void 0, function* () {
     return yield prisma_1.default.user.findUnique({
         where: {

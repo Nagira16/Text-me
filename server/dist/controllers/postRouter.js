@@ -12,7 +12,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.findPostByUuid = exports.deletePostByUuid = exports.updatePostByUuid = exports.createNewPost = exports.getPostByUuid = exports.getAllPosts = void 0;
+exports.findPostById = exports.deletePostById = exports.updatePostById = exports.createNewPost = exports.getPostById = exports.getAllPosts = void 0;
 const prisma_1 = __importDefault(require("../lib/prisma"));
 const getAllPosts = (_, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
@@ -42,10 +42,10 @@ const getAllPosts = (_, res) => __awaiter(void 0, void 0, void 0, function* () {
     }
 });
 exports.getAllPosts = getAllPosts;
-const getPostByUuid = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const uuid = req.params.id;
+const getPostById = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        const post = yield (0, exports.findPostByUuid)(uuid);
+        const post_id = req.params.id;
+        const post = yield (0, exports.findPostById)(post_id);
         if (!post) {
             res.status(404).json({
                 success: false,
@@ -67,11 +67,11 @@ const getPostByUuid = (req, res) => __awaiter(void 0, void 0, void 0, function* 
         });
     }
 });
-exports.getPostByUuid = getPostByUuid;
+exports.getPostById = getPostById;
 const createNewPost = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     var _a;
-    const { photo, content } = req.body;
     try {
+        const { photo, content } = req.body;
         const user_id = (_a = req.user) === null || _a === void 0 ? void 0 : _a.id;
         if (!user_id) {
             res.status(401).json({
@@ -111,11 +111,11 @@ const createNewPost = (req, res) => __awaiter(void 0, void 0, void 0, function* 
     }
 });
 exports.createNewPost = createNewPost;
-const updatePostByUuid = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const uuid = req.params.id;
-    const { content } = req.body;
+const updatePostById = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        const post = yield (0, exports.findPostByUuid)(uuid);
+        const post_id = req.params.id;
+        const { content } = req.body;
+        const post = yield (0, exports.findPostById)(post_id);
         if (!post) {
             res.status(404).json({
                 success: false,
@@ -154,11 +154,11 @@ const updatePostByUuid = (req, res) => __awaiter(void 0, void 0, void 0, functio
         });
     }
 });
-exports.updatePostByUuid = updatePostByUuid;
-const deletePostByUuid = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const uuid = req.params.id;
+exports.updatePostById = updatePostById;
+const deletePostById = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        const post = yield (0, exports.findPostByUuid)(uuid);
+        const post_id = req.params.id;
+        const post = yield (0, exports.findPostById)(post_id);
         if (!post) {
             res.status(404).json({
                 success: false,
@@ -190,9 +190,9 @@ const deletePostByUuid = (req, res) => __awaiter(void 0, void 0, void 0, functio
         });
     }
 });
-exports.deletePostByUuid = deletePostByUuid;
+exports.deletePostById = deletePostById;
 //Sub Function
-const findPostByUuid = (uuid) => __awaiter(void 0, void 0, void 0, function* () {
+const findPostById = (uuid) => __awaiter(void 0, void 0, void 0, function* () {
     return yield prisma_1.default.post.findUnique({
         where: {
             id: uuid,
@@ -208,4 +208,4 @@ const findPostByUuid = (uuid) => __awaiter(void 0, void 0, void 0, function* () 
         },
     });
 });
-exports.findPostByUuid = findPostByUuid;
+exports.findPostById = findPostById;

@@ -12,16 +12,16 @@ export const registerNewUser = async (
   req: Request,
   res: Response
 ): Promise<void> => {
-  const {
-    first_name,
-    last_name,
-    username,
-    email,
-    password,
-    profile_image,
-  }: RegisterInput = req.body;
-
   try {
+    const {
+      first_name,
+      last_name,
+      username,
+      email,
+      password,
+      profile_image,
+    }: RegisterInput = req.body;
+
     const emailExist: User | null = await findUserByEmail(email.trim());
     if (emailExist) {
       res.status(409).json({ success: false, message: "User Already Exists" });
@@ -77,9 +77,9 @@ export const registerNewUser = async (
 };
 
 export const loginUser = async (req: Request, res: Response): Promise<void> => {
-  const { email, password }: LoginInput = req.body;
-
   try {
+    const { email, password }: LoginInput = req.body;
+
     const user: User | null = await findUserByEmail(email.trim());
     if (!user) {
       res.status(404).json({

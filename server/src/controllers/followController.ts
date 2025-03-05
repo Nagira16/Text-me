@@ -1,10 +1,10 @@
 import { Request, Response } from "express";
 import prisma from "../lib/prisma";
 import { FollowerWithUser, FollowingWithUser } from "../types";
-import { findUserByUuid } from "./userController";
+import { findUserById } from "./userController";
 import { Follow, User } from "@prisma/client";
 
-export const getAllFollowerByUserUuid = async (
+export const getAllFollowerByUserId = async (
   req: Request,
   res: Response
 ): Promise<void> => {
@@ -47,7 +47,7 @@ export const getAllFollowerByUserUuid = async (
   }
 };
 
-export const getAllFollowingByUserUuid = async (
+export const getAllFollowingByUserId = async (
   req: Request,
   res: Response
 ): Promise<void> => {
@@ -90,14 +90,15 @@ export const getAllFollowingByUserUuid = async (
   }
 };
 
-export const followUserByUserUuid = async (
+export const followUserByUserId = async (
   req: Request,
   res: Response
 ): Promise<void> => {
-  const following_id: string = req.params.userId;
-  let message: string = "";
-  let follow: boolean;
   try {
+    const following_id: string = req.params.userId;
+    let message: string = "";
+    let follow: boolean;
+
     const follower_id: string | undefined = req.user?.id;
     if (!follower_id) {
       res.status(401).json({
@@ -107,7 +108,7 @@ export const followUserByUserUuid = async (
       return;
     }
 
-    const followingUser: User | null = await findUserByUuid(following_id);
+    const followingUser: User | null = await findUserById(following_id);
     if (!followingUser) {
       res.status(404).json({
         success: false,

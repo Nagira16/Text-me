@@ -4,7 +4,7 @@ import prisma from "../lib/prisma";
 import { UserUpdateInput } from "../types";
 import { validateUsernameLength } from "./authController";
 
-export const getUserByUuid = async (
+export const getUserById = async (
   req: Request,
   res: Response
 ): Promise<void> => {
@@ -18,7 +18,7 @@ export const getUserByUuid = async (
       return;
     }
 
-    const user: User | null = await findUserByUuid(user_id);
+    const user: User | null = await findUserById(user_id);
     if (!user) {
       res.status(404).json({
         success: false,
@@ -41,14 +41,14 @@ export const getUserByUuid = async (
   }
 };
 
-export const updateUserByUuid = async (
+export const updateUserById = async (
   req: Request,
   res: Response
 ): Promise<void> => {
-  const { first_name, last_name, profile_image, username }: UserUpdateInput =
-    req.body;
-
   try {
+    const { first_name, last_name, profile_image, username }: UserUpdateInput =
+      req.body;
+
     const user_id: string | undefined = req.user?.id;
     if (!user_id) {
       res.status(401).json({
@@ -58,7 +58,7 @@ export const updateUserByUuid = async (
       return;
     }
 
-    const user: User | null = await findUserByUuid(user_id);
+    const user: User | null = await findUserById(user_id);
     if (!user) {
       res.status(404).json({
         success: false,
@@ -113,7 +113,7 @@ export const updateUserByUuid = async (
   }
 };
 
-export const deleteUserByUuid = async (
+export const deleteUserById = async (
   req: Request,
   res: Response
 ): Promise<void> => {
@@ -127,7 +127,7 @@ export const deleteUserByUuid = async (
       return;
     }
 
-    const user: User | null = await findUserByUuid(user_id);
+    const user: User | null = await findUserById(user_id);
     if (!user) {
       res.status(404).json({
         success: false,
@@ -158,7 +158,7 @@ export const deleteUserByUuid = async (
 
 //Sub Function
 
-export const findUserByUuid = async (uuid: string): Promise<User | null> => {
+export const findUserById = async (uuid: string): Promise<User | null> => {
   return await prisma.user.findUnique({
     where: {
       id: uuid,

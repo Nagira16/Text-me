@@ -12,10 +12,10 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.followUserByUserUuid = exports.getAllFollowingByUserUuid = exports.getAllFollowerByUserUuid = void 0;
+exports.followUserByUserId = exports.getAllFollowingByUserId = exports.getAllFollowerByUserId = void 0;
 const prisma_1 = __importDefault(require("../lib/prisma"));
 const userController_1 = require("./userController");
-const getAllFollowerByUserUuid = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+const getAllFollowerByUserId = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     var _a;
     try {
         const user_id = (_a = req.user) === null || _a === void 0 ? void 0 : _a.id;
@@ -54,8 +54,8 @@ const getAllFollowerByUserUuid = (req, res) => __awaiter(void 0, void 0, void 0,
         });
     }
 });
-exports.getAllFollowerByUserUuid = getAllFollowerByUserUuid;
-const getAllFollowingByUserUuid = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+exports.getAllFollowerByUserId = getAllFollowerByUserId;
+const getAllFollowingByUserId = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     var _b;
     try {
         const user_id = (_b = req.user) === null || _b === void 0 ? void 0 : _b.id;
@@ -94,13 +94,13 @@ const getAllFollowingByUserUuid = (req, res) => __awaiter(void 0, void 0, void 0
         });
     }
 });
-exports.getAllFollowingByUserUuid = getAllFollowingByUserUuid;
-const followUserByUserUuid = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+exports.getAllFollowingByUserId = getAllFollowingByUserId;
+const followUserByUserId = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     var _c;
-    const following_id = req.params.userId;
-    let message = "";
-    let follow;
     try {
+        const following_id = req.params.userId;
+        let message = "";
+        let follow;
         const follower_id = (_c = req.user) === null || _c === void 0 ? void 0 : _c.id;
         if (!follower_id) {
             res.status(401).json({
@@ -109,7 +109,7 @@ const followUserByUserUuid = (req, res) => __awaiter(void 0, void 0, void 0, fun
             });
             return;
         }
-        const followingUser = yield (0, userController_1.findUserByUuid)(following_id);
+        const followingUser = yield (0, userController_1.findUserById)(following_id);
         if (!followingUser) {
             res.status(404).json({
                 success: false,
@@ -163,4 +163,4 @@ const followUserByUserUuid = (req, res) => __awaiter(void 0, void 0, void 0, fun
         });
     }
 });
-exports.followUserByUserUuid = followUserByUserUuid;
+exports.followUserByUserId = followUserByUserId;
