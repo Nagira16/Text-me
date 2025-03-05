@@ -11,7 +11,14 @@ export const authMiddleware = async (
   try {
     if (!secretKey) throw new Error("Secrec Key Undefined");
 
-    const token: string = req.cookies.token;
+    const token: string | undefined = req.cookies?.token;
+    if (!token) {
+      res.status(404).json({
+        success: false,
+        message: "Token Not Found",
+      });
+      return;
+    }
 
     jwt.verify(token, secretKey);
 

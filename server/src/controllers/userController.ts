@@ -3,6 +3,9 @@ import { Request, Response } from "express";
 import prisma from "../lib/prisma";
 import { UserUpdateInput } from "../types";
 import { validateUsernameLength } from "./authController";
+import jwt from "jsonwebtoken";
+
+const secretKey: string | undefined = process.env.SECRET_KEY;
 
 export const getUserByUuid = async (
   req: Request,
@@ -76,7 +79,7 @@ export const updateUserByUuid = async (
     }
 
     const updatedUser: User = await prisma.user.update({
-      where: { id: uuid },
+      where: { id: user.id },
       data: {
         first_name: first_name?.trim() || user.first_name,
         last_name: last_name?.trim() || user.last_name,
@@ -99,7 +102,10 @@ export const updateUserByUuid = async (
   }
 };
 
-export const deleteUserByUuid = async (req: Request, res: Response) => {
+export const deleteUserByUuid = async (
+  req: Request,
+  res: Response
+): Promise<void> => {
   const uuid: string = req.params.id;
 
   try {
@@ -114,7 +120,7 @@ export const deleteUserByUuid = async (req: Request, res: Response) => {
 
     const deletedUser: User = await prisma.user.delete({
       where: {
-        id: uuid,
+        id: user.id,
       },
     });
 
@@ -158,4 +164,24 @@ export const findUserByUsername = async (
       username,
     },
   });
+};
+
+export const getUuidFromCookie = async (
+  req: Request
+): Promise<string | null> => {
+  try {
+    if (!secretKey) throw new Error("Secret Key Undefined");
+
+    const token: string | undefined = req.cookies?.token;
+    if (!token) return null;
+
+    const userInfo: jwt.JwtPayload | string = jwt.verify(token, secretKey);
+
+    if (typeof userInfo === "string") return null;
+
+    return userInfo.id ?? null;
+  } catch (error) {
+    console.error("Error verifying token:", error);
+    return null;
+  }
 };

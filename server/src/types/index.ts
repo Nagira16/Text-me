@@ -25,3 +25,9 @@ export type UserUpdateInput = {
   username?: string;
   profile_image?: string;
 };
+
+export type PostInput = {
+  photo: string;
+  content?: string;
+  author_id: string;
+};

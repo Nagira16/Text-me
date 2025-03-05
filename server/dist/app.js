@@ -11,6 +11,7 @@ const authRouter_1 = __importDefault(require("./routes/authRouter"));
 const userRouter_1 = __importDefault(require("./routes/userRouter"));
 const middleware_1 = require("./middleware");
 const testController_1 = require("./controllers/testController");
+const postRouter_1 = __importDefault(require("./routes/postRouter"));
 const app = (0, express_1.default)();
 const server = http_1.default.createServer(app);
 const io = new socket_io_1.Server(server, {
@@ -25,4 +26,5 @@ app.use((0, cookie_parser_1.default)());
 app.get("/", testController_1.testCheckWork);
 app.use("/auth", authRouter_1.default);
 app.use("/user", middleware_1.authMiddleware, userRouter_1.default);
+app.use("/post", postRouter_1.default);
 exports.default = server;

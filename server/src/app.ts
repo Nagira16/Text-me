@@ -6,6 +6,7 @@ import authRouter from "./routes/authRouter";
 import userRouter from "./routes/userRouter";
 import { authMiddleware } from "./middleware";
 import { testCheckWork } from "./controllers/testController";
+import postRouter from "./routes/postRouter";
 
 const app: Express = express();
 
@@ -30,5 +31,6 @@ app.get("/", testCheckWork);
 
 app.use("/auth", authRouter);
 app.use("/user", authMiddleware, userRouter);
+app.use("/post", postRouter);
 
 export default server;
