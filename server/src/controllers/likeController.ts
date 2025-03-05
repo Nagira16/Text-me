@@ -11,9 +11,9 @@ export const getLikedPostByUserUuid = async (
   try {
     const user_id: string | undefined = req.user?.id;
     if (!user_id) {
-      res.status(404).json({
+      res.status(401).json({
         success: false,
-        message: "User Id Not Found",
+        message: "Unauthorized: Invalid or missing token",
       });
       return;
     }
@@ -99,13 +99,14 @@ export const toggleLikeByPostUuid = async (
   res: Response
 ): Promise<void> => {
   const post_id: string = req.params.postId;
-  let message = "";
+  let message: string = "";
+  let liked: boolean;
   try {
     const user_id: string | undefined = req.user?.id;
     if (!user_id) {
-      res.status(404).json({
+      res.status(401).json({
         success: false,
-        message: "User Id Not Found",
+        message: "Unauthorized: Invalid or missing token",
       });
       return;
     }
@@ -137,6 +138,7 @@ export const toggleLikeByPostUuid = async (
       ]);
 
       message = "Like Removed";
+      liked = false;
     } else {
       await prisma.$transaction([
         prisma.like.create({ data: { user_id, post_id: post.id } }),
@@ -147,11 +149,13 @@ export const toggleLikeByPostUuid = async (
       ]);
 
       message = "Post Liked";
+      liked = true;
     }
 
     res.status(201).json({
       success: true,
-      message: message,
+      message,
+      liked,
     });
   } catch (error) {
     console.error(error);

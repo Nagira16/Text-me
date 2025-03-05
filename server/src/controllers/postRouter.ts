@@ -69,9 +69,9 @@ export const createNewPost = async (
   try {
     const user_id: string | undefined = req.user?.id;
     if (!user_id) {
-      res.status(404).json({
+      res.status(401).json({
         success: false,
-        message: "User Id Not Found",
+        message: "Unauthorized: Invalid or missing token",
       });
       return;
     }
