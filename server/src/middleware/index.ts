@@ -1,5 +1,6 @@
 import { NextFunction, Request, Response } from "express";
 import jwt from "jsonwebtoken";
+import { Payload } from "../types";
 
 const secretKey: string | undefined = process.env.SECRET_KEY;
 
@@ -20,7 +21,9 @@ export const authMiddleware = async (
       return;
     }
 
-    jwt.verify(token, secretKey);
+    const decode = jwt.verify(token, secretKey) as Payload;
+
+    req.user = decode;
 
     next();
   } catch (error) {
