@@ -44,7 +44,7 @@ const getUserById = (req, res) => __awaiter(void 0, void 0, void 0, function* ()
         console.error(error);
         res.status(500).json({
             success: false,
-            message: "Server Error: Get User By Uuid",
+            message: "Server Error: Get User By Id",
         });
     }
 });
@@ -106,7 +106,7 @@ const updateUserById = (req, res) => __awaiter(void 0, void 0, void 0, function*
         console.error(error);
         res.status(500).json({
             success: false,
-            message: "Server Error: Update User By Uuid",
+            message: "Server Error: Update User By Id",
         });
     }
 });
@@ -145,7 +145,7 @@ const deleteUserById = (req, res) => __awaiter(void 0, void 0, void 0, function*
         console.error(error);
         res.status(500).json({
             success: false,
-            message: "Server Error: Delete User By Uuid",
+            message: "Server Error: Delete User By Id",
         });
     }
 });

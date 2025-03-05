@@ -50,7 +50,7 @@ const getAllFollowerByUserId = (req, res) => __awaiter(void 0, void 0, void 0, f
         console.error(error);
         res.status(500).json({
             success: false,
-            message: "Server Error: Get All Follower By User Uuid",
+            message: "Server Error: Get All Follower By User Id",
         });
     }
 });
@@ -90,7 +90,7 @@ const getAllFollowingByUserId = (req, res) => __awaiter(void 0, void 0, void 0, 
         console.error(error);
         res.status(500).json({
             success: false,
-            message: "Server Error: Get Following By User Uuid",
+            message: "Server Error: Get Following By User Id",
         });
     }
 });
@@ -159,7 +159,7 @@ const followUserByUserId = (req, res) => __awaiter(void 0, void 0, void 0, funct
         console.error(error);
         res.status(500).json({
             success: false,
-            message: "Server Error: Follow User By User Uuid",
+            message: "Server Error: Follow User By User Id",
         });
     }
 });

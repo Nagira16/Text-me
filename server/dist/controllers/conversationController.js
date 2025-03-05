@@ -35,7 +35,7 @@ const getConversationById = (req, res) => __awaiter(void 0, void 0, void 0, func
         console.error(error);
         res.status(500).json({
             success: false,
-            message: "Server Error: Get Conversation By Uuid",
+            message: "Server Error: Get Conversation By Id",
         });
     }
 });
@@ -45,6 +45,22 @@ const findConversationById = (uuid) => __awaiter(void 0, void 0, void 0, functio
     return yield prisma_1.default.conversation.findUnique({
         where: {
             id: uuid,
+        },
+        include: {
+            user1: {
+                select: {
+                    id: true,
+                    username: true,
+                    profile_image: true,
+                },
+            },
+            user2: {
+                select: {
+                    id: true,
+                    username: true,
+                    profile_image: true,
+                },
+            },
         },
     });
 });

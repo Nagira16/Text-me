@@ -29,9 +29,7 @@ export type UserUpdateInput = {
 };
 
 export type PostInput = {
-  photo: string;
   content?: string;
-  author_id: string;
 };
 
 export type CommentInput = {

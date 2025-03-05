@@ -63,7 +63,7 @@ const getPostById = (req, res) => __awaiter(void 0, void 0, void 0, function* ()
         console.error(error);
         res.status(500).json({
             success: false,
-            message: "Server Error: Get Post By Uuid",
+            message: "Server Error: Get Post By Id",
         });
     }
 });
@@ -71,7 +71,15 @@ exports.getPostById = getPostById;
 const createNewPost = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     var _a;
     try {
-        const { photo, content } = req.body;
+        const { content } = req.body;
+        const photo = req.file;
+        if (!photo) {
+            res.status(400).json({
+                success: false,
+                message: "Bad Request: No image uploaded",
+            });
+            return;
+        }
         const user_id = (_a = req.user) === null || _a === void 0 ? void 0 : _a.id;
         if (!user_id) {
             res.status(401).json({
@@ -80,9 +88,10 @@ const createNewPost = (req, res) => __awaiter(void 0, void 0, void 0, function* 
             });
             return;
         }
+        const photoUrl = `http://localhost:5001/uploads/${photo.filename}`;
         const newPost = yield prisma_1.default.post.create({
             data: {
-                photo,
+                photo: photoUrl,
                 content: content || null,
                 author_id: user_id,
             },
@@ -150,7 +159,7 @@ const updatePostById = (req, res) => __awaiter(void 0, void 0, void 0, function*
         console.error(error);
         res.status(500).json({
             success: false,
-            message: "Server Error: Update Post By Uuid",
+            message: "Server Error: Update Post By Id",
         });
     }
 });
@@ -186,7 +195,7 @@ const deletePostById = (req, res) => __awaiter(void 0, void 0, void 0, function*
         console.error(error);
         res.status(500).json({
             success: false,
-            message: "Server Error: Delete Post By Uuid",
+            message: "Server Error: Delete Post By Id",
         });
     }
 });
