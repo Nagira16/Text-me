@@ -6,15 +6,16 @@ import {
   getPostByUuid,
   updatePostByUuid,
 } from "../controllers/postRouter";
+import { authMiddleware } from "../middleware";
 
 const postRouter: Router = Router();
 
 //http://localhost:5001/post
 
 postRouter.get("/", getAllPosts);
-postRouter.post("/", createNewPost);
+postRouter.post("/", authMiddleware, createNewPost);
 postRouter.get("/:id", getPostByUuid);
-postRouter.put("/:id", updatePostByUuid);
-postRouter.put("/:id", deletePostByUuid);
+postRouter.put("/:id", authMiddleware, updatePostByUuid);
+postRouter.put("/:id", authMiddleware, deletePostByUuid);
 
 export default postRouter;

@@ -5,12 +5,15 @@ import {
   getCommentByPostUuid,
   updateCommentByUuid,
 } from "../controllers/commentController";
+import { authMiddleware } from "../middleware";
 
 const commentRouter: Router = Router();
 
 // http://localhost:5001/comment
 
 commentRouter.get("/:postId", getCommentByPostUuid);
-commentRouter.post("/", createNewComment);
-commentRouter.put("/:id", updateCommentByUuid);
-commentRouter.get("/:id", deleteCommentyUuid);
+commentRouter.post("/", authMiddleware, createNewComment);
+commentRouter.put("/:id", authMiddleware, updateCommentByUuid);
+commentRouter.get("/:id", authMiddleware, deleteCommentyUuid);
+
+export default commentRouter;
