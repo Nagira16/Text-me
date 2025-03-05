@@ -16,9 +16,9 @@ exports.deleteCommentyUuid = exports.updateCommentByUuid = exports.createNewComm
 const prisma_1 = __importDefault(require("../lib/prisma"));
 const postRouter_1 = require("./postRouter");
 const getCommentByPostUuid = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const postUuid = req.params.postId;
+    const post_id = req.params.postId;
     try {
-        const post = yield (0, postRouter_1.findPostByUuid)(postUuid);
+        const post = yield (0, postRouter_1.findPostByUuid)(post_id);
         if (!post) {
             res.status(404).json({
                 success: false,
@@ -26,7 +26,7 @@ const getCommentByPostUuid = (req, res) => __awaiter(void 0, void 0, void 0, fun
             });
             return;
         }
-        const comments = yield prisma_1.default.comment.findMany({
+        const postComments = yield prisma_1.default.comment.findMany({
             where: {
                 post_id: post.id,
             },
@@ -37,7 +37,7 @@ const getCommentByPostUuid = (req, res) => __awaiter(void 0, void 0, void 0, fun
         res.status(200).json({
             success: true,
             message: "Comment Found Successfully",
-            result: comments,
+            result: postComments,
         });
     }
     catch (error) {

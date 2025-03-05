@@ -7,10 +7,10 @@ export const getCommentByPostUuid = async (
   req: Request,
   res: Response
 ): Promise<void> => {
-  const postUuid: string = req.params.postId;
+  const post_id: string = req.params.postId;
 
   try {
-    const post: PostWithUser | null = await findPostByUuid(postUuid);
+    const post: PostWithUser | null = await findPostByUuid(post_id);
     if (!post) {
       res.status(404).json({
         success: false,
@@ -19,7 +19,7 @@ export const getCommentByPostUuid = async (
       return;
     }
 
-    const comments: CommentWithUser[] = await prisma.comment.findMany({
+    const postComments: CommentWithUser[] = await prisma.comment.findMany({
       where: {
         post_id: post.id,
       },
@@ -31,7 +31,7 @@ export const getCommentByPostUuid = async (
     res.status(200).json({
       success: true,
       message: "Comment Found Successfully",
-      result: comments,
+      result: postComments,
     });
   } catch (error) {
     console.error(error);

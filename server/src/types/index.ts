@@ -1,4 +1,4 @@
-import { Comment, Post } from "@prisma/client";
+import { Comment, Like, Post } from "@prisma/client";
 
 export type RegisterInput = {
   first_name: string;
@@ -41,10 +41,26 @@ export type CommentInput = {
 
 type UserInfo = { id: string; username: string; profile_image: string };
 
+type PostInfo = {
+  id: string;
+  content: string | null;
+  created_at: Date;
+  photo: string;
+  likes_count: number;
+};
+
 export type CommentWithUser = Comment & {
   user: UserInfo;
 };
 
 export type PostWithUser = Post & {
   author: UserInfo;
+};
+
+export type LikeWithPost = Like & {
+  post: PostInfo;
+};
+
+export type LikeWithUser = Like & {
+  user: UserInfo;
 };
