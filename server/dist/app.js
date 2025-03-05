@@ -6,6 +6,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = __importDefault(require("express"));
 const http_1 = __importDefault(require("http"));
 const socket_io_1 = require("socket.io");
+const cors_1 = __importDefault(require("cors"));
 const cookie_parser_1 = __importDefault(require("cookie-parser"));
 const authRouter_1 = __importDefault(require("./routes/authRouter"));
 const userRouter_1 = __importDefault(require("./routes/userRouter"));
@@ -25,6 +26,11 @@ const io = new socket_io_1.Server(server, {
         credentials: true,
     },
 });
+app.use((0, cors_1.default)({
+    origin: ["http://localhost:3000"],
+    methods: ["GET", "POST", "PUT", "DELETE"],
+    credentials: true,
+}));
 app.use(express_1.default.json());
 app.use((0, cookie_parser_1.default)());
 app.get("/", testController_1.testCheckWork);
@@ -35,4 +41,13 @@ app.use("/comment", commentRouter_1.default);
 app.use("/like", middleware_1.authMiddleware, likeRouter_1.default);
 app.use("/follow", middleware_1.authMiddleware, followRouter_1.default);
 app.use("/conversation", middleware_1.authMiddleware, conversationRouter_1.default);
+io.on("connection", (socket) => {
+    console.log("connected to server");
+    socket.on("joinConversation", (userIds) => {
+        const roomName = [userIds.user1Id, userIds.user2Id].sort().join("-");
+        socket.join(roomName);
+        console.log(`Users ${userIds.user1Id} and ${userIds.user2Id} joined the room ${roomName}`);
+    });
+    socket.on("disconnect", () => console.log("disconnected"));
+});
 exports.default = server;
