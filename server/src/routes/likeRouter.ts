@@ -1,6 +1,7 @@
 import { Router } from "express";
 
 import {
+  checkLikedByPostId,
   getLikedPostByUserId,
   getLikedUserByPostId,
   toggleLikeByPostId,
@@ -11,7 +12,8 @@ const likeRouter: Router = Router();
 // http://localhost:5001/like
 
 likeRouter.get("/", getLikedPostByUserId);
-likeRouter.get("/:postId", getLikedUserByPostId);
+likeRouter.get("/:postId", checkLikedByPostId);
+likeRouter.get("/user/:postId", getLikedUserByPostId);
 likeRouter.post("/:postId", toggleLikeByPostId);
 
 export default likeRouter;
