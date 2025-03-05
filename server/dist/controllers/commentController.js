@@ -12,13 +12,13 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.deleteCommentyUuid = exports.updateCommentByUuid = exports.createNewComment = exports.getCommentByPostUuid = void 0;
+exports.deleteCommentyId = exports.updateCommentById = exports.createNewComment = exports.getCommentByPostId = void 0;
 const prisma_1 = __importDefault(require("../lib/prisma"));
 const postRouter_1 = require("./postRouter");
-const getCommentByPostUuid = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const post_id = req.params.postId;
+const getCommentByPostId = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        const post = yield (0, postRouter_1.findPostByUuid)(post_id);
+        const post_id = req.params.postId;
+        const post = yield (0, postRouter_1.findPostById)(post_id);
         if (!post) {
             res.status(404).json({
                 success: false,
@@ -48,11 +48,11 @@ const getCommentByPostUuid = (req, res) => __awaiter(void 0, void 0, void 0, fun
         });
     }
 });
-exports.getCommentByPostUuid = getCommentByPostUuid;
+exports.getCommentByPostId = getCommentByPostId;
 const createNewComment = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     var _a;
-    const { post_id, content } = req.body;
     try {
+        const { post_id, content } = req.body;
         const user_id = (_a = req.user) === null || _a === void 0 ? void 0 : _a.id;
         if (!user_id) {
             res.status(401).json({
@@ -61,7 +61,7 @@ const createNewComment = (req, res) => __awaiter(void 0, void 0, void 0, functio
             });
             return;
         }
-        const post = yield (0, postRouter_1.findPostByUuid)(post_id);
+        const post = yield (0, postRouter_1.findPostById)(post_id);
         if (!post) {
             res.status(404).json({
                 success: false,
@@ -100,11 +100,11 @@ const createNewComment = (req, res) => __awaiter(void 0, void 0, void 0, functio
     }
 });
 exports.createNewComment = createNewComment;
-const updateCommentByUuid = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const uuid = req.params.id;
-    const { content } = req.body;
+const updateCommentById = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        const comment = yield findCommentByUuid(uuid);
+        const comment_id = req.params.id;
+        const { content } = req.body;
+        const comment = yield findCommentById(comment_id);
         if (!comment) {
             res.status(404).json({
                 success: false,
@@ -143,11 +143,11 @@ const updateCommentByUuid = (req, res) => __awaiter(void 0, void 0, void 0, func
         });
     }
 });
-exports.updateCommentByUuid = updateCommentByUuid;
-const deleteCommentyUuid = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const uuid = req.params.id;
+exports.updateCommentById = updateCommentById;
+const deleteCommentyId = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        const comment = yield findCommentByUuid(uuid);
+        const comment_id = req.params.id;
+        const comment = yield findCommentById(comment_id);
         if (!comment) {
             res.status(404).json({
                 success: false,
@@ -183,9 +183,9 @@ const deleteCommentyUuid = (req, res) => __awaiter(void 0, void 0, void 0, funct
         });
     }
 });
-exports.deleteCommentyUuid = deleteCommentyUuid;
+exports.deleteCommentyId = deleteCommentyId;
 // Sub Function
-const findCommentByUuid = (uuid) => __awaiter(void 0, void 0, void 0, function* () {
+const findCommentById = (uuid) => __awaiter(void 0, void 0, void 0, function* () {
     return yield prisma_1.default.comment.findUnique({
         where: { id: uuid },
         include: {

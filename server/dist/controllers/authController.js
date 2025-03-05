@@ -19,8 +19,8 @@ const jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
 const userController_1 = require("./userController");
 const secretKey = process.env.SECRET_KEY;
 const registerNewUser = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const { first_name, last_name, username, email, password, profile_image, } = req.body;
     try {
+        const { first_name, last_name, username, email, password, profile_image, } = req.body;
         const emailExist = yield (0, userController_1.findUserByEmail)(email.trim());
         if (emailExist) {
             res.status(409).json({ success: false, message: "User Already Exists" });
@@ -68,8 +68,8 @@ const registerNewUser = (req, res) => __awaiter(void 0, void 0, void 0, function
 });
 exports.registerNewUser = registerNewUser;
 const loginUser = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const { email, password } = req.body;
     try {
+        const { email, password } = req.body;
         const user = yield (0, userController_1.findUserByEmail)(email.trim());
         if (!user) {
             res.status(404).json({

@@ -4,6 +4,6 @@ const express_1 = require("express");
 const followController_1 = require("../controllers/followController");
 const followRouter = (0, express_1.Router)();
 // http://localhost:5001/follow
-followRouter.get("/follower", followController_1.getAllFollowerByUserUuid);
-followRouter.get("/following", followController_1.getAllFollowingByUserUuid);
+followRouter.get("/follower", followController_1.getAllFollowerByUserId);
+followRouter.get("/following", followController_1.getAllFollowingByUserId);
 exports.default = followRouter;

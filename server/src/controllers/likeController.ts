@@ -1,10 +1,10 @@
 import { Request, Response } from "express";
 import prisma from "../lib/prisma";
 import { LikeWithPost, LikeWithUser, PostWithUser } from "../types";
-import { Like, Post } from "@prisma/client";
-import { findPostByUuid } from "./postRouter";
+import { Like } from "@prisma/client";
+import { findPostById } from "./postRouter";
 
-export const getLikedPostByUserUuid = async (
+export const getLikedPostByUserId = async (
   req: Request,
   res: Response
 ): Promise<void> => {
@@ -49,14 +49,14 @@ export const getLikedPostByUserUuid = async (
   }
 };
 
-export const getLikedUserByPostUuid = async (
+export const getLikedUserByPostId = async (
   req: Request,
   res: Response
 ): Promise<void> => {
-  const post_id: string = req.params.postId;
-
   try {
-    const post: PostWithUser | null = await findPostByUuid(post_id);
+    const post_id: string = req.params.postId;
+
+    const post: PostWithUser | null = await findPostById(post_id);
     if (!post) {
       res.status(404).json({
         success: false,
@@ -94,14 +94,15 @@ export const getLikedUserByPostUuid = async (
   }
 };
 
-export const toggleLikeByPostUuid = async (
+export const toggleLikeByPostId = async (
   req: Request,
   res: Response
 ): Promise<void> => {
-  const post_id: string = req.params.postId;
-  let message: string = "";
-  let liked: boolean;
   try {
+    const post_id: string = req.params.postId;
+    let message: string = "";
+    let liked: boolean;
+
     const user_id: string | undefined = req.user?.id;
     if (!user_id) {
       res.status(401).json({
@@ -111,7 +112,7 @@ export const toggleLikeByPostUuid = async (
       return;
     }
 
-    const post: PostWithUser | null = await findPostByUuid(post_id);
+    const post: PostWithUser | null = await findPostById(post_id);
     if (!post) {
       res.status(404).json({
         success: false,

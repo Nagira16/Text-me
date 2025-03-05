@@ -30,14 +30,14 @@ export const getAllPosts = async (_: Request, res: Response): Promise<void> => {
   }
 };
 
-export const getPostByUuid = async (
+export const getPostById = async (
   req: Request,
   res: Response
 ): Promise<void> => {
-  const uuid: string = req.params.id;
-
   try {
-    const post: PostWithUser | null = await findPostByUuid(uuid);
+    const post_id: string = req.params.id;
+
+    const post: PostWithUser | null = await findPostById(post_id);
     if (!post) {
       res.status(404).json({
         success: false,
@@ -64,9 +64,9 @@ export const createNewPost = async (
   req: Request,
   res: Response
 ): Promise<void> => {
-  const { photo, content }: PostInput = req.body;
-
   try {
+    const { photo, content }: PostInput = req.body;
+
     const user_id: string | undefined = req.user?.id;
     if (!user_id) {
       res.status(401).json({
@@ -107,15 +107,15 @@ export const createNewPost = async (
   }
 };
 
-export const updatePostByUuid = async (
+export const updatePostById = async (
   req: Request,
   res: Response
 ): Promise<void> => {
-  const uuid: string = req.params.id;
-  const { content }: { content?: string } = req.body;
-
   try {
-    const post: PostWithUser | null = await findPostByUuid(uuid);
+    const post_id: string = req.params.id;
+    const { content }: { content?: string } = req.body;
+
+    const post: PostWithUser | null = await findPostById(post_id);
     if (!post) {
       res.status(404).json({
         success: false,
@@ -156,14 +156,14 @@ export const updatePostByUuid = async (
   }
 };
 
-export const deletePostByUuid = async (
+export const deletePostById = async (
   req: Request,
   res: Response
 ): Promise<void> => {
-  const uuid: string = req.params.id;
-
   try {
-    const post: PostWithUser | null = await findPostByUuid(uuid);
+    const post_id: string = req.params.id;
+
+    const post: PostWithUser | null = await findPostById(post_id);
     if (!post) {
       res.status(404).json({
         success: false,
@@ -199,7 +199,7 @@ export const deletePostByUuid = async (
 
 //Sub Function
 
-export const findPostByUuid = async (
+export const findPostById = async (
   uuid: string
 ): Promise<PostWithUser | null> => {
   return await prisma.post.findUnique({

@@ -12,10 +12,10 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.toggleLikeByPostUuid = exports.getLikedUserByPostUuid = exports.getLikedPostByUserUuid = void 0;
+exports.toggleLikeByPostId = exports.getLikedUserByPostId = exports.getLikedPostByUserId = void 0;
 const prisma_1 = __importDefault(require("../lib/prisma"));
 const postRouter_1 = require("./postRouter");
-const getLikedPostByUserUuid = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+const getLikedPostByUserId = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     var _a;
     try {
         const user_id = (_a = req.user) === null || _a === void 0 ? void 0 : _a.id;
@@ -56,11 +56,11 @@ const getLikedPostByUserUuid = (req, res) => __awaiter(void 0, void 0, void 0, f
         });
     }
 });
-exports.getLikedPostByUserUuid = getLikedPostByUserUuid;
-const getLikedUserByPostUuid = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const post_id = req.params.postId;
+exports.getLikedPostByUserId = getLikedPostByUserId;
+const getLikedUserByPostId = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        const post = yield (0, postRouter_1.findPostByUuid)(post_id);
+        const post_id = req.params.postId;
+        const post = yield (0, postRouter_1.findPostById)(post_id);
         if (!post) {
             res.status(404).json({
                 success: false,
@@ -96,13 +96,13 @@ const getLikedUserByPostUuid = (req, res) => __awaiter(void 0, void 0, void 0, f
         });
     }
 });
-exports.getLikedUserByPostUuid = getLikedUserByPostUuid;
-const toggleLikeByPostUuid = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+exports.getLikedUserByPostId = getLikedUserByPostId;
+const toggleLikeByPostId = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     var _b;
-    const post_id = req.params.postId;
-    let message = "";
-    let liked;
     try {
+        const post_id = req.params.postId;
+        let message = "";
+        let liked;
         const user_id = (_b = req.user) === null || _b === void 0 ? void 0 : _b.id;
         if (!user_id) {
             res.status(401).json({
@@ -111,7 +111,7 @@ const toggleLikeByPostUuid = (req, res) => __awaiter(void 0, void 0, void 0, fun
             });
             return;
         }
-        const post = yield (0, postRouter_1.findPostByUuid)(post_id);
+        const post = yield (0, postRouter_1.findPostById)(post_id);
         if (!post) {
             res.status(404).json({
                 success: false,
@@ -163,4 +163,4 @@ const toggleLikeByPostUuid = (req, res) => __awaiter(void 0, void 0, void 0, fun
         });
     }
 });
-exports.toggleLikeByPostUuid = toggleLikeByPostUuid;
+exports.toggleLikeByPostId = toggleLikeByPostId;

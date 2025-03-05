@@ -10,6 +10,7 @@ import postRouter from "./routes/postRouter";
 import commentRouter from "./routes/commentRouter";
 import likeRouter from "./routes/likeRouter";
 import followRouter from "./routes/followRouter";
+import conversationRouter from "./routes/conversationRouter";
 
 const app: Express = express();
 
@@ -38,5 +39,6 @@ app.use("/post", postRouter);
 app.use("/comment", commentRouter);
 app.use("/like", authMiddleware, likeRouter);
 app.use("/follow", authMiddleware, followRouter);
+app.use("/conversation", authMiddleware, conversationRouter);
 
 export default server;

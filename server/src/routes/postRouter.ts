@@ -1,12 +1,13 @@
 import { Router } from "express";
+
+import { authMiddleware } from "../middleware";
 import {
   createNewPost,
-  deletePostByUuid,
+  deletePostById,
   getAllPosts,
-  getPostByUuid,
-  updatePostByUuid,
+  getPostById,
+  updatePostById,
 } from "../controllers/postRouter";
-import { authMiddleware } from "../middleware";
 
 const postRouter: Router = Router();
 
@@ -14,8 +15,8 @@ const postRouter: Router = Router();
 
 postRouter.get("/", getAllPosts);
 postRouter.post("/", authMiddleware, createNewPost);
-postRouter.get("/:id", getPostByUuid);
-postRouter.put("/:id", authMiddleware, updatePostByUuid);
-postRouter.put("/:id", authMiddleware, deletePostByUuid);
+postRouter.get("/:id", getPostById);
+postRouter.put("/:id", authMiddleware, updatePostById);
+postRouter.put("/:id", authMiddleware, deletePostById);
 
 export default postRouter;

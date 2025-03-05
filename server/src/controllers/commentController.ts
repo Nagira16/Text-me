@@ -1,16 +1,16 @@
 import { Request, Response } from "express";
 import prisma from "../lib/prisma";
 import { CommentInput, CommentWithUser, PostWithUser } from "../types";
-import { findPostByUuid } from "./postRouter";
+import { findPostById } from "./postRouter";
 
-export const getCommentByPostUuid = async (
+export const getCommentByPostId = async (
   req: Request,
   res: Response
 ): Promise<void> => {
-  const post_id: string = req.params.postId;
-
   try {
-    const post: PostWithUser | null = await findPostByUuid(post_id);
+    const post_id: string = req.params.postId;
+
+    const post: PostWithUser | null = await findPostById(post_id);
     if (!post) {
       res.status(404).json({
         success: false,
@@ -46,9 +46,9 @@ export const createNewComment = async (
   req: Request,
   res: Response
 ): Promise<void> => {
-  const { post_id, content }: CommentInput = req.body;
-
   try {
+    const { post_id, content }: CommentInput = req.body;
+
     const user_id: string | undefined = req.user?.id;
     if (!user_id) {
       res.status(401).json({
@@ -58,7 +58,7 @@ export const createNewComment = async (
       return;
     }
 
-    const post: PostWithUser | null = await findPostByUuid(post_id);
+    const post: PostWithUser | null = await findPostById(post_id);
     if (!post) {
       res.status(404).json({
         success: false,
@@ -98,15 +98,15 @@ export const createNewComment = async (
   }
 };
 
-export const updateCommentByUuid = async (
+export const updateCommentById = async (
   req: Request,
   res: Response
 ): Promise<void> => {
-  const uuid: string = req.params.id;
-  const { content }: { content?: string } = req.body;
-
   try {
-    const comment: CommentWithUser | null = await findCommentByUuid(uuid);
+    const comment_id: string = req.params.id;
+    const { content }: { content?: string } = req.body;
+
+    const comment: CommentWithUser | null = await findCommentById(comment_id);
     if (!comment) {
       res.status(404).json({
         success: false,
@@ -147,14 +147,14 @@ export const updateCommentByUuid = async (
   }
 };
 
-export const deleteCommentyUuid = async (
+export const deleteCommentyId = async (
   req: Request,
   res: Response
 ): Promise<void> => {
-  const uuid: string = req.params.id;
-
   try {
-    const comment: CommentWithUser | null = await findCommentByUuid(uuid);
+    const comment_id: string = req.params.id;
+
+    const comment: CommentWithUser | null = await findCommentById(comment_id);
     if (!comment) {
       res.status(404).json({
         success: false,
@@ -194,7 +194,7 @@ export const deleteCommentyUuid = async (
 
 // Sub Function
 
-const findCommentByUuid = async (
+const findCommentById = async (
   uuid: string
 ): Promise<CommentWithUser | null> => {
   return await prisma.comment.findUnique({
