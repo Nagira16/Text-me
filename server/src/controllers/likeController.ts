@@ -1,7 +1,7 @@
 import { Request, Response } from "express";
 import prisma from "../lib/prisma";
 import { LikeWithPost, LikeWithUser, PostWithUser } from "../types";
-import { Like } from "@prisma/client";
+import { Like, Post } from "@prisma/client";
 import { findPostById } from "./postRouter";
 
 export const getLikedPostByUserId = async (
@@ -37,7 +37,7 @@ export const getLikedPostByUserId = async (
 
     res.status(200).json({
       success: true,
-      message: "Liked Post Found Successfully",
+      message: "Liked Posts Found Successfully",
       result: likes,
     });
   } catch (error) {
@@ -82,7 +82,7 @@ export const getLikedUserByPostId = async (
 
     res.status(200).json({
       success: true,
-      message: "Users Found Successfully",
+      message: "Liked Users Found Successfully",
       result: likedUser,
     });
   } catch (error) {
@@ -163,6 +163,53 @@ export const toggleLikeByPostId = async (
     res.status(500).json({
       success: false,
       message: "Server Error: Toggle Like By Post Id ",
+    });
+  }
+};
+
+export const checkLikedByPostId = async (
+  req: Request,
+  res: Response
+): Promise<void> => {
+  try {
+    const post_id: string = req.body.post_id;
+
+    const user_id: string | undefined = req.user?.id;
+
+    if (!user_id) {
+      res.status(401).json({
+        success: false,
+        message: "Unauthorized: Invalid or missing token",
+      });
+      return;
+    }
+
+    const post = (await findPostById(post_id)) as Post | null;
+    if (!post) {
+      res.status(404).json({
+        success: false,
+        message: "Post Not Found",
+      });
+      return;
+    }
+
+    const like: Like | null = await prisma.like.findFirst({
+      where: {
+        user_id,
+        post_id,
+      },
+    });
+
+    res.status(200).json({
+      success: true,
+      message: "Like Found Successfully",
+      result: like,
+    });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({
+      success: false,
+      message: "Server Error: Check Liked By Post Id",
     });
   }
 };

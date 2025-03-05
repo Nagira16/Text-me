@@ -12,7 +12,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.toggleLikeByPostId = exports.getLikedUserByPostId = exports.getLikedPostByUserId = void 0;
+exports.checkLikedByPostId = exports.toggleLikeByPostId = exports.getLikedUserByPostId = exports.getLikedPostByUserId = void 0;
 const prisma_1 = __importDefault(require("../lib/prisma"));
 const postRouter_1 = require("./postRouter");
 const getLikedPostByUserId = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
@@ -44,7 +44,7 @@ const getLikedPostByUserId = (req, res) => __awaiter(void 0, void 0, void 0, fun
         });
         res.status(200).json({
             success: true,
-            message: "Liked Post Found Successfully",
+            message: "Liked Posts Found Successfully",
             result: likes,
         });
     }
@@ -84,7 +84,7 @@ const getLikedUserByPostId = (req, res) => __awaiter(void 0, void 0, void 0, fun
         });
         res.status(200).json({
             success: true,
-            message: "Users Found Successfully",
+            message: "Liked Users Found Successfully",
             result: likedUser,
         });
     }
@@ -164,3 +164,44 @@ const toggleLikeByPostId = (req, res) => __awaiter(void 0, void 0, void 0, funct
     }
 });
 exports.toggleLikeByPostId = toggleLikeByPostId;
+const checkLikedByPostId = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    var _c;
+    try {
+        const post_id = req.body.post_id;
+        const user_id = (_c = req.user) === null || _c === void 0 ? void 0 : _c.id;
+        if (!user_id) {
+            res.status(401).json({
+                success: false,
+                message: "Unauthorized: Invalid or missing token",
+            });
+            return;
+        }
+        const post = (yield (0, postRouter_1.findPostById)(post_id));
+        if (!post) {
+            res.status(404).json({
+                success: false,
+                message: "Post Not Found",
+            });
+            return;
+        }
+        const like = yield prisma_1.default.like.findFirst({
+            where: {
+                user_id,
+                post_id,
+            },
+        });
+        res.status(200).json({
+            success: true,
+            message: "Like Found Successfully",
+            result: like,
+        });
+    }
+    catch (error) {
+        console.error(error);
+        res.status(500).json({
+            success: false,
+            message: "Server Error: Check Liked By Post Id",
+        });
+    }
+});
+exports.checkLikedByPostId = checkLikedByPostId;
