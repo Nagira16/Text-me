@@ -9,6 +9,7 @@ import { testCheckWork } from "./controllers/testController";
 import postRouter from "./routes/postRouter";
 import commentRouter from "./routes/commentRouter";
 import likeRouter from "./routes/likeRouter";
+import followRouter from "./routes/followRouter";
 
 const app: Express = express();
 
@@ -36,5 +37,6 @@ app.use("/user", authMiddleware, userRouter);
 app.use("/post", postRouter);
 app.use("/comment", commentRouter);
 app.use("/like", authMiddleware, likeRouter);
+app.use("/follow", authMiddleware, followRouter);
 
 export default server;

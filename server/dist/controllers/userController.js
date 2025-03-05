@@ -12,13 +12,21 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.findUserByUsername = exports.findUserByEmail = exports.deleteUserByUuid = exports.updateUserByUuid = exports.getUserByUuid = void 0;
+exports.findUserByUsername = exports.findUserByEmail = exports.findUserByUuid = exports.deleteUserByUuid = exports.updateUserByUuid = exports.getUserByUuid = void 0;
 const prisma_1 = __importDefault(require("../lib/prisma"));
 const authController_1 = require("./authController");
 const getUserByUuid = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const uuid = req.params.id;
+    var _a;
     try {
-        const user = yield findUserByUuid(uuid);
+        const user_id = (_a = req.user) === null || _a === void 0 ? void 0 : _a.id;
+        if (!user_id) {
+            res.status(401).json({
+                success: false,
+                message: "Unauthorized: Invalid or missing token",
+            });
+            return;
+        }
+        const user = yield (0, exports.findUserByUuid)(user_id);
         if (!user) {
             res.status(404).json({
                 success: false,
@@ -42,10 +50,18 @@ const getUserByUuid = (req, res) => __awaiter(void 0, void 0, void 0, function* 
 });
 exports.getUserByUuid = getUserByUuid;
 const updateUserByUuid = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const uuid = req.params.id;
+    var _b;
     const { first_name, last_name, profile_image, username } = req.body;
     try {
-        const user = yield findUserByUuid(uuid);
+        const user_id = (_b = req.user) === null || _b === void 0 ? void 0 : _b.id;
+        if (!user_id) {
+            res.status(401).json({
+                success: false,
+                message: "Unauthorized: Invalid or missing token",
+            });
+            return;
+        }
+        const user = yield (0, exports.findUserByUuid)(user_id);
         if (!user) {
             res.status(404).json({
                 success: false,
@@ -96,9 +112,17 @@ const updateUserByUuid = (req, res) => __awaiter(void 0, void 0, void 0, functio
 });
 exports.updateUserByUuid = updateUserByUuid;
 const deleteUserByUuid = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const uuid = req.params.id;
+    var _c;
     try {
-        const user = yield findUserByUuid(uuid);
+        const user_id = (_c = req.user) === null || _c === void 0 ? void 0 : _c.id;
+        if (!user_id) {
+            res.status(401).json({
+                success: false,
+                message: "Unauthorized: Invalid or missing token",
+            });
+            return;
+        }
+        const user = yield (0, exports.findUserByUuid)(user_id);
         if (!user) {
             res.status(404).json({
                 success: false,
@@ -134,6 +158,7 @@ const findUserByUuid = (uuid) => __awaiter(void 0, void 0, void 0, function* () 
         },
     });
 });
+exports.findUserByUuid = findUserByUuid;
 const findUserByEmail = (email) => __awaiter(void 0, void 0, void 0, function* () {
     return yield prisma_1.default.user.findUnique({
         where: {

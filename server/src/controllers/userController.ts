@@ -8,10 +8,17 @@ export const getUserByUuid = async (
   req: Request,
   res: Response
 ): Promise<void> => {
-  const uuid: string = req.params.id;
-
   try {
-    const user: User | null = await findUserByUuid(uuid);
+    const user_id: string | undefined = req.user?.id;
+    if (!user_id) {
+      res.status(401).json({
+        success: false,
+        message: "Unauthorized: Invalid or missing token",
+      });
+      return;
+    }
+
+    const user: User | null = await findUserByUuid(user_id);
     if (!user) {
       res.status(404).json({
         success: false,
@@ -38,13 +45,20 @@ export const updateUserByUuid = async (
   req: Request,
   res: Response
 ): Promise<void> => {
-  const uuid: string = req.params.id;
-
   const { first_name, last_name, profile_image, username }: UserUpdateInput =
     req.body;
 
   try {
-    const user: User | null = await findUserByUuid(uuid);
+    const user_id: string | undefined = req.user?.id;
+    if (!user_id) {
+      res.status(401).json({
+        success: false,
+        message: "Unauthorized: Invalid or missing token",
+      });
+      return;
+    }
+
+    const user: User | null = await findUserByUuid(user_id);
     if (!user) {
       res.status(404).json({
         success: false,
@@ -103,10 +117,17 @@ export const deleteUserByUuid = async (
   req: Request,
   res: Response
 ): Promise<void> => {
-  const uuid: string = req.params.id;
-
   try {
-    const user: User | null = await findUserByUuid(uuid);
+    const user_id: string | undefined = req.user?.id;
+    if (!user_id) {
+      res.status(401).json({
+        success: false,
+        message: "Unauthorized: Invalid or missing token",
+      });
+      return;
+    }
+
+    const user: User | null = await findUserByUuid(user_id);
     if (!user) {
       res.status(404).json({
         success: false,
@@ -137,7 +158,7 @@ export const deleteUserByUuid = async (
 
 //Sub Function
 
-const findUserByUuid = async (uuid: string): Promise<User | null> => {
+export const findUserByUuid = async (uuid: string): Promise<User | null> => {
   return await prisma.user.findUnique({
     where: {
       id: uuid,

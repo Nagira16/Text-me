@@ -20,9 +20,9 @@ const getLikedPostByUserUuid = (req, res) => __awaiter(void 0, void 0, void 0, f
     try {
         const user_id = (_a = req.user) === null || _a === void 0 ? void 0 : _a.id;
         if (!user_id) {
-            res.status(404).json({
+            res.status(401).json({
                 success: false,
-                message: "User Id Not Found",
+                message: "Unauthorized: Invalid or missing token",
             });
             return;
         }
@@ -101,12 +101,13 @@ const toggleLikeByPostUuid = (req, res) => __awaiter(void 0, void 0, void 0, fun
     var _b;
     const post_id = req.params.postId;
     let message = "";
+    let liked;
     try {
         const user_id = (_b = req.user) === null || _b === void 0 ? void 0 : _b.id;
         if (!user_id) {
-            res.status(404).json({
+            res.status(401).json({
                 success: false,
-                message: "User Id Not Found",
+                message: "Unauthorized: Invalid or missing token",
             });
             return;
         }
@@ -135,6 +136,7 @@ const toggleLikeByPostUuid = (req, res) => __awaiter(void 0, void 0, void 0, fun
                 }),
             ]);
             message = "Like Removed";
+            liked = false;
         }
         else {
             yield prisma_1.default.$transaction([
@@ -145,10 +147,12 @@ const toggleLikeByPostUuid = (req, res) => __awaiter(void 0, void 0, void 0, fun
                 }),
             ]);
             message = "Post Liked";
+            liked = true;
         }
         res.status(201).json({
             success: true,
-            message: message,
+            message,
+            liked,
         });
     }
     catch (error) {
