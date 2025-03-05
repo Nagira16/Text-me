@@ -16,10 +16,18 @@ exports.authMiddleware = void 0;
 const jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
 const secretKey = process.env.SECRET_KEY;
 const authMiddleware = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
+    var _a;
     try {
         if (!secretKey)
             throw new Error("Secrec Key Undefined");
-        const token = req.cookies.token;
+        const token = (_a = req.cookies) === null || _a === void 0 ? void 0 : _a.token;
+        if (!token) {
+            res.status(404).json({
+                success: false,
+                message: "Token Not Found",
+            });
+            return;
+        }
         jsonwebtoken_1.default.verify(token, secretKey);
         next();
     }

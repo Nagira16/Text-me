@@ -12,9 +12,11 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.findUserByUsername = exports.findUserByEmail = exports.deleteUserByUuid = exports.updateUserByUuid = exports.getUserByUuid = void 0;
+exports.getUuidFromCookie = exports.findUserByUsername = exports.findUserByEmail = exports.deleteUserByUuid = exports.updateUserByUuid = exports.getUserByUuid = void 0;
 const prisma_1 = __importDefault(require("../lib/prisma"));
 const authController_1 = require("./authController");
+const jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
+const secretKey = process.env.SECRET_KEY;
 const getUserByUuid = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const uuid = req.params.id;
     try {
@@ -72,7 +74,7 @@ const updateUserByUuid = (req, res) => __awaiter(void 0, void 0, void 0, functio
             }
         }
         const updatedUser = yield prisma_1.default.user.update({
-            where: { id: uuid },
+            where: { id: user.id },
             data: {
                 first_name: (first_name === null || first_name === void 0 ? void 0 : first_name.trim()) || user.first_name,
                 last_name: (last_name === null || last_name === void 0 ? void 0 : last_name.trim()) || user.last_name,
@@ -108,7 +110,7 @@ const deleteUserByUuid = (req, res) => __awaiter(void 0, void 0, void 0, functio
         }
         const deletedUser = yield prisma_1.default.user.delete({
             where: {
-                id: uuid,
+                id: user.id,
             },
         });
         res.status(200).json({
@@ -150,3 +152,22 @@ const findUserByUsername = (username) => __awaiter(void 0, void 0, void 0, funct
     });
 });
 exports.findUserByUsername = findUserByUsername;
+const getUuidFromCookie = (req) => __awaiter(void 0, void 0, void 0, function* () {
+    var _a, _b;
+    try {
+        if (!secretKey)
+            throw new Error("Secret Key Undefined");
+        const token = (_a = req.cookies) === null || _a === void 0 ? void 0 : _a.token;
+        if (!token)
+            return null;
+        const userInfo = jsonwebtoken_1.default.verify(token, secretKey);
+        if (typeof userInfo === "string")
+            return null;
+        return (_b = userInfo.id) !== null && _b !== void 0 ? _b : null;
+    }
+    catch (error) {
+        console.error("Error verifying token:", error);
+        return null;
+    }
+});
+exports.getUuidFromCookie = getUuidFromCookie;
