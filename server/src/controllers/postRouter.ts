@@ -26,6 +26,7 @@ export const getAllPosts = async (_: Request, res: Response): Promise<void> => {
     res.status(500).json({
       success: false,
       message: "Server Error: Get All Posts",
+      result: null,
     });
   }
 };
@@ -42,6 +43,7 @@ export const getPostById = async (
       res.status(404).json({
         success: false,
         message: "Post Not Found",
+        result: null,
       });
       return;
     }
@@ -56,6 +58,7 @@ export const getPostById = async (
     res.status(500).json({
       success: false,
       message: "Server Error: Get Post By Id",
+      result: null,
     });
   }
 };
@@ -73,6 +76,7 @@ export const createNewPost = async (
       res.status(400).json({
         success: false,
         message: "Bad Request: No image uploaded",
+        result: null,
       });
       return;
     }
@@ -82,6 +86,7 @@ export const createNewPost = async (
       res.status(401).json({
         success: false,
         message: "Unauthorized: Invalid or missing token",
+        result: null,
       });
       return;
     }
@@ -115,6 +120,7 @@ export const createNewPost = async (
     res.status(500).json({
       success: false,
       message: "Server Error: Create New Post",
+      result: null,
     });
   }
 };
@@ -132,6 +138,7 @@ export const updatePostById = async (
       res.status(404).json({
         success: false,
         message: "Post Not Found",
+        result: null,
       });
       return;
     }
@@ -164,6 +171,7 @@ export const updatePostById = async (
     res.status(500).json({
       success: false,
       message: "Server Error: Update Post By Id",
+      result: null,
     });
   }
 };
@@ -180,6 +188,7 @@ export const deletePostById = async (
       res.status(404).json({
         success: false,
         message: "Post Not Found",
+        result: null,
       });
       return;
     }
@@ -205,6 +214,7 @@ export const deletePostById = async (
     res.status(500).json({
       success: false,
       message: "Server Error: Delete Post By Id",
+      result: null,
     });
   }
 };

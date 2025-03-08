@@ -38,6 +38,7 @@ const getAllPosts = (_, res) => __awaiter(void 0, void 0, void 0, function* () {
         res.status(500).json({
             success: false,
             message: "Server Error: Get All Posts",
+            result: null,
         });
     }
 });
@@ -50,6 +51,7 @@ const getPostById = (req, res) => __awaiter(void 0, void 0, void 0, function* ()
             res.status(404).json({
                 success: false,
                 message: "Post Not Found",
+                result: null,
             });
             return;
         }
@@ -64,6 +66,7 @@ const getPostById = (req, res) => __awaiter(void 0, void 0, void 0, function* ()
         res.status(500).json({
             success: false,
             message: "Server Error: Get Post By Id",
+            result: null,
         });
     }
 });
@@ -77,6 +80,7 @@ const createNewPost = (req, res) => __awaiter(void 0, void 0, void 0, function* 
             res.status(400).json({
                 success: false,
                 message: "Bad Request: No image uploaded",
+                result: null,
             });
             return;
         }
@@ -85,6 +89,7 @@ const createNewPost = (req, res) => __awaiter(void 0, void 0, void 0, function* 
             res.status(401).json({
                 success: false,
                 message: "Unauthorized: Invalid or missing token",
+                result: null,
             });
             return;
         }
@@ -116,6 +121,7 @@ const createNewPost = (req, res) => __awaiter(void 0, void 0, void 0, function* 
         res.status(500).json({
             success: false,
             message: "Server Error: Create New Post",
+            result: null,
         });
     }
 });
@@ -129,6 +135,7 @@ const updatePostById = (req, res) => __awaiter(void 0, void 0, void 0, function*
             res.status(404).json({
                 success: false,
                 message: "Post Not Found",
+                result: null,
             });
             return;
         }
@@ -160,6 +167,7 @@ const updatePostById = (req, res) => __awaiter(void 0, void 0, void 0, function*
         res.status(500).json({
             success: false,
             message: "Server Error: Update Post By Id",
+            result: null,
         });
     }
 });
@@ -172,6 +180,7 @@ const deletePostById = (req, res) => __awaiter(void 0, void 0, void 0, function*
             res.status(404).json({
                 success: false,
                 message: "Post Not Found",
+                result: null,
             });
             return;
         }
@@ -196,6 +205,7 @@ const deletePostById = (req, res) => __awaiter(void 0, void 0, void 0, function*
         res.status(500).json({
             success: false,
             message: "Server Error: Delete Post By Id",
+            result: null,
         });
     }
 });

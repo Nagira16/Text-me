@@ -62,6 +62,7 @@ export type LikeWithPost = Like & {
 export type LikeWithUser = Like & {
   user: UserInfo;
 };
+
 export type FollowerWithUser = Follow & {
   follower: UserInfo;
 };

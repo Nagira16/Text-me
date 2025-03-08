@@ -15,6 +15,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.checkLikedByPostId = exports.toggleLikeByPostId = exports.getLikedUserByPostId = exports.getLikedPostByUserId = void 0;
 const prisma_1 = __importDefault(require("../lib/prisma"));
 const postRouter_1 = require("./postRouter");
+const app_1 = require("../app");
 const getLikedPostByUserId = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     var _a;
     try {
@@ -23,10 +24,11 @@ const getLikedPostByUserId = (req, res) => __awaiter(void 0, void 0, void 0, fun
             res.status(401).json({
                 success: false,
                 message: "Unauthorized: Invalid or missing token",
+                result: null,
             });
             return;
         }
-        const likes = yield prisma_1.default.like.findMany({
+        const likedPost = yield prisma_1.default.like.findMany({
             where: {
                 user_id,
             },
@@ -45,7 +47,7 @@ const getLikedPostByUserId = (req, res) => __awaiter(void 0, void 0, void 0, fun
         res.status(200).json({
             success: true,
             message: "Liked Posts Found Successfully",
-            result: likes,
+            result: likedPost,
         });
     }
     catch (error) {
@@ -53,6 +55,7 @@ const getLikedPostByUserId = (req, res) => __awaiter(void 0, void 0, void 0, fun
         res.status(500).json({
             success: false,
             message: "Server Error: Get Like By User Id",
+            result: null,
         });
     }
 });
@@ -65,6 +68,7 @@ const getLikedUserByPostId = (req, res) => __awaiter(void 0, void 0, void 0, fun
             res.status(404).json({
                 success: false,
                 message: "Post Not Found",
+                result: null,
             });
             return;
         }
@@ -93,6 +97,7 @@ const getLikedUserByPostId = (req, res) => __awaiter(void 0, void 0, void 0, fun
         res.status(500).json({
             success: false,
             message: "Server Error: Get Liked User By Post Id",
+            result: null,
         });
     }
 });
@@ -108,6 +113,7 @@ const toggleLikeByPostId = (req, res) => __awaiter(void 0, void 0, void 0, funct
             res.status(401).json({
                 success: false,
                 message: "Unauthorized: Invalid or missing token",
+                result: null,
             });
             return;
         }
@@ -116,6 +122,7 @@ const toggleLikeByPostId = (req, res) => __awaiter(void 0, void 0, void 0, funct
             res.status(404).json({
                 success: false,
                 message: "Post Not Found",
+                result: null,
             });
             return;
         }
@@ -148,11 +155,18 @@ const toggleLikeByPostId = (req, res) => __awaiter(void 0, void 0, void 0, funct
             ]);
             message = "Post Liked";
             liked = true;
+            // notification for author user
+            app_1.io.to(post.author_id).emit("postLikedNotification", {
+                post,
+                user_id,
+                liked,
+            });
         }
         res.status(201).json({
             success: true,
             message,
             liked,
+            result: null,
         });
     }
     catch (error) {
@@ -160,6 +174,7 @@ const toggleLikeByPostId = (req, res) => __awaiter(void 0, void 0, void 0, funct
         res.status(500).json({
             success: false,
             message: "Server Error: Toggle Like By Post Id ",
+            result: null,
         });
     }
 });
@@ -173,6 +188,7 @@ const checkLikedByPostId = (req, res) => __awaiter(void 0, void 0, void 0, funct
             res.status(401).json({
                 success: false,
                 message: "Unauthorized: Invalid or missing token",
+                result: null,
             });
             return;
         }
@@ -181,6 +197,7 @@ const checkLikedByPostId = (req, res) => __awaiter(void 0, void 0, void 0, funct
             res.status(404).json({
                 success: false,
                 message: "Post Not Found",
+                result: null,
             });
             return;
         }
@@ -201,6 +218,7 @@ const checkLikedByPostId = (req, res) => __awaiter(void 0, void 0, void 0, funct
         res.status(500).json({
             success: false,
             message: "Server Error: Check Liked By Post Id",
+            result: null,
         });
     }
 });

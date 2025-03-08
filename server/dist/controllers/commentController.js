@@ -23,6 +23,7 @@ const getCommentByPostId = (req, res) => __awaiter(void 0, void 0, void 0, funct
             res.status(404).json({
                 success: false,
                 message: "Post Not Found",
+                result: null,
             });
             return;
         }
@@ -45,6 +46,7 @@ const getCommentByPostId = (req, res) => __awaiter(void 0, void 0, void 0, funct
         res.status(500).json({
             success: false,
             message: "Server Error: Get Comment By Post Id",
+            result: null,
         });
     }
 });
@@ -58,6 +60,7 @@ const createNewComment = (req, res) => __awaiter(void 0, void 0, void 0, functio
             res.status(401).json({
                 success: false,
                 message: "Unauthorized: Invalid or missing token",
+                result: null,
             });
             return;
         }
@@ -66,6 +69,7 @@ const createNewComment = (req, res) => __awaiter(void 0, void 0, void 0, functio
             res.status(404).json({
                 success: false,
                 message: "Post Not Found",
+                result: null,
             });
             return;
         }
@@ -96,6 +100,7 @@ const createNewComment = (req, res) => __awaiter(void 0, void 0, void 0, functio
         res.status(500).json({
             success: false,
             message: "Server Error: Create New Comment",
+            result: null,
         });
     }
 });
@@ -109,6 +114,7 @@ const updateCommentById = (req, res) => __awaiter(void 0, void 0, void 0, functi
             res.status(404).json({
                 success: false,
                 message: "Comment Not Found",
+                result: null,
             });
             return;
         }
@@ -140,6 +146,7 @@ const updateCommentById = (req, res) => __awaiter(void 0, void 0, void 0, functi
         res.status(500).json({
             success: false,
             message: "Server Error: Update Comment By Id",
+            result: null,
         });
     }
 });
@@ -152,6 +159,7 @@ const deleteCommentyId = (req, res) => __awaiter(void 0, void 0, void 0, functio
             res.status(404).json({
                 success: false,
                 message: "Comment Not Found",
+                result: null,
             });
             return;
         }
@@ -180,6 +188,7 @@ const deleteCommentyId = (req, res) => __awaiter(void 0, void 0, void 0, functio
         res.status(500).json({
             success: false,
             message: "Server Error: Delete Comment By Id",
+            result: null,
         });
     }
 });

@@ -12,10 +12,10 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.findUserByUsername = exports.findUserByEmail = exports.findUserById = exports.deleteUserById = exports.updateUserById = exports.getUserById = void 0;
+exports.findUserByUsername = exports.findUserByEmail = exports.findUserById = exports.deleteUserById = exports.updateUserById = exports.getUser = void 0;
 const prisma_1 = __importDefault(require("../lib/prisma"));
 const authController_1 = require("./authController");
-const getUserById = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+const getUser = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     var _a;
     try {
         const user_id = (_a = req.user) === null || _a === void 0 ? void 0 : _a.id;
@@ -23,6 +23,7 @@ const getUserById = (req, res) => __awaiter(void 0, void 0, void 0, function* ()
             res.status(401).json({
                 success: false,
                 message: "Unauthorized: Invalid or missing token",
+                result: null,
             });
             return;
         }
@@ -31,6 +32,7 @@ const getUserById = (req, res) => __awaiter(void 0, void 0, void 0, function* ()
             res.status(404).json({
                 success: false,
                 message: "User Not Found",
+                result: null,
             });
             return;
         }
@@ -44,11 +46,12 @@ const getUserById = (req, res) => __awaiter(void 0, void 0, void 0, function* ()
         console.error(error);
         res.status(500).json({
             success: false,
-            message: "Server Error: Get User By Id",
+            message: "Server Error: Get User",
+            result: null,
         });
     }
 });
-exports.getUserById = getUserById;
+exports.getUser = getUser;
 const updateUserById = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     var _b;
     try {
@@ -58,6 +61,7 @@ const updateUserById = (req, res) => __awaiter(void 0, void 0, void 0, function*
             res.status(401).json({
                 success: false,
                 message: "Unauthorized: Invalid or missing token",
+                result: null,
             });
             return;
         }
@@ -66,6 +70,7 @@ const updateUserById = (req, res) => __awaiter(void 0, void 0, void 0, function*
             res.status(404).json({
                 success: false,
                 message: "User Not Found",
+                result: null,
             });
             return;
         }
@@ -75,6 +80,7 @@ const updateUserById = (req, res) => __awaiter(void 0, void 0, void 0, function*
                 res.status(400).json({
                     success: false,
                     message: "Username must be between 4 and 16 characters",
+                    result: null,
                 });
                 return;
             }
@@ -83,6 +89,7 @@ const updateUserById = (req, res) => __awaiter(void 0, void 0, void 0, function*
                 res.status(409).json({
                     success: false,
                     message: "Username Already Taken",
+                    result: null,
                 });
                 return;
             }
@@ -107,6 +114,7 @@ const updateUserById = (req, res) => __awaiter(void 0, void 0, void 0, function*
         res.status(500).json({
             success: false,
             message: "Server Error: Update User By Id",
+            result: null,
         });
     }
 });
@@ -119,6 +127,7 @@ const deleteUserById = (req, res) => __awaiter(void 0, void 0, void 0, function*
             res.status(401).json({
                 success: false,
                 message: "Unauthorized: Invalid or missing token",
+                result: null,
             });
             return;
         }
@@ -127,6 +136,7 @@ const deleteUserById = (req, res) => __awaiter(void 0, void 0, void 0, function*
             res.status(404).json({
                 success: false,
                 message: "User Not Found",
+                result: null,
             });
             return;
         }
@@ -146,6 +156,7 @@ const deleteUserById = (req, res) => __awaiter(void 0, void 0, void 0, function*
         res.status(500).json({
             success: false,
             message: "Server Error: Delete User By Id",
+            result: null,
         });
     }
 });
