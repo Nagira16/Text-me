@@ -20,8 +20,9 @@ const getConversationById = (req, res) => __awaiter(void 0, void 0, void 0, func
         const conversation = yield findConversationById(conversation_id);
         if (!conversation) {
             res.status(404).json({
-                result: false,
+                success: false,
                 message: "Conversation Not Found",
+                result: null,
             });
             return;
         }
@@ -36,6 +37,7 @@ const getConversationById = (req, res) => __awaiter(void 0, void 0, void 0, func
         res.status(500).json({
             success: false,
             message: "Server Error: Get Conversation By Id",
+            result: null,
         });
     }
 });

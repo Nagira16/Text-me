@@ -13,8 +13,9 @@ export const getConversationById = async (
       await findConversationById(conversation_id);
     if (!conversation) {
       res.status(404).json({
-        result: false,
+        success: false,
         message: "Conversation Not Found",
+        result: null,
       });
       return;
     }
@@ -29,6 +30,7 @@ export const getConversationById = async (
     res.status(500).json({
       success: false,
       message: "Server Error: Get Conversation By Id",
+      result: null,
     });
   }
 };

@@ -1,7 +1,7 @@
 import { Router } from "express";
 import {
   deleteUserById,
-  getUserById,
+  getUser,
   updateUserById,
 } from "../controllers/userController";
 
@@ -9,7 +9,7 @@ const userRouter: Router = Router();
 
 //http://localhost:5001/user
 
-userRouter.get("/", getUserById);
+userRouter.get("/", getUser);
 userRouter.put("/:id", updateUserById);
 userRouter.get("/:id", deleteUserById);
 

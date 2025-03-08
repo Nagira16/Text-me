@@ -15,6 +15,7 @@ export const getCommentByPostId = async (
       res.status(404).json({
         success: false,
         message: "Post Not Found",
+        result: null,
       });
       return;
     }
@@ -38,6 +39,7 @@ export const getCommentByPostId = async (
     res.status(500).json({
       success: false,
       message: "Server Error: Get Comment By Post Id",
+      result: null,
     });
   }
 };
@@ -54,6 +56,7 @@ export const createNewComment = async (
       res.status(401).json({
         success: false,
         message: "Unauthorized: Invalid or missing token",
+        result: null,
       });
       return;
     }
@@ -63,6 +66,7 @@ export const createNewComment = async (
       res.status(404).json({
         success: false,
         message: "Post Not Found",
+        result: null,
       });
       return;
     }
@@ -94,6 +98,7 @@ export const createNewComment = async (
     res.status(500).json({
       success: false,
       message: "Server Error: Create New Comment",
+      result: null,
     });
   }
 };
@@ -111,6 +116,7 @@ export const updateCommentById = async (
       res.status(404).json({
         success: false,
         message: "Comment Not Found",
+        result: null,
       });
       return;
     }
@@ -143,6 +149,7 @@ export const updateCommentById = async (
     res.status(500).json({
       success: false,
       message: "Server Error: Update Comment By Id",
+      result: null,
     });
   }
 };
@@ -159,6 +166,7 @@ export const deleteCommentyId = async (
       res.status(404).json({
         success: false,
         message: "Comment Not Found",
+        result: null,
       });
       return;
     }
@@ -188,6 +196,7 @@ export const deleteCommentyId = async (
     res.status(500).json({
       success: false,
       message: "Server Error: Delete Comment By Id",
+      result: null,
     });
   }
 };

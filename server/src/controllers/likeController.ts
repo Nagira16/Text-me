@@ -14,11 +14,12 @@ export const getLikedPostByUserId = async (
       res.status(401).json({
         success: false,
         message: "Unauthorized: Invalid or missing token",
+        result: null,
       });
       return;
     }
 
-    const likes: LikeWithPost[] = await prisma.like.findMany({
+    const likedPost: LikeWithPost[] = await prisma.like.findMany({
       where: {
         user_id,
       },
@@ -38,13 +39,14 @@ export const getLikedPostByUserId = async (
     res.status(200).json({
       success: true,
       message: "Liked Posts Found Successfully",
-      result: likes,
+      result: likedPost,
     });
   } catch (error) {
     console.error(error);
     res.status(500).json({
       success: false,
       message: "Server Error: Get Like By User Id",
+      result: null,
     });
   }
 };
@@ -61,6 +63,7 @@ export const getLikedUserByPostId = async (
       res.status(404).json({
         success: false,
         message: "Post Not Found",
+        result: null,
       });
       return;
     }
@@ -90,6 +93,7 @@ export const getLikedUserByPostId = async (
     res.status(500).json({
       success: false,
       message: "Server Error: Get Liked User By Post Id",
+      result: null,
     });
   }
 };
@@ -108,6 +112,7 @@ export const toggleLikeByPostId = async (
       res.status(401).json({
         success: false,
         message: "Unauthorized: Invalid or missing token",
+        result: null,
       });
       return;
     }
@@ -117,6 +122,7 @@ export const toggleLikeByPostId = async (
       res.status(404).json({
         success: false,
         message: "Post Not Found",
+        result: null,
       });
       return;
     }
@@ -151,18 +157,27 @@ export const toggleLikeByPostId = async (
 
       message = "Post Liked";
       liked = true;
+
+      // notification for author user
+      io.to(post.author_id).emit("postLikedNotification", {
+        post,
+        user_id,
+        liked,
+      });
     }
 
     res.status(201).json({
       success: true,
       message,
       liked,
+      result: null,
     });
   } catch (error) {
     console.error(error);
     res.status(500).json({
       success: false,
       message: "Server Error: Toggle Like By Post Id ",
+      result: null,
     });
   }
 };
@@ -180,6 +195,7 @@ export const checkLikedByPostId = async (
       res.status(401).json({
         success: false,
         message: "Unauthorized: Invalid or missing token",
+        result: null,
       });
       return;
     }
@@ -189,6 +205,7 @@ export const checkLikedByPostId = async (
       res.status(404).json({
         success: false,
         message: "Post Not Found",
+        result: null,
       });
       return;
     }
@@ -210,6 +227,7 @@ export const checkLikedByPostId = async (
     res.status(500).json({
       success: false,
       message: "Server Error: Check Liked By Post Id",
+      result: null,
     });
   }
 };

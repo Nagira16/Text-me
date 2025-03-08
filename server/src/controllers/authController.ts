@@ -31,7 +31,9 @@ export const registerNewUser = async (
       email.trim()
     );
     if (emailExist) {
-      res.status(409).json({ success: false, message: "User Already Exists" });
+      res
+        .status(409)
+        .json({ success: false, message: "User Already Exists", result: null });
       return;
     }
 
@@ -39,9 +41,11 @@ export const registerNewUser = async (
       username.trim()
     );
     if (usernameExist) {
-      res
-        .status(409)
-        .json({ success: false, message: "Username Already Taken" });
+      res.status(409).json({
+        success: false,
+        message: "Username Already Taken",
+        result: null,
+      });
       return;
     }
 
@@ -57,6 +61,7 @@ export const registerNewUser = async (
         ]
           .filter(Boolean)
           .join(" "),
+        result: null,
       });
       return;
     }
@@ -76,7 +81,11 @@ export const registerNewUser = async (
       },
     });
 
-    res.status(201).json({ success: true, message: "Registered Successfully" });
+    res.status(201).json({
+      success: true,
+      message: "Registered Successfully",
+      result: null,
+    });
   } catch (error) {
     console.error("Register Error:", error);
     res.status(500).json({
@@ -96,6 +105,7 @@ export const loginUser = async (req: Request, res: Response): Promise<void> => {
       res.status(404).json({
         success: false,
         message: "Email Or Password Is Wrong",
+        result: null,
       });
       return;
     }
@@ -108,6 +118,7 @@ export const loginUser = async (req: Request, res: Response): Promise<void> => {
       res.status(404).json({
         success: false,
         message: "Email Or Password Is Wrong",
+        result: null,
       });
       return;
     }
