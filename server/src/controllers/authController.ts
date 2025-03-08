@@ -1,5 +1,10 @@
 import { Request, Response } from "express";
-import { LoginInput, Payload, RegisterInput } from "../types";
+import {
+  LoginInput,
+  Payload,
+  RegisterInput,
+  UserWithoutPassword,
+} from "../types";
 import { User } from "@prisma/client";
 import prisma from "../lib/prisma";
 import bcrypt from "bcrypt";
@@ -22,13 +27,15 @@ export const registerNewUser = async (
       profile_image,
     }: RegisterInput = req.body;
 
-    const emailExist: User | null = await findUserByEmail(email.trim());
+    const emailExist: UserWithoutPassword | null = await findUserByEmail(
+      email.trim()
+    );
     if (emailExist) {
       res.status(409).json({ success: false, message: "User Already Exists" });
       return;
     }
 
-    const usernameExist: User | null = await findUserByUsername(
+    const usernameExist: UserWithoutPassword | null = await findUserByUsername(
       username.trim()
     );
     if (usernameExist) {
@@ -72,7 +79,11 @@ export const registerNewUser = async (
     res.status(201).json({ success: true, message: "Registered Successfully" });
   } catch (error) {
     console.error("Register Error:", error);
-    res.status(500).json({ success: false, message: "Server Error: Register" });
+    res.status(500).json({
+      success: false,
+      message: "Server Error: Register",
+      result: null,
+    });
   }
 };
 
@@ -118,12 +129,29 @@ export const loginUser = async (req: Request, res: Response): Promise<void> => {
       maxAge: 10800000,
     });
 
-    res.status(200).json({ success: true, message: "Logged In Successfully" });
+    const userWithoutPassword: Omit<User, "password"> = {
+      id: user.id,
+      username: user.username,
+      email: user.email,
+      first_name: user.first_name,
+      last_name: user.last_name,
+      profile_image: user.profile_image,
+      role: user.role,
+      created_at: user.created_at,
+      updated_at: user.updated_at,
+    };
+
+    res.status(200).json({
+      success: true,
+      message: "Logged In Successfully",
+      result: userWithoutPassword,
+    });
   } catch (error) {
     console.error(error);
     res.status(500).json({
       success: false,
       message: "Server Error: Login",
+      result: null,
     });
   }
 };
@@ -138,12 +166,14 @@ export const logout = async (_: Request, res: Response) => {
     res.status(200).json({
       success: true,
       message: "Logged Out Successfully",
+      result: null,
     });
   } catch (error) {
     console.error(error);
     res.status(500).json({
       success: false,
       message: "Server Error: Logout",
+      result: null,
     });
   }
 };

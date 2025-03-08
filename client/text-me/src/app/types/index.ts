@@ -4,7 +4,7 @@ export type FetchData = {
 };
 
 export type UserData = FetchData & {
-  result: User | null;
+  result: UserWithoutPassword | null;
 };
 
 export type RegisterInput = {
@@ -39,6 +39,8 @@ type User = {
   role: Role;
   updated_at: Date;
 };
+
+export type UserWithoutPassword = Omit<User, "password">;
 
 type UserInfo = { id: string; username: string; profile_image: string };
 

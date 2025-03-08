@@ -7,7 +7,7 @@ import {
   getAllPosts,
   getPostById,
   updatePostById,
-} from "../controllers/postRouter";
+} from "../controllers/postController";
 import multer, { Multer } from "multer";
 import path from "path";
 import fs from "fs";

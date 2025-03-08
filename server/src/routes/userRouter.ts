@@ -1,5 +1,4 @@
 import { Router } from "express";
-import { testCheckWork } from "../controllers/testController";
 import {
   deleteUserById,
   getUserById,
@@ -10,8 +9,7 @@ const userRouter: Router = Router();
 
 //http://localhost:5001/user
 
-userRouter.get("/", testCheckWork);
-userRouter.get("/:id", getUserById);
+userRouter.get("/", getUserById);
 userRouter.put("/:id", updateUserById);
 userRouter.get("/:id", deleteUserById);
 

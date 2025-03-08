@@ -2,7 +2,7 @@ import { Request, Response } from "express";
 import prisma from "../lib/prisma";
 import { LikeWithPost, LikeWithUser, PostWithUser } from "../types";
 import { Like, Post } from "@prisma/client";
-import { findPostById } from "./postRouter";
+import { findPostById } from "./postController";
 
 export const getLikedPostByUserId = async (
   req: Request,
