@@ -16,7 +16,7 @@ const postRouter: Router = Router();
 
 //http://localhost:5001/post
 
-const uploadDir = path.join(__dirname, "./uploads");
+export const uploadDir = path.join(__dirname, "../../src/uploads");
 
 if (!fs.existsSync(uploadDir)) {
   fs.mkdirSync(uploadDir, { recursive: true });

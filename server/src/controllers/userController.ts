@@ -4,16 +4,14 @@ import prisma from "../lib/prisma";
 import { UserUpdateInput } from "../types";
 import { validateUsernameLength } from "./authController";
 
-export const getUserById = async (
-  req: Request,
-  res: Response
-): Promise<void> => {
+export const getUser = async (req: Request, res: Response): Promise<void> => {
   try {
     const user_id: string | undefined = req.user?.id;
     if (!user_id) {
       res.status(401).json({
         success: false,
         message: "Unauthorized: Invalid or missing token",
+        result: null,
       });
       return;
     }
@@ -23,6 +21,7 @@ export const getUserById = async (
       res.status(404).json({
         success: false,
         message: "User Not Found",
+        result: null,
       });
       return;
     }
@@ -36,7 +35,8 @@ export const getUserById = async (
     console.error(error);
     res.status(500).json({
       success: false,
-      message: "Server Error: Get User By Id",
+      message: "Server Error: Get User",
+      result: null,
     });
   }
 };
@@ -54,6 +54,7 @@ export const updateUserById = async (
       res.status(401).json({
         success: false,
         message: "Unauthorized: Invalid or missing token",
+        result: null,
       });
       return;
     }
@@ -63,6 +64,7 @@ export const updateUserById = async (
       res.status(404).json({
         success: false,
         message: "User Not Found",
+        result: null,
       });
       return;
     }
@@ -73,6 +75,7 @@ export const updateUserById = async (
         res.status(400).json({
           success: false,
           message: "Username must be between 4 and 16 characters",
+          result: null,
         });
         return;
       }
@@ -84,6 +87,7 @@ export const updateUserById = async (
         res.status(409).json({
           success: false,
           message: "Username Already Taken",
+          result: null,
         });
         return;
       }
@@ -109,6 +113,7 @@ export const updateUserById = async (
     res.status(500).json({
       success: false,
       message: "Server Error: Update User By Id",
+      result: null,
     });
   }
 };
@@ -123,6 +128,7 @@ export const deleteUserById = async (
       res.status(401).json({
         success: false,
         message: "Unauthorized: Invalid or missing token",
+        result: null,
       });
       return;
     }
@@ -132,6 +138,7 @@ export const deleteUserById = async (
       res.status(404).json({
         success: false,
         message: "User Not Found",
+        result: null,
       });
       return;
     }
@@ -152,6 +159,7 @@ export const deleteUserById = async (
     res.status(500).json({
       success: false,
       message: "Server Error: Delete User By Id",
+      result: null,
     });
   }
 };

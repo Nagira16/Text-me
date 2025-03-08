@@ -23,14 +23,18 @@ const registerNewUser = (req, res) => __awaiter(void 0, void 0, void 0, function
         const { first_name, last_name, username, email, password, profile_image, } = req.body;
         const emailExist = yield (0, userController_1.findUserByEmail)(email.trim());
         if (emailExist) {
-            res.status(409).json({ success: false, message: "User Already Exists" });
+            res
+                .status(409)
+                .json({ success: false, message: "User Already Exists", result: null });
             return;
         }
         const usernameExist = yield (0, userController_1.findUserByUsername)(username.trim());
         if (usernameExist) {
-            res
-                .status(409)
-                .json({ success: false, message: "Username Already Taken" });
+            res.status(409).json({
+                success: false,
+                message: "Username Already Taken",
+                result: null,
+            });
             return;
         }
         const validatePassword = (0, exports.validatePasswordLength)(password.trim());
@@ -44,6 +48,7 @@ const registerNewUser = (req, res) => __awaiter(void 0, void 0, void 0, function
                 ]
                     .filter(Boolean)
                     .join(" "),
+                result: null,
             });
             return;
         }
@@ -59,11 +64,19 @@ const registerNewUser = (req, res) => __awaiter(void 0, void 0, void 0, function
                     "https://cdn-icons-png.flaticon.com/512/8847/8847419.png",
             },
         });
-        res.status(201).json({ success: true, message: "Registered Successfully" });
+        res.status(201).json({
+            success: true,
+            message: "Registered Successfully",
+            result: null,
+        });
     }
     catch (error) {
         console.error("Register Error:", error);
-        res.status(500).json({ success: false, message: "Server Error: Register" });
+        res.status(500).json({
+            success: false,
+            message: "Server Error: Register",
+            result: null,
+        });
     }
 });
 exports.registerNewUser = registerNewUser;
@@ -75,6 +88,7 @@ const loginUser = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
             res.status(404).json({
                 success: false,
                 message: "Email Or Password Is Wrong",
+                result: null,
             });
             return;
         }
@@ -83,6 +97,7 @@ const loginUser = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
             res.status(404).json({
                 success: false,
                 message: "Email Or Password Is Wrong",
+                result: null,
             });
             return;
         }
@@ -107,6 +122,7 @@ const loginUser = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
         res.status(500).json({
             success: false,
             message: "Server Error: Login",
+            result: null,
         });
     }
 });
@@ -120,6 +136,7 @@ const logout = (_, res) => __awaiter(void 0, void 0, void 0, function* () {
         res.status(200).json({
             success: true,
             message: "Logged Out Successfully",
+            result: null,
         });
     }
     catch (error) {
@@ -127,6 +144,7 @@ const logout = (_, res) => __awaiter(void 0, void 0, void 0, function* () {
         res.status(500).json({
             success: false,
             message: "Server Error: Logout",
+            result: null,
         });
     }
 });

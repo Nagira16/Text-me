@@ -12,6 +12,7 @@ import commentRouter from "./routes/commentRouter";
 import likeRouter from "./routes/likeRouter";
 import followRouter from "./routes/followRouter";
 import conversationRouter from "./routes/conversationRouter";
+import path from "path";
 
 const app: Express = express();
 
@@ -20,14 +21,18 @@ const server: http.Server<
   typeof http.ServerResponse
 > = http.createServer(app);
 
-const io: Server<DefaultEventsMap, DefaultEventsMap, DefaultEventsMap, any> =
-  new Server(server, {
-    cors: {
-      origin: ["http://localhost:3000"],
-      methods: ["GET", "POST"],
-      credentials: true,
-    },
-  });
+export const io: Server<
+  DefaultEventsMap,
+  DefaultEventsMap,
+  DefaultEventsMap,
+  any
+> = new Server(server, {
+  cors: {
+    origin: ["http://localhost:3000"],
+    methods: ["GET", "POST"],
+    credentials: true,
+  },
+});
 
 app.use(
   cors({
@@ -38,6 +43,7 @@ app.use(
 );
 app.use(express.json());
 app.use(cookieParser());
+app.use("/uploads", express.static(path.join(__dirname, "../src/uploads")));
 
 app.get("/", testCheckWork);
 
@@ -52,12 +58,16 @@ app.use("/conversation", authMiddleware, conversationRouter);
 io.on("connection", (socket: Socket) => {
   console.log("connected to server");
 
+  const userId = socket.handshake.auth.userId;
+  if (userId) {
+    socket.join(userId);
+    console.log(`${userId} joined the room`);
+  }
+
   socket.on(
     "joinConversation",
     (userIds: { user1Id: string; user2Id: string }) => {
       const roomName = [userIds.user1Id, userIds.user2Id].sort().join("-");
-
-      socket.join(roomName);
       console.log(
         `Users ${userIds.user1Id} and ${userIds.user2Id} joined the room ${roomName}`
       );

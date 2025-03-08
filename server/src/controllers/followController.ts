@@ -3,6 +3,7 @@ import prisma from "../lib/prisma";
 import { FollowerWithUser, FollowingWithUser } from "../types";
 import { findUserById } from "./userController";
 import { Follow, User } from "@prisma/client";
+import { io } from "../app";
 
 export const getAllFollowerByUserId = async (
   req: Request,
@@ -14,6 +15,7 @@ export const getAllFollowerByUserId = async (
       res.status(401).json({
         success: false,
         message: "Unauthorized: Invalid or missing token",
+        result: null,
       });
       return;
     }
@@ -43,6 +45,7 @@ export const getAllFollowerByUserId = async (
     res.status(500).json({
       success: false,
       message: "Server Error: Get All Follower By User Id",
+      result: null,
     });
   }
 };
@@ -57,6 +60,7 @@ export const getAllFollowingByUserId = async (
       res.status(401).json({
         success: false,
         message: "Unauthorized: Invalid or missing token",
+        result: null,
       });
       return;
     }
@@ -86,6 +90,7 @@ export const getAllFollowingByUserId = async (
     res.status(500).json({
       success: false,
       message: "Server Error: Get Following By User Id",
+      result: null,
     });
   }
 };
@@ -97,22 +102,26 @@ export const followUserByUserId = async (
   try {
     const following_id: string = req.params.userId;
     let message: string = "";
-    let follow: boolean;
+    let followed: boolean;
 
     const follower_id: string | undefined = req.user?.id;
     if (!follower_id) {
       res.status(401).json({
         success: false,
         message: "Unauthorized: Invalid or missing token",
+        result: null,
       });
       return;
     }
 
+    const followerUser: User | null = await findUserById(follower_id);
+
     const followingUser: User | null = await findUserById(following_id);
-    if (!followingUser) {
+    if (!followingUser || !followerUser) {
       res.status(404).json({
         success: false,
         message: "User to follow not found",
+        result: null,
       });
       return;
     }
@@ -121,6 +130,7 @@ export const followUserByUserId = async (
       res.status(400).json({
         success: false,
         message: "You cannot follow yourself",
+        result: null,
       });
       return;
     }
@@ -140,7 +150,7 @@ export const followUserByUserId = async (
       });
 
       message = "User unfollowed successfully";
-      follow = false;
+      followed = false;
     } else {
       await prisma.follow.create({
         data: {
@@ -150,19 +160,43 @@ export const followUserByUserId = async (
       });
 
       message = "User followed successfully";
-      follow = true;
+      followed = true;
+
+      // notification for following user
+      io.to(following_id).emit("followedNotifiction", {
+        followerUser: followerUser.username,
+      });
     }
+
+    const followerConut: number = await prisma.follow.count({
+      where: {
+        following_id,
+      },
+    });
+
+    // update follower count for following user
+    io.to(following_id).emit("followerCountUpdate", {
+      userId: following_id,
+      count: followerConut,
+    });
+
+    // update follower count for follower user
+    io.to(follower_id).emit("followerCountUpdate", {
+      userId: following_id,
+      count: followerConut,
+    });
 
     res.status(200).json({
       success: true,
       message,
-      follow,
+      followed,
     });
   } catch (error) {
     console.error(error);
     res.status(500).json({
       success: false,
       message: "Server Error: Follow User By User Id",
+      result: null,
     });
   }
 };
