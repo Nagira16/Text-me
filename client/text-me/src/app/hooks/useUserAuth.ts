@@ -1,9 +1,11 @@
 import { useEffect, useState, useCallback } from "react";
 import { UserData, UserWithoutPassword } from "../types";
+import { useSocket } from "../components/provider/SocketContext";
 
-export const useAuth = () => {
+export const useUserAuth = () => {
   const [user, setUser] = useState<UserWithoutPassword | null>(null);
   const [isSignedIn, setIsSignedIn] = useState<boolean>(false);
+  const socket = useSocket();
 
   const fetchUser = useCallback(async () => {
     try {
@@ -89,6 +91,9 @@ export const useAuth = () => {
 
       const data: UserData = await res.json();
       if (data.success) {
+        if (socket && user) {
+          socket.emit("leaveRoom", user.id);
+        }
         setUser(null);
         setIsSignedIn(false);
       } else {

@@ -115,3 +115,19 @@ type Comment = {
 export type CommentWithUser = Comment & {
   user: UserInfo;
 };
+
+export type UseUserAuth = {
+  user: UserWithoutPassword | null;
+  isSignedIn: boolean;
+  register: (
+    first_name: string,
+    last_name: string,
+    username: string,
+    email: string,
+    password: string,
+    profile_image?: File
+  ) => Promise<void>;
+  login: (email: string, password: string) => Promise<void>;
+  logout: () => Promise<void>;
+  refreshUser: () => Promise<void>;
+};

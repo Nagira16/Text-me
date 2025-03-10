@@ -1,6 +1,5 @@
 "use client";
 
-import { UserData } from "@/app/types";
 import {
   createContext,
   ReactNode,
@@ -9,33 +8,38 @@ import {
   useState,
 } from "react";
 import { io, Socket } from "socket.io-client";
+import { useAuth } from "./AuthContent";
 
 const SocketContext = createContext<Socket | null>(null);
 
-// just for now
-const userId = "";
-
 export const SocketProvider = ({ children }: { children: ReactNode }) => {
   const [socket, setSocket] = useState<Socket | null>(null);
+  const { isSignedIn, user } = useAuth();
 
   useEffect(() => {
-    if (!userId) return;
-
-    const newSocket = io("http://localhost:5001", {
-      auth: {
-        userId,
-      },
-    });
+    const newSocket = io("http://localhost:5001");
     setSocket(newSocket);
 
     return () => {
       newSocket.disconnect();
     };
-  }, [userId]);
+  }, []);
+
+  useEffect(() => {
+    if (socket && isSignedIn && user?.id) {
+      socket.emit("joinRoom", user.id);
+    }
+  }, [socket, isSignedIn, user]);
 
   return (
     <SocketContext.Provider value={socket}>{children}</SocketContext.Provider>
   );
 };
 
-export const useSocket = () => useContext(SocketContext);
+export const useSocket = () => {
+  const context: Socket | null = useContext(SocketContext);
+  if (!context) {
+    throw new Error("useSocket must be used within a SocketProvider");
+  }
+  return context;
+};
