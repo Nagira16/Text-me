@@ -14,11 +14,11 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.deleteCommentyId = exports.updateCommentById = exports.createNewComment = exports.getCommentByPostId = void 0;
 const prisma_1 = __importDefault(require("../lib/prisma"));
-const postRouter_1 = require("./postRouter");
+const postController_1 = require("./postController");
 const getCommentByPostId = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const post_id = req.params.postId;
-        const post = yield (0, postRouter_1.findPostById)(post_id);
+        const post = yield (0, postController_1.findPostById)(post_id);
         if (!post) {
             res.status(404).json({
                 success: false,
@@ -64,7 +64,7 @@ const createNewComment = (req, res) => __awaiter(void 0, void 0, void 0, functio
             });
             return;
         }
-        const post = yield (0, postRouter_1.findPostById)(post_id);
+        const post = yield (0, postController_1.findPostById)(post_id);
         if (!post) {
             res.status(404).json({
                 success: false,

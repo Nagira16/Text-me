@@ -1,8 +1,12 @@
 import { Request, Response } from "express";
 import prisma from "../lib/prisma";
-import { FollowerWithUser, FollowingWithUser } from "../types";
+import {
+  FollowerWithUser,
+  FollowingWithUser,
+  UserWithoutPassword,
+} from "../types";
 import { findUserById } from "./userController";
-import { Follow, User } from "@prisma/client";
+import { Follow } from "@prisma/client";
 import { io } from "../app";
 
 export const getAllFollowerByUserId = async (
@@ -114,9 +118,13 @@ export const followUserByUserId = async (
       return;
     }
 
-    const followerUser: User | null = await findUserById(follower_id);
+    const followerUser: UserWithoutPassword | null = await findUserById(
+      follower_id
+    );
 
-    const followingUser: User | null = await findUserById(following_id);
+    const followingUser: UserWithoutPassword | null = await findUserById(
+      following_id
+    );
     if (!followingUser || !followerUser) {
       res.status(404).json({
         success: false,

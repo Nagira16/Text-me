@@ -14,7 +14,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.checkLikedByPostId = exports.toggleLikeByPostId = exports.getLikedUserByPostId = exports.getLikedPostByUserId = void 0;
 const prisma_1 = __importDefault(require("../lib/prisma"));
-const postRouter_1 = require("./postRouter");
+const postController_1 = require("./postController");
 const app_1 = require("../app");
 const getLikedPostByUserId = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     var _a;
@@ -63,7 +63,7 @@ exports.getLikedPostByUserId = getLikedPostByUserId;
 const getLikedUserByPostId = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const post_id = req.params.postId;
-        const post = yield (0, postRouter_1.findPostById)(post_id);
+        const post = yield (0, postController_1.findPostById)(post_id);
         if (!post) {
             res.status(404).json({
                 success: false,
@@ -117,7 +117,7 @@ const toggleLikeByPostId = (req, res) => __awaiter(void 0, void 0, void 0, funct
             });
             return;
         }
-        const post = yield (0, postRouter_1.findPostById)(post_id);
+        const post = yield (0, postController_1.findPostById)(post_id);
         if (!post) {
             res.status(404).json({
                 success: false,
@@ -192,7 +192,7 @@ const checkLikedByPostId = (req, res) => __awaiter(void 0, void 0, void 0, funct
             });
             return;
         }
-        const post = (yield (0, postRouter_1.findPostById)(post_id));
+        const post = (yield (0, postController_1.findPostById)(post_id));
         if (!post) {
             res.status(404).json({
                 success: false,

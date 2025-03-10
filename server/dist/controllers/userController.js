@@ -12,7 +12,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.findUserByUsername = exports.findUserByEmail = exports.findUserById = exports.deleteUserById = exports.updateUserById = exports.getUser = void 0;
+exports.findUserByUsername = exports.findUserByEmail = exports.findUserByEmailWithoutPassword = exports.findUserById = exports.deleteUserById = exports.updateUserById = exports.getUser = void 0;
 const prisma_1 = __importDefault(require("../lib/prisma"));
 const authController_1 = require("./authController");
 const getUser = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
@@ -102,6 +102,9 @@ const updateUserById = (req, res) => __awaiter(void 0, void 0, void 0, function*
                 profile_image: (profile_image === null || profile_image === void 0 ? void 0 : profile_image.trim()) || user.profile_image,
                 username: (username === null || username === void 0 ? void 0 : username.trim()) || user.username,
             },
+            omit: {
+                password: true,
+            },
         });
         res.status(200).json({
             success: true,
@@ -144,6 +147,9 @@ const deleteUserById = (req, res) => __awaiter(void 0, void 0, void 0, function*
             where: {
                 id: user.id,
             },
+            omit: {
+                password: true,
+            },
         });
         res.status(200).json({
             success: true,
@@ -167,9 +173,23 @@ const findUserById = (uuid) => __awaiter(void 0, void 0, void 0, function* () {
         where: {
             id: uuid,
         },
+        omit: {
+            password: true,
+        },
     });
 });
 exports.findUserById = findUserById;
+const findUserByEmailWithoutPassword = (email) => __awaiter(void 0, void 0, void 0, function* () {
+    return yield prisma_1.default.user.findUnique({
+        where: {
+            email,
+        },
+        omit: {
+            password: true,
+        },
+    });
+});
+exports.findUserByEmailWithoutPassword = findUserByEmailWithoutPassword;
 const findUserByEmail = (email) => __awaiter(void 0, void 0, void 0, function* () {
     return yield prisma_1.default.user.findUnique({
         where: {
@@ -182,6 +202,9 @@ const findUserByUsername = (username) => __awaiter(void 0, void 0, void 0, funct
     return yield prisma_1.default.user.findUnique({
         where: {
             username,
+        },
+        omit: {
+            password: true,
         },
     });
 });

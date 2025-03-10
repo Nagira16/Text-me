@@ -18,14 +18,10 @@ export const registerNewUser = async (
   res: Response
 ): Promise<void> => {
   try {
-    const {
-      first_name,
-      last_name,
-      username,
-      email,
-      password,
-      profile_image,
-    }: RegisterInput = req.body;
+    const { first_name, last_name, username, email, password }: RegisterInput =
+      req.body;
+
+    const image: Express.Multer.File | undefined = req.file;
 
     const emailExist: UserWithoutPassword | null = await findUserByEmail(
       email.trim()
@@ -66,6 +62,10 @@ export const registerNewUser = async (
       return;
     }
 
+    const imageUrl = image?.filename
+      ? `http://localhost:3001/uploads/${image.filename}`
+      : "https://cdn-icons-png.flaticon.com/512/8847/8847419.png";
+
     const hashedPassword: string = await bcrypt.hash(password.trim(), 10);
 
     await prisma.user.create({
@@ -75,9 +75,7 @@ export const registerNewUser = async (
         username: username.trim(),
         email: email.trim(),
         password: hashedPassword,
-        profile_image:
-          profile_image?.trim() ||
-          "https://cdn-icons-png.flaticon.com/512/8847/8847419.png",
+        profile_image: imageUrl,
       },
     });
 
