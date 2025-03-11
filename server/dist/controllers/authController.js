@@ -20,7 +20,8 @@ const userController_1 = require("./userController");
 const secretKey = process.env.SECRET_KEY;
 const registerNewUser = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        const { first_name, last_name, username, email, password, profile_image, } = req.body;
+        const { first_name, last_name, username, email, password } = req.body;
+        const image = req.file;
         const emailExist = yield (0, userController_1.findUserByEmail)(email.trim());
         if (emailExist) {
             res
@@ -52,6 +53,9 @@ const registerNewUser = (req, res) => __awaiter(void 0, void 0, void 0, function
             });
             return;
         }
+        const imageUrl = (image === null || image === void 0 ? void 0 : image.filename)
+            ? `http://localhost:3001/uploads/${image.filename}`
+            : "https://cdn-icons-png.flaticon.com/512/8847/8847419.png";
         const hashedPassword = yield bcrypt_1.default.hash(password.trim(), 10);
         yield prisma_1.default.user.create({
             data: {
@@ -60,8 +64,7 @@ const registerNewUser = (req, res) => __awaiter(void 0, void 0, void 0, function
                 username: username.trim(),
                 email: email.trim(),
                 password: hashedPassword,
-                profile_image: (profile_image === null || profile_image === void 0 ? void 0 : profile_image.trim()) ||
-                    "https://cdn-icons-png.flaticon.com/512/8847/8847419.png",
+                profile_image: imageUrl,
             },
         });
         res.status(201).json({
@@ -115,7 +118,22 @@ const loginUser = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
             secure: false,
             maxAge: 10800000,
         });
-        res.status(200).json({ success: true, message: "Logged In Successfully" });
+        const userWithoutPassword = {
+            id: user.id,
+            username: user.username,
+            email: user.email,
+            first_name: user.first_name,
+            last_name: user.last_name,
+            profile_image: user.profile_image,
+            role: user.role,
+            created_at: user.created_at,
+            updated_at: user.updated_at,
+        };
+        res.status(200).json({
+            success: true,
+            message: "Logged In Successfully",
+            result: userWithoutPassword,
+        });
     }
     catch (error) {
         console.error(error);

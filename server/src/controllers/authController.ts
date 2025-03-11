@@ -1,5 +1,10 @@
 import { Request, Response } from "express";
-import { LoginInput, Payload, RegisterInput } from "../types";
+import {
+  LoginInput,
+  Payload,
+  RegisterInput,
+  UserWithoutPassword,
+} from "../types";
 import { User } from "@prisma/client";
 import prisma from "../lib/prisma";
 import bcrypt from "bcrypt";
@@ -13,16 +18,14 @@ export const registerNewUser = async (
   res: Response
 ): Promise<void> => {
   try {
-    const {
-      first_name,
-      last_name,
-      username,
-      email,
-      password,
-      profile_image,
-    }: RegisterInput = req.body;
+    const { first_name, last_name, username, email, password }: RegisterInput =
+      req.body;
 
-    const emailExist: User | null = await findUserByEmail(email.trim());
+    const image: Express.Multer.File | undefined = req.file;
+
+    const emailExist: UserWithoutPassword | null = await findUserByEmail(
+      email.trim()
+    );
     if (emailExist) {
       res
         .status(409)
@@ -30,7 +33,7 @@ export const registerNewUser = async (
       return;
     }
 
-    const usernameExist: User | null = await findUserByUsername(
+    const usernameExist: UserWithoutPassword | null = await findUserByUsername(
       username.trim()
     );
     if (usernameExist) {
@@ -59,6 +62,10 @@ export const registerNewUser = async (
       return;
     }
 
+    const imageUrl = image?.filename
+      ? `http://localhost:3001/uploads/${image.filename}`
+      : "https://cdn-icons-png.flaticon.com/512/8847/8847419.png";
+
     const hashedPassword: string = await bcrypt.hash(password.trim(), 10);
 
     await prisma.user.create({
@@ -68,9 +75,7 @@ export const registerNewUser = async (
         username: username.trim(),
         email: email.trim(),
         password: hashedPassword,
-        profile_image:
-          profile_image?.trim() ||
-          "https://cdn-icons-png.flaticon.com/512/8847/8847419.png",
+        profile_image: imageUrl,
       },
     });
 
@@ -133,7 +138,23 @@ export const loginUser = async (req: Request, res: Response): Promise<void> => {
       maxAge: 10800000,
     });
 
-    res.status(200).json({ success: true, message: "Logged In Successfully" });
+    const userWithoutPassword: Omit<User, "password"> = {
+      id: user.id,
+      username: user.username,
+      email: user.email,
+      first_name: user.first_name,
+      last_name: user.last_name,
+      profile_image: user.profile_image,
+      role: user.role,
+      created_at: user.created_at,
+      updated_at: user.updated_at,
+    };
+
+    res.status(200).json({
+      success: true,
+      message: "Logged In Successfully",
+      result: userWithoutPassword,
+    });
   } catch (error) {
     console.error(error);
     res.status(500).json({

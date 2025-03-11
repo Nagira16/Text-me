@@ -1,4 +1,11 @@
-import { Comment, Conversation, Follow, Like, Post } from "@prisma/client";
+import {
+  Comment,
+  Conversation,
+  Follow,
+  Like,
+  Post,
+  User,
+} from "@prisma/client";
 
 export type RegisterInput = {
   first_name: string;
@@ -6,7 +13,6 @@ export type RegisterInput = {
   username: string;
   email: string;
   password: string;
-  profile_image?: string;
 };
 
 export type LoginInput = {
@@ -36,6 +42,8 @@ export type CommentInput = {
   content: string;
   post_id: string;
 };
+
+export type UserWithoutPassword = Omit<User, "password">;
 
 type UserInfo = { id: string; username: string; profile_image: string };
 

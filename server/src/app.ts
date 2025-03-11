@@ -34,6 +34,8 @@ export const io: Server<
   },
 });
 
+export const uploadDir = path.join(__dirname, "../../src/uploads");
+
 app.use(
   cors({
     origin: ["http://localhost:3000"],
