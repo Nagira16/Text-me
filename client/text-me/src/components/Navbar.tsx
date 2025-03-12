@@ -1,19 +1,21 @@
 "use client";
 
 import Image from "next/image";
-import logo from "@/app/images/Text-Me-Logo.png";
-import {
-  Bell,
-  CircleUserRound,
-  House,
-  LogIn,
-  MessageCircleMore,
-} from "lucide-react";
+import logo from "@/images/Text-Me-Logo.png";
+import { Bell, House, LogIn, MessageCircleMore } from "lucide-react";
 import { useUserAuth } from "../hooks/useUserAuth";
 import Link from "next/link";
+import { useEffect, useState } from "react";
 
 const Navbar = () => {
+  const [isClient, setIsClient] = useState<boolean>(false);
   const { user } = useUserAuth();
+
+  useEffect(() => {
+    setIsClient(true);
+  }, []);
+
+  if (!isClient) return null;
 
   const NavLinks = [
     {
@@ -22,28 +24,28 @@ const Navbar = () => {
       icon: <Image src={logo} alt="Logo" width={50} height={50} />,
     },
     { title: "Home", path: "/", icon: <House /> },
-    { title: "DM", path: "/dm", icon: user ? <MessageCircleMore /> : null },
+    { title: "DM", path: "/dm", icon: user && <MessageCircleMore /> },
     {
       title: "Notification",
       path: "/notification",
-      icon: user ? <Bell /> : null,
+      icon: user && <Bell />,
     },
     {
       title: "Account",
       path: "/account",
-      icon: user ? (
+      icon: user && (
         <Image
           src={user.profile_image}
           alt="User Icon"
           width={50}
           height={50}
         />
-      ) : null,
+      ),
     },
     {
       title: "SignIn",
       path: "/sign-in",
-      icon: user ? null : <LogIn />,
+      icon: !user && <LogIn />,
     },
   ];
 

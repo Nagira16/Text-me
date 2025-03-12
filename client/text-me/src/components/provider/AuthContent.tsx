@@ -1,7 +1,7 @@
 "use client";
 
-import { useUserAuth } from "@/app/hooks/useUserAuth";
-import { UseUserAuth } from "@/app/types";
+import { useUserAuth } from "@/hooks/useUserAuth";
+import { UseUserAuth } from "@/types";
 import { createContext, ReactNode, useContext } from "react";
 
 const AuthContext = createContext<UseUserAuth | null>(null);
