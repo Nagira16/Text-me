@@ -2,7 +2,13 @@
 
 import Image from "next/image";
 import logo from "@/app/images/Text-Me-Logo.png";
-import { Bell, CircleUserRound, House, MessageCircleMore } from "lucide-react";
+import {
+  Bell,
+  CircleUserRound,
+  House,
+  LogIn,
+  MessageCircleMore,
+} from "lucide-react";
 import { useUserAuth } from "../hooks/useUserAuth";
 import Link from "next/link";
 
@@ -16,8 +22,12 @@ const Navbar = () => {
       icon: <Image src={logo} alt="Logo" width={50} height={50} />,
     },
     { title: "Home", path: "/", icon: <House /> },
-    { title: "DM", path: "/dm", icon: <MessageCircleMore /> },
-    { title: "Notification", path: "/notification", icon: <Bell /> },
+    { title: "DM", path: "/dm", icon: user ? <MessageCircleMore /> : null },
+    {
+      title: "Notification",
+      path: "/notification",
+      icon: user ? <Bell /> : null,
+    },
     {
       title: "Account",
       path: "/account",
@@ -28,9 +38,12 @@ const Navbar = () => {
           width={50}
           height={50}
         />
-      ) : (
-        <CircleUserRound />
-      ),
+      ) : null,
+    },
+    {
+      title: "SignIn",
+      path: "/sign-in",
+      icon: user ? null : <LogIn />,
     },
   ];
 
