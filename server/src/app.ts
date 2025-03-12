@@ -34,8 +34,6 @@ export const io: Server<
   },
 });
 
-export const uploadDir = path.join(__dirname, "../../src/uploads");
-
 app.use(
   cors({
     origin: ["http://localhost:3000"],
@@ -60,11 +58,10 @@ app.use("/conversation", authMiddleware, conversationRouter);
 io.on("connection", (socket: Socket) => {
   console.log("connected to server");
 
-  const userId = socket.handshake.auth.userId;
-  if (userId) {
+  socket.on("joinRoom", ({ userId }: { userId: string }) => {
     socket.join(userId);
     console.log(`${userId} joined the room`);
-  }
+  });
 
   socket.on(
     "joinConversation",

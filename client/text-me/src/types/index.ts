@@ -125,9 +125,11 @@ export type UseUserAuth = {
     username: string,
     email: string,
     password: string,
-    profile_image?: File
-  ) => Promise<void>;
-  login: (email: string, password: string) => Promise<void>;
+    profile_image?: File | null
+  ) => Promise<ReturnType>;
+  login: (email: string, password: string) => Promise<ReturnType>;
   logout: () => Promise<void>;
   refreshUser: () => Promise<void>;
 };
+
+export type ReturnType = { message: string; success: boolean };

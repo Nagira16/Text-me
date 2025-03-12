@@ -4,6 +4,7 @@ import "../globals.css";
 import { AuthProvider } from "@/components/provider/AuthContent";
 import { SocketProvider } from "@/components/provider/SocketContext";
 import Navbar from "@/components/Navbar";
+import { ThemeProvider } from "@/components/provider/ThemeProvider";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -30,12 +31,19 @@ export default function RootLayout({
       <body
       // className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
-        <AuthProvider>
-          <SocketProvider>
-            <Navbar />
-            {children}
-          </SocketProvider>
-        </AuthProvider>
+        <ThemeProvider
+          attribute="class"
+          defaultTheme="system"
+          enableSystem
+          disableTransitionOnChange
+        >
+          <AuthProvider>
+            <SocketProvider>
+              <Navbar />
+              {children}
+            </SocketProvider>
+          </AuthProvider>
+        </ThemeProvider>
       </body>
     </html>
   );

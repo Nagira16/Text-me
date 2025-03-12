@@ -24,7 +24,7 @@ export const registerNewUser = async (
     const image: Express.Multer.File | undefined = req.file;
 
     const emailExist: UserWithoutPassword | null = await findUserByEmail(
-      email.trim()
+      email.trim().toLocaleLowerCase()
     );
     if (emailExist) {
       res
@@ -52,8 +52,8 @@ export const registerNewUser = async (
       res.status(400).json({
         success: false,
         message: [
-          !validatePassword && "Password must be between 8 and 16 characters.",
-          !validateUsername && "Username must be between 4 and 16 characters.",
+          !validatePassword && "Password must be longer than 8.",
+          !validateUsername && "Username must be longer than 4.",
         ]
           .filter(Boolean)
           .join(" "),
@@ -63,7 +63,7 @@ export const registerNewUser = async (
     }
 
     const imageUrl = image?.filename
-      ? `http://localhost:3001/uploads/${image.filename}`
+      ? `http://localhost:5001/uploads/${image.filename}`
       : "https://cdn-icons-png.flaticon.com/512/8847/8847419.png";
 
     const hashedPassword: string = await bcrypt.hash(password.trim(), 10);
@@ -73,7 +73,7 @@ export const registerNewUser = async (
         first_name: first_name.trim(),
         last_name: last_name.trim(),
         username: username.trim(),
-        email: email.trim(),
+        email: email.trim().toLocaleLowerCase(),
         password: hashedPassword,
         profile_image: imageUrl,
       },
@@ -98,7 +98,9 @@ export const loginUser = async (req: Request, res: Response): Promise<void> => {
   try {
     const { email, password }: LoginInput = req.body;
 
-    const user: User | null = await findUserByEmail(email.trim());
+    const user: User | null = await findUserByEmail(
+      email.trim().toLocaleLowerCase()
+    );
     if (!user) {
       res.status(404).json({
         success: false,
@@ -190,14 +192,14 @@ export const logout = async (_: Request, res: Response) => {
 //Sub Function
 
 export const validateUsernameLength = (username: string): boolean => {
-  if (username.length <= 4) {
+  if (username.length < 4) {
     return false;
   }
   return true;
 };
 
 export const validatePasswordLength = (password: string): boolean => {
-  if (password.length <= 8 || password.length >= 16) {
+  if (password.length < 8) {
     return false;
   }
   return true;

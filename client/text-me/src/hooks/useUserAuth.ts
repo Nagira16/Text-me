@@ -37,8 +37,8 @@ export const useUserAuth = () => {
     username: string,
     email: string,
     password: string,
-    profile_image?: File
-  ) => {
+    profile_image?: File | null
+  ): Promise<{ message: string; success: boolean }> => {
     try {
       const formData = new FormData();
       formData.append("first_name", first_name);
@@ -55,13 +55,18 @@ export const useUserAuth = () => {
       });
 
       const data: UserData = await res.json();
-      console.log(data.message);
+
+      return { message: data.message, success: data.success };
     } catch (error) {
       console.error("Register error:", error);
+      return { message: "Register error", success: false };
     }
   };
 
-  const login = async (email: string, password: string) => {
+  const login = async (
+    email: string,
+    password: string
+  ): Promise<{ message: string; success: boolean }> => {
     try {
       const res = await fetch("http://localhost:5001/auth/login", {
         method: "POST",
@@ -74,11 +79,11 @@ export const useUserAuth = () => {
       if (data.success) {
         setUser(data.result);
         setIsSignedIn(true);
-      } else {
-        console.log(data.message);
-      }
+        return { message: data.message, success: data.success };
+      } else return { message: data.message, success: data.success };
     } catch (error) {
       console.error("Login error:", error);
+      return { message: "Login Error", success: false };
     }
   };
 

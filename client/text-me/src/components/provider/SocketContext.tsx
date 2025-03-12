@@ -27,7 +27,7 @@ export const SocketProvider = ({ children }: { children: ReactNode }) => {
 
   useEffect(() => {
     if (socket && isSignedIn && user?.id) {
-      socket.emit("joinRoom", user.id);
+      socket.emit("joinRoom", { userId: user.id });
     }
   }, [socket, isSignedIn, user]);
 

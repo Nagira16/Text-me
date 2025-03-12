@@ -8,13 +8,13 @@ const middleware_1 = require("../middleware");
 const postController_1 = require("../controllers/postController");
 const multer_1 = __importDefault(require("multer"));
 const path_1 = __importDefault(require("path"));
-const app_1 = require("../app");
 const postRouter = (0, express_1.Router)();
 //http://localhost:5001/post
+const uploadDir = path_1.default.join(__dirname, "../../src/uploads");
 const upload = (0, multer_1.default)({
     storage: multer_1.default.diskStorage({
         destination(req, file, cb) {
-            cb(null, app_1.uploadDir);
+            cb(null, uploadDir);
         },
         filename(req, file, cb) {
             cb(null, Date.now() + path_1.default.extname(file.originalname));

@@ -22,7 +22,7 @@ const registerNewUser = (req, res) => __awaiter(void 0, void 0, void 0, function
     try {
         const { first_name, last_name, username, email, password } = req.body;
         const image = req.file;
-        const emailExist = yield (0, userController_1.findUserByEmail)(email.trim());
+        const emailExist = yield (0, userController_1.findUserByEmail)(email.trim().toLocaleLowerCase());
         if (emailExist) {
             res
                 .status(409)
@@ -44,8 +44,8 @@ const registerNewUser = (req, res) => __awaiter(void 0, void 0, void 0, function
             res.status(400).json({
                 success: false,
                 message: [
-                    !validatePassword && "Password must be between 8 and 16 characters.",
-                    !validateUsername && "Username must be between 4 and 16 characters.",
+                    !validatePassword && "Password must be longer than 8.",
+                    !validateUsername && "Username must be longer than 4.",
                 ]
                     .filter(Boolean)
                     .join(" "),
@@ -54,7 +54,7 @@ const registerNewUser = (req, res) => __awaiter(void 0, void 0, void 0, function
             return;
         }
         const imageUrl = (image === null || image === void 0 ? void 0 : image.filename)
-            ? `http://localhost:3001/uploads/${image.filename}`
+            ? `http://localhost:5001/uploads/${image.filename}`
             : "https://cdn-icons-png.flaticon.com/512/8847/8847419.png";
         const hashedPassword = yield bcrypt_1.default.hash(password.trim(), 10);
         yield prisma_1.default.user.create({
@@ -62,7 +62,7 @@ const registerNewUser = (req, res) => __awaiter(void 0, void 0, void 0, function
                 first_name: first_name.trim(),
                 last_name: last_name.trim(),
                 username: username.trim(),
-                email: email.trim(),
+                email: email.trim().toLocaleLowerCase(),
                 password: hashedPassword,
                 profile_image: imageUrl,
             },
@@ -86,7 +86,7 @@ exports.registerNewUser = registerNewUser;
 const loginUser = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const { email, password } = req.body;
-        const user = yield (0, userController_1.findUserByEmail)(email.trim());
+        const user = yield (0, userController_1.findUserByEmail)(email.trim().toLocaleLowerCase());
         if (!user) {
             res.status(404).json({
                 success: false,
@@ -169,14 +169,14 @@ const logout = (_, res) => __awaiter(void 0, void 0, void 0, function* () {
 exports.logout = logout;
 //Sub Function
 const validateUsernameLength = (username) => {
-    if (username.length <= 4) {
+    if (username.length < 4) {
         return false;
     }
     return true;
 };
 exports.validateUsernameLength = validateUsernameLength;
 const validatePasswordLength = (password) => {
-    if (password.length <= 8 || password.length >= 16) {
+    if (password.length < 8) {
         return false;
     }
     return true;
