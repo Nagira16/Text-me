@@ -7,11 +7,12 @@ import {
 import { testGetToken } from "../controllers/testController";
 import multer, { Multer } from "multer";
 import path from "path";
-import { uploadDir } from "../app";
 
 const authRouter: Router = Router();
 
 //http://localhost:5001/auth
+
+const uploadDir = path.join(__dirname, "../../src/uploads");
 
 const upload: Multer = multer({
   storage: multer.diskStorage({

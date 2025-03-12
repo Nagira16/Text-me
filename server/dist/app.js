@@ -3,7 +3,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.uploadDir = exports.io = void 0;
+exports.io = void 0;
 const express_1 = __importDefault(require("express"));
 const http_1 = __importDefault(require("http"));
 const socket_io_1 = require("socket.io");
@@ -28,7 +28,6 @@ exports.io = new socket_io_1.Server(server, {
         credentials: true,
     },
 });
-exports.uploadDir = path_1.default.join(__dirname, "../../src/uploads");
 app.use((0, cors_1.default)({
     origin: ["http://localhost:3000"],
     methods: ["GET", "POST", "PUT", "DELETE"],
@@ -47,11 +46,10 @@ app.use("/follow", middleware_1.authMiddleware, followRouter_1.default);
 app.use("/conversation", middleware_1.authMiddleware, conversationRouter_1.default);
 exports.io.on("connection", (socket) => {
     console.log("connected to server");
-    const userId = socket.handshake.auth.userId;
-    if (userId) {
+    socket.on("joinRoom", ({ userId }) => {
         socket.join(userId);
         console.log(`${userId} joined the room`);
-    }
+    });
     socket.on("joinConversation", (userIds) => {
         const roomName = [userIds.user1Id, userIds.user2Id].sort().join("-");
         console.log(`Users ${userIds.user1Id} and ${userIds.user2Id} joined the room ${roomName}`);

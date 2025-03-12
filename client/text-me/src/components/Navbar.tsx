@@ -6,10 +6,11 @@ import { Bell, House, LogIn, MessageCircleMore } from "lucide-react";
 import { useUserAuth } from "../hooks/useUserAuth";
 import Link from "next/link";
 import { useEffect, useState } from "react";
+import { ModeToggle } from "./ModeToggle";
 
 const Navbar = () => {
-  const [isClient, setIsClient] = useState<boolean>(false);
   const { user } = useUserAuth();
+  const [isClient, setIsClient] = useState<boolean>(false);
 
   useEffect(() => {
     setIsClient(true);
@@ -37,8 +38,9 @@ const Navbar = () => {
         <Image
           src={user.profile_image}
           alt="User Icon"
-          width={50}
-          height={50}
+          width={30}
+          height={30}
+          className="rounded-full"
         />
       ),
     },
@@ -53,10 +55,11 @@ const Navbar = () => {
     <nav className="fixed top-0 left-0 flex flex-col h-full w-16 items-center bg-black border-r border-white">
       <ul className="flex flex-col gap-16 items-center mt-16">
         {NavLinks.map((link, i) => (
-          <li key={i}>
+          <li key={i} className="text-white">
             <Link href={link.path}>{link.icon}</Link>
           </li>
         ))}
+        <ModeToggle />
       </ul>
     </nav>
   );
