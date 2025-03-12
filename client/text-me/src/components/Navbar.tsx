@@ -3,13 +3,13 @@
 import Image from "next/image";
 import logo from "@/images/Text-Me-Logo.png";
 import { Bell, House, LogIn, MessageCircleMore } from "lucide-react";
-import { useUserAuth } from "../hooks/useUserAuth";
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import { ModeToggle } from "./ModeToggle";
+import { useAuth } from "./provider/AuthContent";
 
 const Navbar = () => {
-  const { user } = useUserAuth();
+  const { user } = useAuth();
   const [isClient, setIsClient] = useState<boolean>(false);
 
   useEffect(() => {
@@ -25,11 +25,11 @@ const Navbar = () => {
       icon: <Image src={logo} alt="Logo" width={50} height={50} />,
     },
     { title: "Home", path: "/", icon: <House /> },
-    { title: "DM", path: "/dm", icon: user && <MessageCircleMore /> },
+    { title: "DM", path: "/dm", icon: <MessageCircleMore /> },
     {
       title: "Notification",
       path: "/notification",
-      icon: user && <Bell />,
+      icon: <Bell />,
     },
     {
       title: "Account",
