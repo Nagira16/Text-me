@@ -31,6 +31,8 @@ export const SocketProvider = ({ children }: { children: ReactNode }) => {
     }
   }, [socket, isSignedIn, user]);
 
+  useEffect(() => {}, [socket]);
+
   return (
     <SocketContext.Provider value={socket}>{children}</SocketContext.Provider>
   );

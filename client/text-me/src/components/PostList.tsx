@@ -1,8 +1,9 @@
 import { getAllPost } from "@/actions";
 import PostCard from "./PostCard";
+import { AllPostData } from "@/types";
 
 const PostList = async () => {
-  const posts = await getAllPost();
+  const posts: AllPostData = await getAllPost();
 
   if (!posts?.result || posts.result.length === 0) {
     return (

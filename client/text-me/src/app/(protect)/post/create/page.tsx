@@ -3,7 +3,7 @@
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { PostReturnType } from "@/types";
+import { PostData } from "@/types";
 import { AppRouterInstance } from "next/dist/shared/lib/app-router-context.shared-runtime";
 import Form from "next/form";
 import { useRouter } from "next/navigation";
@@ -20,7 +20,7 @@ const PostForm = () => {
       body: formData,
     });
 
-    const { success, message }: PostReturnType = await res.json();
+    const { success, message }: PostData = await res.json();
 
     Swal.fire({
       text: message,

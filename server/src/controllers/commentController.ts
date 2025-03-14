@@ -2,6 +2,7 @@ import { Request, Response } from "express";
 import prisma from "../lib/prisma";
 import { CommentInput, CommentWithUser, PostWithUser } from "../types";
 import { findPostById } from "./postController";
+import { io } from "../app";
 
 export const getCommentByPostId = async (
   req: Request,
@@ -49,7 +50,9 @@ export const createNewComment = async (
   res: Response
 ): Promise<void> => {
   try {
-    const { post_id, content }: CommentInput = req.body;
+    const post_id: string = req.params.postId;
+
+    const { content }: CommentInput = req.body;
 
     const user_id: string | undefined = req.user?.id;
     if (!user_id) {
@@ -86,6 +89,11 @@ export const createNewComment = async (
           },
         },
       },
+    });
+
+    io.to(post.author_id).emit("commentNotification", {
+      user: newComment.user.username,
+      comment: newComment.content,
     });
 
     res.status(201).json({

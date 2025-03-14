@@ -15,6 +15,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.deleteCommentyId = exports.updateCommentById = exports.createNewComment = exports.getCommentByPostId = void 0;
 const prisma_1 = __importDefault(require("../lib/prisma"));
 const postController_1 = require("./postController");
+const app_1 = require("../app");
 const getCommentByPostId = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const post_id = req.params.postId;
@@ -54,7 +55,8 @@ exports.getCommentByPostId = getCommentByPostId;
 const createNewComment = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     var _a;
     try {
-        const { post_id, content } = req.body;
+        const post_id = req.params.postId;
+        const { content } = req.body;
         const user_id = (_a = req.user) === null || _a === void 0 ? void 0 : _a.id;
         if (!user_id) {
             res.status(401).json({
@@ -88,6 +90,10 @@ const createNewComment = (req, res) => __awaiter(void 0, void 0, void 0, functio
                     },
                 },
             },
+        });
+        app_1.io.to(post.author_id).emit("commentNotification", {
+            user: newComment.user.username,
+            comment: newComment.content,
         });
         res.status(201).json({
             success: true,

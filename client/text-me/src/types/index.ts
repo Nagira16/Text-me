@@ -136,12 +136,20 @@ export type AllPostData = FetchData & {
   result: PostWithUser[] | null;
 };
 
+export type PostData = FetchData & {
+  result: PostWithUser | null;
+};
+
 export type LikeData = FetchData & {
   result: Like | null;
 };
 
-export type PostReturnType = FetchData & {
-  result: PostWithUser | null;
+export type AllCommentData = FetchData & {
+  result: CommentWithUser[] | null;
+};
+
+export type CommentData = FetchData & {
+  result: CommentWithUser | null;
 };
 
 export type LikeReturnType = FetchData & {
