@@ -182,7 +182,7 @@ exports.toggleLikeByPostId = toggleLikeByPostId;
 const checkLikedByPostId = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     var _c;
     try {
-        const post_id = req.body.post_id;
+        const post_id = req.params.postId;
         const user_id = (_c = req.user) === null || _c === void 0 ? void 0 : _c.id;
         if (!user_id) {
             res.status(401).json({
@@ -209,8 +209,9 @@ const checkLikedByPostId = (req, res) => __awaiter(void 0, void 0, void 0, funct
         });
         res.status(200).json({
             success: true,
-            message: "Like Found Successfully",
-            result: like,
+            message: like ? "User has liked the post" : "User has not liked the post",
+            result: null,
+            liked: like,
         });
     }
     catch (error) {

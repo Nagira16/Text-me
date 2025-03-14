@@ -20,11 +20,14 @@ const authMiddleware = (req, res, next) => __awaiter(void 0, void 0, void 0, fun
     try {
         if (!secretKey)
             throw new Error("Secrec Key Undefined");
-        const token = (_a = req.cookies) === null || _a === void 0 ? void 0 : _a.token;
+        const cookieToken = (_a = req.cookies) === null || _a === void 0 ? void 0 : _a.token;
+        const authHeader = req.headers["authorization"];
+        const headerToken = authHeader && authHeader.split(" ")[1];
+        const token = cookieToken || headerToken;
         if (!token) {
-            res.status(404).json({
+            res.status(401).json({
                 success: false,
-                message: "Token Not Found",
+                message: "Unauthorized: Token not provided",
             });
             return;
         }

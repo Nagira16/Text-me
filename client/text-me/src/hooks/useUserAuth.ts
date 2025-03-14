@@ -1,18 +1,17 @@
 "use client";
 
 import { useEffect, useState, useCallback } from "react";
-import { UserData, UserWithoutPassword } from "../types";
+import { FetchData, UserData, UserWithoutPassword } from "../types";
+import { getUser } from "@/actions";
 
 export const useUserAuth = () => {
   const [user, setUser] = useState<UserWithoutPassword | null>(null);
   const [isSignedIn, setIsSignedIn] = useState<boolean>(false);
 
-  const fetchUser = useCallback(async () => {
+  const fetchUser = useCallback(async (): Promise<void> => {
     try {
-      const res: Response = await fetch("http://localhost:5001/user", {
-        credentials: "include",
-      });
-      const data: UserData = await res.json();
+      const data: UserData = await getUser();
+
       if (data.success) {
         setUser(data.result);
         setIsSignedIn(true);
@@ -38,7 +37,7 @@ export const useUserAuth = () => {
     email: string,
     password: string,
     profile_image?: File | null
-  ): Promise<{ message: string; success: boolean }> => {
+  ): Promise<FetchData> => {
     try {
       const formData = new FormData();
       formData.append("first_name", first_name);
@@ -63,10 +62,7 @@ export const useUserAuth = () => {
     }
   };
 
-  const login = async (
-    email: string,
-    password: string
-  ): Promise<{ message: string; success: boolean }> => {
+  const login = async (email: string, password: string): Promise<FetchData> => {
     try {
       const res = await fetch("http://localhost:5001/auth/login", {
         method: "POST",
@@ -87,7 +83,7 @@ export const useUserAuth = () => {
     }
   };
 
-  const logout = async () => {
+  const logout = async (): Promise<void> => {
     try {
       const res = await fetch("http://localhost:5001/auth/logout", {
         method: "POST",
