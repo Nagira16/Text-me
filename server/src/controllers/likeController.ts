@@ -188,7 +188,7 @@ export const checkLikedByPostId = async (
   res: Response
 ): Promise<void> => {
   try {
-    const post_id: string = req.body.post_id;
+    const post_id: string = req.params.postId;
 
     const user_id: string | undefined = req.user?.id;
 
@@ -220,8 +220,9 @@ export const checkLikedByPostId = async (
 
     res.status(200).json({
       success: true,
-      message: "Like Found Successfully",
-      result: like,
+      message: like ? "User has liked the post" : "User has not liked the post",
+      result: null,
+      liked: like,
     });
   } catch (error) {
     console.error(error);

@@ -6,7 +6,7 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { ReturnType } from "@/types";
+import { FetchData } from "@/types";
 import { AppRouterInstance } from "next/dist/shared/lib/app-router-context.shared-runtime";
 import Form from "next/form";
 import Link from "next/link";
@@ -31,7 +31,7 @@ const SignIn = () => {
     const email = formData.get("email") as string;
     const password = formData.get("password") as string;
 
-    const { message, success }: ReturnType = await login(email, password);
+    const { message, success }: FetchData = await login(email, password);
 
     setIsSaving(false);
 

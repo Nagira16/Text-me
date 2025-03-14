@@ -2,7 +2,13 @@
 
 import Image from "next/image";
 import logo from "@/images/Text-Me-Logo.png";
-import { Bell, House, LogIn, MessageCircleMore } from "lucide-react";
+import {
+  Bell,
+  House,
+  LogIn,
+  MessageCircleMore,
+  SquarePlus,
+} from "lucide-react";
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import { ModeToggle } from "./ModeToggle";
@@ -30,6 +36,11 @@ const Navbar = () => {
       title: "Notification",
       path: "/notification",
       icon: <Bell />,
+    },
+    {
+      title: "Post",
+      path: "/post/create",
+      icon: <SquarePlus />,
     },
     {
       title: "Account",

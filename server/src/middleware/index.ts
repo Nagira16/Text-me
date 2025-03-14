@@ -12,11 +12,16 @@ export const authMiddleware = async (
   try {
     if (!secretKey) throw new Error("Secrec Key Undefined");
 
-    const token: string | undefined = req.cookies?.token;
+    const cookieToken: string | undefined = req.cookies?.token;
+    const authHeader: string | undefined = req.headers["authorization"];
+    const headerToken: string | undefined =
+      authHeader && authHeader.split(" ")[1];
+
+    const token: string | undefined = cookieToken || headerToken;
     if (!token) {
-      res.status(404).json({
+      res.status(401).json({
         success: false,
-        message: "Token Not Found",
+        message: "Unauthorized: Token not provided",
       });
       return;
     }

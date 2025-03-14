@@ -3,10 +3,6 @@ export type FetchData = {
   message: string;
 };
 
-export type UserData = FetchData & {
-  result: UserWithoutPassword | null;
-};
-
 export type RegisterInput = {
   first_name: string;
   last_name: string;
@@ -126,10 +122,34 @@ export type UseUserAuth = {
     email: string,
     password: string,
     profile_image?: File | null
-  ) => Promise<ReturnType>;
-  login: (email: string, password: string) => Promise<ReturnType>;
+  ) => Promise<FetchData>;
+  login: (email: string, password: string) => Promise<FetchData>;
   logout: () => Promise<void>;
   refreshUser: () => Promise<void>;
 };
 
-export type ReturnType = { message: string; success: boolean };
+export type UserData = FetchData & {
+  result: UserWithoutPassword | null;
+};
+
+export type AllPostData = FetchData & {
+  result: PostWithUser[] | null;
+};
+
+export type LikeData = FetchData & {
+  result: Like | null;
+};
+
+export type PostReturnType = FetchData & {
+  result: PostWithUser | null;
+};
+
+export type LikeReturnType = FetchData & {
+  result: null;
+  liked: Like | null;
+};
+
+export type ToggleLikeData = FetchData & {
+  liked: boolean;
+  result: null;
+};
