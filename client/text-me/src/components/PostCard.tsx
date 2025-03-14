@@ -1,18 +1,12 @@
 import React from "react";
-import {
-  Card,
-  CardContent,
-  CardFooter,
-  CardHeader,
-  CardTitle,
-} from "./ui/card";
+import { Card, CardFooter, CardHeader, CardTitle } from "./ui/card";
 import { PostWithUser } from "@/types";
 import Image from "next/image";
 import LikeButton from "./LikeButton";
 
 const PostCard = ({ post }: { post: PostWithUser }) => {
   return (
-    <Card className="shadow-md border border-white w-[600px] h-[750px]]">
+    <Card className="shadow-md border border-white w-[600px] h-[610px]]">
       <CardHeader>
         <CardTitle className="flex items-center gap-5 text-lg mb-5">
           <Image
