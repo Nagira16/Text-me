@@ -62,18 +62,17 @@ io.on("connection", (socket: Socket) => {
 
   socket.on("joinRoom", ({ userId }: { userId: string }) => {
     socket.join(userId);
-    console.log(`${userId} joined the room`);
+    console.log(`joined the room`);
   });
 
-  socket.on(
-    "joinConversation",
-    (userIds: { user1Id: string; user2Id: string }) => {
-      const roomName = [userIds.user1Id, userIds.user2Id].sort().join("-");
-      console.log(
-        `Users ${userIds.user1Id} and ${userIds.user2Id} joined the room ${roomName}`
-      );
-    }
-  );
+  socket.on("joinConversation", (conversationId) => {
+    socket.join(conversationId);
+    console.log(`joined the conversation`);
+  });
+
+  socket.on("sendMessage", (message) => {
+    io.to(message.conversation_id).emit("newMessage", message);
+  });
 
   socket.on("disconnect", () => console.log("disconnected"));
 });

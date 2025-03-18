@@ -1,8 +1,5 @@
-"use client";
-
 import { Dispatch, SetStateAction, useEffect, useState } from "react";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { Card } from "@/components/ui/card";
 import { AllConversationData, ConversationWithUser } from "@/types";
 import { useAuth } from "./provider/AuthContent";
 
@@ -30,7 +27,7 @@ const ConversationList = ({
   }, []);
 
   return (
-    <aside className="w-1/3 p-4 border-r">
+    <aside className="w-1/3 p-4 border-r ml-16">
       <h2 className="text-lg font-bold mb-4">DM</h2>
       {conversations.map((conv) => {
         const currentUserId = user?.id;
