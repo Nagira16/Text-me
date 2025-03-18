@@ -4,19 +4,18 @@ import { PostWithUser } from "@/types";
 import Image from "next/image";
 import LikeButton from "./LikeButton";
 import CommentList from "./CommentList";
+import { Avatar, AvatarFallback, AvatarImage } from "./ui/avatar";
 
 const PostCard = ({ post }: { post: PostWithUser }) => {
   return (
     <Card className="relative shadow-md border border-white w-[700px] h-[600px] overflow-hidden z-10">
       <CardHeader>
         <CardTitle className="flex items-center gap-5 text-lg mb-5">
-          <Image
-            src={post.author.profile_image}
-            alt="User Icon"
-            width={40}
-            height={40}
-            className="rounded-full border border-white"
-          />
+          <Avatar className="w-10 h-10 border-2 border-white">
+            <AvatarImage src={post.author.profile_image} />
+            <AvatarFallback>User</AvatarFallback>
+          </Avatar>
+
           <p>{post.author.username}</p>
         </CardTitle>
       </CardHeader>

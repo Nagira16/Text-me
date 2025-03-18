@@ -5,6 +5,7 @@ import { AllCommentData, CommentWithUser } from "@/types";
 import Image from "next/image";
 import { useEffect, useState } from "react";
 import CommentForm from "./CommentForm";
+import { Avatar, AvatarFallback, AvatarImage } from "./ui/avatar";
 
 const CommentList = ({ post_id }: { post_id: string }) => {
   const [allComments, setComments] = useState<CommentWithUser[]>([]);
@@ -46,13 +47,10 @@ const CommentList = ({ post_id }: { post_id: string }) => {
             >
               <div className="flex items-center gap-4">
                 <div className="flex items-center gap-2">
-                  <Image
-                    src={comment.user.profile_image}
-                    alt="User Icon"
-                    width={25}
-                    height={25}
-                    className="rounded-full border border-white"
-                  />
+                  <Avatar className="w-7 h-7 border border-white">
+                    <AvatarImage src={comment.user.profile_image} />
+                    <AvatarFallback>User</AvatarFallback>
+                  </Avatar>
                   <p className="font-semibold text-sm">
                     {comment.user.username}
                   </p>
