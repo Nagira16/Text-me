@@ -13,7 +13,6 @@ import CommentForm from "./CommentForm";
 import { useState } from "react";
 import { CommentWithUser } from "@/types";
 import { Card } from "./ui/card";
-import { Button } from "@/components/ui/button";
 
 const CommentDialog = ({ post_id }: { post_id: string }) => {
   const [allComments, setComments] = useState<CommentWithUser[]>([]);
