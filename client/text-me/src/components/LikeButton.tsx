@@ -32,7 +32,7 @@ const LikeButton = ({ post_id }: { post_id: string }) => {
   return (
     <>
       {isSignedIn && (
-        <button onClick={handleLike} className="text-3xl">
+        <button onClick={handleLike} className="text-2xl">
           {isLiked ? "❤️" : "🤍"}
         </button>
       )}

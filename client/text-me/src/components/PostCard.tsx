@@ -3,8 +3,8 @@ import { Card, CardFooter, CardHeader, CardTitle } from "./ui/card";
 import { PostWithUser } from "@/types";
 import Image from "next/image";
 import LikeButton from "./LikeButton";
-import CommentList from "./CommentList";
 import { Avatar, AvatarFallback, AvatarImage } from "./ui/avatar";
+import CommentDialog from "./CommentDialog";
 
 const PostCard = ({ post }: { post: PostWithUser }) => {
   return (
@@ -31,9 +31,10 @@ const PostCard = ({ post }: { post: PostWithUser }) => {
       </div>
 
       <CardFooter className="grid space-y-4">
-        <div className="flex justify-between">
-          <div>
+        <div className="flex justify-between items-center">
+          <div className="flex items-center gap-2">
             <LikeButton post_id={post.id} />
+            <CommentDialog post_id={post.id} />
           </div>
           <div>{new Date(post.created_at).toLocaleString()}</div>
         </div>
@@ -41,7 +42,7 @@ const PostCard = ({ post }: { post: PostWithUser }) => {
           <p>{post.author.username}</p>
           <p>{post.content}</p>
         </div>
-        <CommentList post_id={post.id} />
+        {/* <CommentList post_id={post.id} /> */}
       </CardFooter>
     </Card>
   );
