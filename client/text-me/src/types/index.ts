@@ -165,3 +165,7 @@ export type ToggleLikeData = FetchData & {
 export type FollowData = FetchData & {
   result: FollowingWithUser;
 };
+
+export type AllConversationData = FetchData & {
+  result: ConversationWithUser[] | null;
+};

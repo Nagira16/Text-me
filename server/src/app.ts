@@ -13,6 +13,7 @@ import likeRouter from "./routes/likeRouter";
 import followRouter from "./routes/followRouter";
 import conversationRouter from "./routes/conversationRouter";
 import path from "path";
+import messageRouter from "./routes/messageRouter";
 
 const app: Express = express();
 
@@ -54,6 +55,7 @@ app.use("/comment", commentRouter);
 app.use("/like", authMiddleware, likeRouter);
 app.use("/follow", authMiddleware, followRouter);
 app.use("/conversation", authMiddleware, conversationRouter);
+app.use("/message", authMiddleware, messageRouter);
 
 io.on("connection", (socket: Socket) => {
   console.log("connected to server");

@@ -3,6 +3,7 @@ import {
   Conversation,
   Follow,
   Like,
+  Message,
   Post,
   User,
 } from "@prisma/client";
@@ -82,4 +83,8 @@ export type FollowingWithUser = Follow & {
 export type ConversationWithUser = Conversation & {
   user1: UserInfo;
   user2: UserInfo;
+};
+
+export type MessageWithUser = Message & {
+  sender: UserInfo;
 };
