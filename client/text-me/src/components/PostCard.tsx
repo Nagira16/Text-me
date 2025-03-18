@@ -1,18 +1,13 @@
 import React from "react";
-import {
-  Card,
-  CardContent,
-  CardFooter,
-  CardHeader,
-  CardTitle,
-} from "./ui/card";
+import { Card, CardFooter, CardHeader, CardTitle } from "./ui/card";
 import { PostWithUser } from "@/types";
 import Image from "next/image";
 import LikeButton from "./LikeButton";
+import CommentList from "./CommentList";
 
 const PostCard = ({ post }: { post: PostWithUser }) => {
   return (
-    <Card className="shadow-md border border-white w-[600px] h-[750px]]">
+    <Card className="relative shadow-md border border-white w-[700px] h-[600px] overflow-hidden z-10">
       <CardHeader>
         <CardTitle className="flex items-center gap-5 text-lg mb-5">
           <Image
@@ -25,9 +20,19 @@ const PostCard = ({ post }: { post: PostWithUser }) => {
           <p>{post.author.username}</p>
         </CardTitle>
       </CardHeader>
-      <Image src={post.photo} width={600} height={395} alt="Post Photo" />
-      <CardFooter className="grid">
-        <div className="flex justify-between mb-4">
+
+      <div className="relative w-[700px] h-[400px] overflow-hidden z-0">
+        <Image
+          src={post.photo}
+          alt="Post Photo"
+          layout="fill"
+          objectFit="cover"
+          className="absolute"
+        />
+      </div>
+
+      <CardFooter className="grid space-y-4">
+        <div className="flex justify-between">
           <div>
             <LikeButton post_id={post.id} />
           </div>
@@ -37,6 +42,7 @@ const PostCard = ({ post }: { post: PostWithUser }) => {
           <p>{post.author.username}</p>
           <p>{post.content}</p>
         </div>
+        <CommentList post_id={post.id} />
       </CardFooter>
     </Card>
   );

@@ -3,7 +3,7 @@
 import { checkLiked, toggleLike } from "@/actions";
 import { useEffect, useState } from "react";
 import { useAuth } from "./provider/AuthContent";
-import { FetchData, LikeReturnType, ToggleLikeData } from "@/types";
+import { LikeReturnType, ToggleLikeData } from "@/types";
 
 const LikeButton = ({ post_id }: { post_id: string }) => {
   const { isSignedIn } = useAuth();
@@ -11,9 +11,7 @@ const LikeButton = ({ post_id }: { post_id: string }) => {
   const [isLiked, setIsLiked] = useState<boolean>(false);
 
   const handleLike = async () => {
-    const { success, message, liked }: ToggleLikeData = await toggleLike(
-      post_id
-    );
+    const { liked }: ToggleLikeData = await toggleLike(post_id);
 
     setIsLiked(liked);
   };

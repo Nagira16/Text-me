@@ -12,7 +12,7 @@ const commentRouter: Router = Router();
 // http://localhost:5001/comment
 
 commentRouter.get("/:postId", getCommentByPostId);
-commentRouter.post("/", authMiddleware, createNewComment);
+commentRouter.post("/:postId", authMiddleware, createNewComment);
 commentRouter.put("/:id", authMiddleware, updateCommentById);
 commentRouter.get("/:id", authMiddleware, deleteCommentyId);
 

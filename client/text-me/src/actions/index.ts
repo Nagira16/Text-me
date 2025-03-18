@@ -1,6 +1,13 @@
 "use server";
 
-import { AllPostData, LikeReturnType, ToggleLikeData, UserData } from "@/types";
+import {
+  AllCommentData,
+  AllPostData,
+  CommentData,
+  LikeReturnType,
+  ToggleLikeData,
+  UserData,
+} from "@/types";
 import { RequestCookie } from "next/dist/compiled/@edge-runtime/cookies";
 import { cookies } from "next/headers";
 
@@ -21,6 +28,8 @@ export const getUser = async (): Promise<UserData> => {
 export const getAllPost = async (): Promise<AllPostData> => {
   const res: Response = await fetch("http://localhost:5001/post");
   const data: AllPostData = await res.json();
+
+  await new Promise((resolve) => setTimeout(resolve, 5000));
 
   return {
     success: data.success,
@@ -53,6 +62,37 @@ export const toggleLike = async (post_id: string): Promise<ToggleLikeData> => {
     },
   });
   const data: ToggleLikeData = await res.json();
+
+  return data;
+};
+
+export const getCommentByPostId = async (
+  post_id: string
+): Promise<AllCommentData> => {
+  const res: Response = await fetch(`http://localhost:5001/comment/${post_id}`);
+  const data: AllCommentData = await res.json();
+
+  return data;
+};
+
+export const createNewComment = async (
+  post_id: string,
+  content: string
+): Promise<CommentData> => {
+  const cookie: RequestCookie | undefined = (await cookies()).get("token");
+  const res: Response = await fetch(
+    `http://localhost:5001/comment/${post_id}`,
+    {
+      method: "POST",
+      headers: {
+        Authorization: `Bearer ${cookie?.value}`,
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ content }),
+    }
+  );
+  const data: CommentData = await res.json();
+
   console.log({ data });
 
   return data;
