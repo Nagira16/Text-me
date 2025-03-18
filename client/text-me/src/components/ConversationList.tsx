@@ -20,8 +20,8 @@ const ConversationList = ({
         method: "GET",
         credentials: "include",
       });
-      const data: AllConversationData = await res.json();
-      if (data.success && data.result) setConversations(data.result);
+      const { success, result }: AllConversationData = await res.json();
+      if (success && result) setConversations(result);
     };
     fetchConversations();
   }, []);

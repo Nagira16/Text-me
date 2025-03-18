@@ -10,9 +10,9 @@ const ProtectWrapper = ({ children }: { children: ReactNode }) => {
 
   useEffect(() => {
     const fetchUser = async () => {
-      const data: UserData = await getUser();
+      const { success }: UserData = await getUser();
 
-      if (!data.success) {
+      if (!success) {
         router.push("/sign-in");
       }
     };

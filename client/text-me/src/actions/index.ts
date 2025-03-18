@@ -8,6 +8,7 @@ import {
   LikeReturnType,
   ToggleLikeData,
   UserData,
+  UserWithPostData,
 } from "@/types";
 import { RequestCookie } from "next/dist/compiled/@edge-runtime/cookies";
 import { cookies } from "next/headers";
@@ -22,6 +23,22 @@ export const getUser = async (): Promise<UserData> => {
     },
   });
   const data: UserData = await res.json();
+
+  return data;
+};
+
+export const getUserById = async (
+  user_id: string
+): Promise<UserWithPostData> => {
+  const cookie: RequestCookie | undefined = (await cookies()).get("token");
+  const res: Response = await fetch(`http://localhost:5001/user/${user_id}`, {
+    method: "GET",
+    headers: {
+      Authorization: `Bearer ${cookie?.value}`,
+      "Content-Type": "application/json",
+    },
+  });
+  const data: UserWithPostData = await res.json();
 
   return data;
 };

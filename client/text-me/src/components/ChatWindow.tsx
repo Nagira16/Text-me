@@ -23,8 +23,8 @@ const ChatWindow = ({ conversationId }: { conversationId: string }) => {
           credentials: "include",
         }
       );
-      const data: AllMessageData = await res.json();
-      if (data.success && data.result) setMessages(data.result);
+      const { success, result }: AllMessageData = await res.json();
+      if (success && result) setMessages(result);
     };
     fetchMessages();
   }, [conversationId]);

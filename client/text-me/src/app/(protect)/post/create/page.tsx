@@ -7,13 +7,15 @@ import { PostData } from "@/types";
 import { AppRouterInstance } from "next/dist/shared/lib/app-router-context.shared-runtime";
 import Form from "next/form";
 import { useRouter } from "next/navigation";
-import React from "react";
+import React, { useState } from "react";
 import Swal from "sweetalert2";
 
 const PostForm = () => {
   const router: AppRouterInstance = useRouter();
+  const [isSaving, setIsSaving] = useState<boolean>(false);
 
   const addPost = async (formData: FormData) => {
+    setIsSaving(true);
     const res: Response = await fetch("http://localhost:5001/post", {
       method: "POST",
       credentials: "include",
@@ -21,6 +23,8 @@ const PostForm = () => {
     });
 
     const { success, message }: PostData = await res.json();
+
+    setIsSaving(false);
 
     Swal.fire({
       text: message,
@@ -47,7 +51,12 @@ const PostForm = () => {
           <Input type="text" name="content" />
         </div>
 
-        <Button>Post</Button>
+        <Button
+          disabled={isSaving}
+          className={`${isSaving ? "bg-gray-500" : "bg-white"}`}
+        >
+          Post
+        </Button>
       </Form>
     </div>
   );

@@ -46,7 +46,7 @@ export type CommentInput = {
 
 export type UserWithoutPassword = Omit<User, "password">;
 
-type UserInfo = { id: string; username: string; profile_image: string };
+export type UserInfo = { id: string; username: string; profile_image: string };
 
 type PostInfo = {
   id: string;
@@ -87,4 +87,15 @@ export type ConversationWithUser = Conversation & {
 
 export type MessageWithUser = Message & {
   sender: UserInfo;
+};
+
+export type UserWithPost = UserWithoutPassword & {
+  post: {
+    id: string;
+    created_at: Date;
+    updated_at: Date;
+    content: string | null;
+    photo: string;
+    likes_count: number;
+  }[];
 };

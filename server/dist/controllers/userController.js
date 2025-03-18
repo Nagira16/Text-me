@@ -12,7 +12,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.findUserByUsername = exports.findUserByEmail = exports.findUserByEmailWithoutPassword = exports.findUserById = exports.deleteUserById = exports.updateUserById = exports.getUser = void 0;
+exports.findUserByUsername = exports.findUserByEmail = exports.findUserByEmailWithoutPassword = exports.findUserById = exports.deleteUserById = exports.updateUserById = exports.queryUser = exports.getUserById = exports.getUser = void 0;
 const prisma_1 = __importDefault(require("../lib/prisma"));
 const authController_1 = require("./authController");
 const getUser = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
@@ -52,6 +52,95 @@ const getUser = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     }
 });
 exports.getUser = getUser;
+const getUserById = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        const user_id = req.params.id;
+        const user = yield prisma_1.default.user.findUnique({
+            where: { id: user_id },
+            omit: { password: true },
+            include: {
+                post: {
+                    select: {
+                        id: true,
+                        photo: true,
+                        content: true,
+                        created_at: true,
+                        likes_count: true,
+                        updated_at: true,
+                    },
+                },
+            },
+        });
+        const followerCount = yield prisma_1.default.follow.count({
+            where: { following_id: user_id },
+        });
+        const followingCount = yield prisma_1.default.follow.count({
+            where: { follower_id: user_id },
+        });
+        if (!user) {
+            res.status(404).json({
+                success: false,
+                message: "User Not Found",
+                result: null,
+            });
+            return;
+        }
+        res.status(200).json({
+            success: true,
+            message: "User Found Successfully",
+            result: { user, followerCount, followingCount },
+        });
+    }
+    catch (error) {
+        console.error(error);
+        res.status(500).json({
+            success: false,
+            message: "Server Error: Get User By Id",
+            result: null,
+        });
+    }
+});
+exports.getUserById = getUserById;
+const queryUser = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        const query = req.query.q;
+        if (!query) {
+            res.status(400).json({
+                success: false,
+                message: "Search query is required",
+                result: null,
+            });
+            return;
+        }
+        const users = yield prisma_1.default.user.findMany({
+            where: {
+                username: {
+                    contains: query,
+                    mode: "insensitive",
+                },
+            },
+            select: {
+                id: true,
+                username: true,
+                profile_image: true,
+            },
+        });
+        res.status(200).json({
+            success: true,
+            message: "Users Found Successfully",
+            result: users,
+        });
+    }
+    catch (error) {
+        console.error(error);
+        res.status(500).json({
+            success: false,
+            message: "Server Error: Query User",
+            result: null,
+        });
+    }
+});
+exports.queryUser = queryUser;
 const updateUserById = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     var _b;
     try {

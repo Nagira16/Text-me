@@ -7,6 +7,7 @@ import {
   House,
   LogIn,
   MessageCircleMore,
+  Search,
   SquarePlus,
 } from "lucide-react";
 import Link from "next/link";
@@ -32,6 +33,7 @@ const Navbar = () => {
     },
     { title: "Home", path: "/", icon: <House /> },
     { title: "DM", path: "/dm", icon: <MessageCircleMore /> },
+    { title: "Search", path: "/search", icon: <Search /> },
     {
       title: "Notification",
       path: "/notification",
