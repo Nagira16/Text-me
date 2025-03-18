@@ -3,20 +3,19 @@ import { Card, CardFooter, CardHeader, CardTitle } from "./ui/card";
 import { PostWithUser } from "@/types";
 import Image from "next/image";
 import LikeButton from "./LikeButton";
-import CommentList from "./CommentList";
+import { Avatar, AvatarFallback, AvatarImage } from "./ui/avatar";
+import CommentDialog from "./CommentDialog";
 
 const PostCard = ({ post }: { post: PostWithUser }) => {
   return (
     <Card className="relative shadow-md border border-white w-[700px] h-[600px] overflow-hidden z-10">
       <CardHeader>
         <CardTitle className="flex items-center gap-5 text-lg mb-5">
-          <Image
-            src={post.author.profile_image}
-            alt="User Icon"
-            width={40}
-            height={40}
-            className="rounded-full border border-white"
-          />
+          <Avatar className="w-10 h-10 border-2 border-white">
+            <AvatarImage src={post.author.profile_image} />
+            <AvatarFallback>User</AvatarFallback>
+          </Avatar>
+
           <p>{post.author.username}</p>
         </CardTitle>
       </CardHeader>
@@ -32,9 +31,10 @@ const PostCard = ({ post }: { post: PostWithUser }) => {
       </div>
 
       <CardFooter className="grid space-y-4">
-        <div className="flex justify-between">
-          <div>
+        <div className="flex justify-between items-center">
+          <div className="flex items-center gap-2">
             <LikeButton post_id={post.id} />
+            <CommentDialog post_id={post.id} />
           </div>
           <div>{new Date(post.created_at).toLocaleString()}</div>
         </div>
@@ -42,7 +42,7 @@ const PostCard = ({ post }: { post: PostWithUser }) => {
           <p>{post.author.username}</p>
           <p>{post.content}</p>
         </div>
-        <CommentList post_id={post.id} />
+        {/* <CommentList post_id={post.id} /> */}
       </CardFooter>
     </Card>
   );
