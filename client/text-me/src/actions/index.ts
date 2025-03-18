@@ -4,6 +4,7 @@ import {
   AllCommentData,
   AllPostData,
   CommentData,
+  FollowData,
   LikeReturnType,
   ToggleLikeData,
   UserData,
@@ -93,7 +94,21 @@ export const createNewComment = async (
   );
   const data: CommentData = await res.json();
 
-  console.log({ data });
+  return data;
+};
+
+export const getAllFollowing = async () => {
+  const cookie: RequestCookie | undefined = (await cookies()).get("token");
+  const res: Response = await fetch(`http://localhost:5001/follow/following`, {
+    method: "GET",
+    headers: {
+      Authorization: `Bearer ${cookie?.value}`,
+      "Content-Type": "application/json",
+    },
+  });
+  const data: FollowData = await res.json();
+
+  console.log(data);
 
   return data;
 };

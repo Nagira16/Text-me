@@ -161,3 +161,7 @@ export type ToggleLikeData = FetchData & {
   liked: boolean;
   result: null;
 };
+
+export type FollowData = FetchData & {
+  result: FollowingWithUser;
+};
