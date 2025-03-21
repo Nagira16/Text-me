@@ -25,22 +25,5 @@ export default function AuthLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  return (
-    <html lang="en">
-      <body
-      // className={`${geistSans.variable} ${geistMono.variable} antialiased`}
-      >
-        <ThemeProvider
-          attribute="class"
-          defaultTheme="dark"
-          enableSystem
-          disableTransitionOnChange
-        >
-          <AuthProvider>
-            <SocketProvider>{children}</SocketProvider>
-          </AuthProvider>
-        </ThemeProvider>
-      </body>
-    </html>
-  );
+  return { children };
 }

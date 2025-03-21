@@ -58,23 +58,41 @@ app.use("/conversation", authMiddleware, conversationRouter);
 app.use("/message", authMiddleware, messageRouter);
 
 io.on("connection", (socket: Socket) => {
-  console.log("connected to server");
+  console.log("🔵 Connected to server:", socket.id);
 
   socket.on("joinRoom", ({ userId }: { userId: string }) => {
+    if (!userId) return;
     socket.join(userId);
-    console.log(`joined the room`);
+    console.log(`👤 User joined room: ${userId}`);
   });
 
-  socket.on("joinConversation", (conversationId) => {
+  socket.on("joinConversation", (conversationId: string) => {
+    if (!conversationId) return;
     socket.join(conversationId);
-    console.log(`joined the conversation`);
+    console.log(`💬 Joined conversation: ${conversationId}`);
+  });
+
+  socket.on("joinUserProfile", (userId: string) => {
+    if (!userId) return;
+    socket.join(userId);
+    console.log(`📄 Joined user profile: ${userId}`);
+  });
+
+  socket.on("leaveRoom", (id: string) => {
+    if (!id) return;
+    socket.leave(id);
+    console.log(`🚪 Left : ${id}`);
   });
 
   socket.on("sendMessage", (message) => {
+    if (!message?.conversation_id) return;
     io.to(message.conversation_id).emit("newMessage", message);
+    console.log(`📨 Message sent to conversation ${message.conversation_id}`);
   });
 
-  socket.on("disconnect", () => console.log("disconnected"));
+  socket.on("disconnect", () => {
+    console.log("🔴 Disconnected:", socket.id);
+  });
 });
 
 export default server;

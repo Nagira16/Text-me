@@ -188,15 +188,10 @@ export const followUserByUserId = async (
       count: followerConut,
     });
 
-    // update follower count for follower user
-    io.to(follower_id).emit("followerCountUpdate", {
-      userId: following_id,
-      count: followerConut,
-    });
-
     res.status(200).json({
       success: true,
       message,
+      result: null,
       followed,
     });
   } catch (error) {
@@ -204,6 +199,58 @@ export const followUserByUserId = async (
     res.status(500).json({
       success: false,
       message: "Server Error: Follow User By User Id",
+      result: null,
+    });
+  }
+};
+
+export const checkFollowingByUserId = async (
+  req: Request,
+  res: Response
+): Promise<void> => {
+  try {
+    const following_user_id: string = req.params.userId;
+
+    const user_id: string | undefined = req.user?.id;
+
+    if (!user_id) {
+      res.status(401).json({
+        success: false,
+        message: "Unauthorized: Invalid or missing token",
+        result: null,
+      });
+      return;
+    }
+
+    const user = (await findUserById(
+      following_user_id
+    )) as UserWithoutPassword | null;
+    if (!user) {
+      res.status(404).json({
+        success: false,
+        message: "User Not Found",
+        result: null,
+      });
+      return;
+    }
+
+    const follow: Follow | null = await prisma.follow.findFirst({
+      where: {
+        follower_id: user_id,
+        following_id: user.id,
+      },
+    });
+
+    res.status(200).json({
+      success: true,
+      message: follow ? "Is Following" : "Is Not Following",
+      result: follow,
+    });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({
+      success: false,
+      message: "Server Error: Check Liked By Post Id",
       result: null,
     });
   }

@@ -2,6 +2,7 @@ import { Dispatch, SetStateAction, useEffect, useState } from "react";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { AllConversationData, ConversationWithUser } from "@/types";
 import { useAuth } from "./provider/AuthContent";
+import Link from "next/link";
 
 const ConversationList = ({
   setSelectedConversation,
@@ -40,10 +41,15 @@ const ConversationList = ({
             className="flex items-center gap-3 p-3 rounded-lg cursor-pointer hover:bg-gray-200"
             onClick={() => setSelectedConversation(conv.id)}
           >
-            <Avatar className="w-10 h-10">
-              <AvatarImage src={chatPartner.profile_image} />
-              <AvatarFallback>{chatPartner.username[0]}</AvatarFallback>
-            </Avatar>
+            <Link
+              href={`account/${chatPartner.id}`}
+              className="border border-white rounded-full p-1"
+            >
+              <Avatar className="w-10 h-10">
+                <AvatarImage src={chatPartner.profile_image} />
+                <AvatarFallback>{chatPartner.username[0]}</AvatarFallback>
+              </Avatar>
+            </Link>
             <span className="font-medium">{chatPartner.username}</span>
           </div>
         );

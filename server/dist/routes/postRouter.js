@@ -22,6 +22,7 @@ const upload = (0, multer_1.default)({
     }),
 });
 postRouter.get("/", postController_1.getAllPosts);
+postRouter.get("/follow", middleware_1.authMiddleware, postController_1.getFollowingUsersAllPosts);
 postRouter.post("/", middleware_1.authMiddleware, upload.single("image"), postController_1.createNewPost);
 postRouter.get("/:id", postController_1.getPostById);
 postRouter.put("/:id", middleware_1.authMiddleware, postController_1.updatePostById);

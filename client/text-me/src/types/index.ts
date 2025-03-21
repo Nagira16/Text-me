@@ -219,3 +219,12 @@ export type UserWithPost = UserWithoutPassword & {
     likes_count: number;
   }[];
 };
+
+export type CheckFollowData = FetchData & {
+  result: Follow | null;
+};
+
+export type ToggleFollowData = FetchData & {
+  result: null;
+  followed: boolean;
+};

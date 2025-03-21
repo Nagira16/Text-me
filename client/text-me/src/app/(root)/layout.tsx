@@ -27,24 +27,9 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
-      <body
-      // className={`${geistSans.variable} ${geistMono.variable} antialiased`}
-      >
-        <ThemeProvider
-          attribute="class"
-          defaultTheme="system"
-          enableSystem
-          disableTransitionOnChange
-        >
-          <AuthProvider>
-            <SocketProvider>
-              <Navbar />
-              {children}
-            </SocketProvider>
-          </AuthProvider>
-        </ThemeProvider>
-      </body>
-    </html>
+    <>
+      <Navbar />
+      {children}
+    </>
   );
 }

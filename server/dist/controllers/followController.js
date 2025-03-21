@@ -12,7 +12,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.followUserByUserId = exports.getAllFollowingByUserId = exports.getAllFollowerByUserId = void 0;
+exports.checkFollowingByUserId = exports.followUserByUserId = exports.getAllFollowingByUserId = exports.getAllFollowerByUserId = void 0;
 const prisma_1 = __importDefault(require("../lib/prisma"));
 const userController_1 = require("./userController");
 const app_1 = require("../app");
@@ -172,14 +172,10 @@ const followUserByUserId = (req, res) => __awaiter(void 0, void 0, void 0, funct
             userId: following_id,
             count: followerConut,
         });
-        // update follower count for follower user
-        app_1.io.to(follower_id).emit("followerCountUpdate", {
-            userId: following_id,
-            count: followerConut,
-        });
         res.status(200).json({
             success: true,
             message,
+            result: null,
             followed,
         });
     }
@@ -193,3 +189,47 @@ const followUserByUserId = (req, res) => __awaiter(void 0, void 0, void 0, funct
     }
 });
 exports.followUserByUserId = followUserByUserId;
+const checkFollowingByUserId = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    var _d;
+    try {
+        const following_user_id = req.params.userId;
+        const user_id = (_d = req.user) === null || _d === void 0 ? void 0 : _d.id;
+        if (!user_id) {
+            res.status(401).json({
+                success: false,
+                message: "Unauthorized: Invalid or missing token",
+                result: null,
+            });
+            return;
+        }
+        const user = (yield (0, userController_1.findUserById)(following_user_id));
+        if (!user) {
+            res.status(404).json({
+                success: false,
+                message: "User Not Found",
+                result: null,
+            });
+            return;
+        }
+        const follow = yield prisma_1.default.follow.findFirst({
+            where: {
+                follower_id: user_id,
+                following_id: user.id,
+            },
+        });
+        res.status(200).json({
+            success: true,
+            message: follow ? "Is Following" : "Is Not Following",
+            result: follow,
+        });
+    }
+    catch (error) {
+        console.error(error);
+        res.status(500).json({
+            success: false,
+            message: "Server Error: Check Liked By Post Id",
+            result: null,
+        });
+    }
+});
+exports.checkFollowingByUserId = checkFollowingByUserId;

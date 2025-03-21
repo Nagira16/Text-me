@@ -7,8 +7,14 @@ import { useEffect, useState } from "react";
 import { Card, CardHeader, CardTitle, CardContent } from "./ui/card";
 import { Avatar, AvatarImage, AvatarFallback } from "./ui/avatar";
 import Image from "next/image";
+import { Button } from "./ui/button";
+import { useAuth } from "./provider/AuthContent";
+import FollowButton from "./FollowButton";
+import { useSocket } from "./provider/SocketContext";
 
 const UserProfile = () => {
+  const { user } = useAuth();
+  const socket = useSocket();
   const { id }: { id: string } = useParams();
   const [userData, setUserData] = useState<UserWithPostData["result"] | null>(
     null
@@ -33,6 +39,24 @@ const UserProfile = () => {
     fetchUser();
   }, [id]);
 
+  useEffect(() => {
+    socket.emit("joinUserProfile", id);
+
+    socket.on(
+      "followerCountUpdate",
+      ({ userId, count }: { userId: string; count: number }) => {
+        if (userId === id) {
+          setFollowerCount(count);
+        }
+      }
+    );
+
+    return () => {
+      socket.emit("leaveRoom", id);
+      socket.off("followerCountUpdate");
+    };
+  }, [id]);
+
   if (isLoading) {
     return (
       <div className="min-h-screen flex justify-center items-center">
@@ -49,30 +73,39 @@ const UserProfile = () => {
     );
   }
 
-  const user = userData.user;
+  const selectedUser = userData.user;
 
   return (
     <div className="min-h-screen flex flex-col items-center justify-center">
       <Card className="w-full max-w-screen-md p-6 mb-6">
         <CardHeader>
           <CardTitle className="flex items-center gap-4">
-            <Avatar className="w-16 h-16 border-2 border-white">
-              <AvatarImage src={user.profile_image || "/default-avatar.png"} />
-              <AvatarFallback>{user.username.charAt(0)}</AvatarFallback>
+            <Avatar className="w-16 h-16 border-2 border-white p-1">
+              <AvatarImage
+                src={selectedUser.profile_image || "/default-avatar.png"}
+              />
+              <AvatarFallback>{selectedUser.username.charAt(0)}</AvatarFallback>
             </Avatar>
             <div>
-              <h2 className="text-xl font-semibold">{user.username}</h2>
+              <h2 className="text-xl font-semibold">{selectedUser.username}</h2>
               <p className="text-sm text-gray-500">
                 {followerCount} Followers ・ {followingCount} Following
               </p>
+            </div>
+            <div>
+              {user?.id === selectedUser.id ? (
+                <Button>Edit</Button>
+              ) : (
+                <FollowButton user_id={selectedUser.id} />
+              )}
             </div>
           </CardTitle>
         </CardHeader>
       </Card>
 
       <div className="w-full max-w-screen-lg grid grid-cols-1 md:grid-cols-2 gap-6">
-        {user.post.length > 0 ? (
-          user.post.map((post) => (
+        {selectedUser.post.length > 0 ? (
+          selectedUser.post.map((post) => (
             <Card key={post.id} className="p-4 shadow-md w-full">
               {post.photo && (
                 <div className="relative w-full h-64 aspect-[4/3]">

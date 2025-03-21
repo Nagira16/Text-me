@@ -5,6 +5,7 @@ import {
   createNewPost,
   deletePostById,
   getAllPosts,
+  getFollowingUsersAllPosts,
   getPostById,
   updatePostById,
 } from "../controllers/postController";
@@ -29,6 +30,7 @@ const upload: Multer = multer({
 });
 
 postRouter.get("/", getAllPosts);
+postRouter.get("/follow", authMiddleware, getFollowingUsersAllPosts);
 postRouter.post("/", authMiddleware, upload.single("image"), createNewPost);
 postRouter.get("/:id", getPostById);
 postRouter.put("/:id", authMiddleware, updatePostById);
