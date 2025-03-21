@@ -112,6 +112,19 @@ export type CommentWithUser = Comment & {
   user: UserInfo;
 };
 
+type Message = {
+  id: string;
+  sender_id: string;
+  conversation_id: string;
+  content: string;
+  is_read: boolean;
+  created_at: Date;
+};
+
+export type MessageWithUser = Message & {
+  sender: UserInfo;
+};
+
 export type UseUserAuth = {
   user: UserWithoutPassword | null;
   isSignedIn: boolean;
@@ -164,4 +177,16 @@ export type ToggleLikeData = FetchData & {
 
 export type FollowData = FetchData & {
   result: FollowingWithUser;
+};
+
+export type AllConversationData = FetchData & {
+  result: ConversationWithUser[] | null;
+};
+
+export type AllMessageData = FetchData & {
+  result: MessageWithUser[] | null;
+};
+
+export type MessageData = FetchData & {
+  result: MessageWithUser | null;
 };

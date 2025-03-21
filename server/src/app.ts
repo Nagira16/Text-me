@@ -13,6 +13,7 @@ import likeRouter from "./routes/likeRouter";
 import followRouter from "./routes/followRouter";
 import conversationRouter from "./routes/conversationRouter";
 import path from "path";
+import messageRouter from "./routes/messageRouter";
 
 const app: Express = express();
 
@@ -54,24 +55,24 @@ app.use("/comment", commentRouter);
 app.use("/like", authMiddleware, likeRouter);
 app.use("/follow", authMiddleware, followRouter);
 app.use("/conversation", authMiddleware, conversationRouter);
+app.use("/message", authMiddleware, messageRouter);
 
 io.on("connection", (socket: Socket) => {
   console.log("connected to server");
 
   socket.on("joinRoom", ({ userId }: { userId: string }) => {
     socket.join(userId);
-    console.log(`${userId} joined the room`);
+    console.log(`joined the room`);
   });
 
-  socket.on(
-    "joinConversation",
-    (userIds: { user1Id: string; user2Id: string }) => {
-      const roomName = [userIds.user1Id, userIds.user2Id].sort().join("-");
-      console.log(
-        `Users ${userIds.user1Id} and ${userIds.user2Id} joined the room ${roomName}`
-      );
-    }
-  );
+  socket.on("joinConversation", (conversationId) => {
+    socket.join(conversationId);
+    console.log(`joined the conversation`);
+  });
+
+  socket.on("sendMessage", (message) => {
+    io.to(message.conversation_id).emit("newMessage", message);
+  });
 
   socket.on("disconnect", () => console.log("disconnected"));
 });

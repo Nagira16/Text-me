@@ -1,5 +1,6 @@
 import { Router } from "express";
 import {
+  followUserByUserId,
   getAllFollowerByUserId,
   getAllFollowingByUserId,
 } from "../controllers/followController";
@@ -10,5 +11,6 @@ const followRouter: Router = Router();
 
 followRouter.get("/follower", getAllFollowerByUserId);
 followRouter.get("/following", getAllFollowingByUserId);
+followRouter.post("/:userId", followUserByUserId);
 
 export default followRouter;
