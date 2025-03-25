@@ -1,6 +1,7 @@
 import { Request, Response } from "express";
 import prisma from "../lib/prisma";
 import { PostInput, PostWithUser } from "../types";
+import { Follow } from "@prisma/client";
 
 export const getAllPosts = async (_: Request, res: Response): Promise<void> => {
   try {
@@ -14,6 +15,59 @@ export const getAllPosts = async (_: Request, res: Response): Promise<void> => {
           },
         },
       },
+      orderBy: { created_at: "desc" },
+    });
+
+    res.status(200).json({
+      success: true,
+      message: "All Post Found Successfully",
+      result: posts,
+    });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({
+      success: false,
+      message: "Server Error: Get All Posts",
+      result: null,
+    });
+  }
+};
+
+export const getFollowingUsersAllPosts = async (
+  req: Request,
+  res: Response
+): Promise<void> => {
+  try {
+    const userId = req.user?.id;
+
+    if (!userId) {
+      res.status(401).json({
+        success: false,
+        message: "Unauthorized: User not found",
+        result: null,
+      });
+      return;
+    }
+    const followingUsers: Follow[] = await prisma.follow.findMany({
+      where: { follower_id: userId },
+    });
+
+    const followingUserIds = followingUsers.map((f) => f.following_id);
+
+    const posts: PostWithUser[] = await prisma.post.findMany({
+      where: {
+        author_id: { in: followingUserIds },
+      },
+      include: {
+        author: {
+          select: {
+            id: true,
+            username: true,
+            profile_image: true,
+          },
+        },
+      },
+      orderBy: { created_at: "desc" },
     });
 
     res.status(200).json({

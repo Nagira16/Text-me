@@ -6,6 +6,9 @@ import { Send } from "lucide-react";
 import { AllMessageData, MessageData, MessageWithUser } from "@/types";
 import { useAuth } from "./provider/AuthContent";
 import { useSocket } from "./provider/SocketContext";
+import { Avatar, AvatarFallback } from "@radix-ui/react-avatar";
+import { AvatarImage } from "./ui/avatar";
+import Image from "next/image";
 
 const ChatWindow = ({ conversationId }: { conversationId: string }) => {
   const [messages, setMessages] = useState<MessageWithUser[]>([]);
@@ -23,8 +26,8 @@ const ChatWindow = ({ conversationId }: { conversationId: string }) => {
           credentials: "include",
         }
       );
-      const data: AllMessageData = await res.json();
-      if (data.success && data.result) setMessages(data.result);
+      const { success, result }: AllMessageData = await res.json();
+      if (success && result) setMessages(result);
     };
     fetchMessages();
   }, [conversationId]);

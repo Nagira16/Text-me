@@ -9,8 +9,6 @@ const Chat = () => {
     string | null
   >(null);
 
-  console.log(selectedConversation);
-
   return (
     <div className="flex h-screen w-full">
       <ConversationList setSelectedConversation={setSelectedConversation} />

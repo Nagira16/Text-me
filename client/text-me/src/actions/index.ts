@@ -3,11 +3,14 @@
 import {
   AllCommentData,
   AllPostData,
+  CheckFollowData,
   CommentData,
   FollowData,
   LikeReturnType,
+  ToggleFollowData,
   ToggleLikeData,
   UserData,
+  UserWithPostData,
 } from "@/types";
 import { RequestCookie } from "next/dist/compiled/@edge-runtime/cookies";
 import { cookies } from "next/headers";
@@ -26,6 +29,22 @@ export const getUser = async (): Promise<UserData> => {
   return data;
 };
 
+export const getUserById = async (
+  user_id: string
+): Promise<UserWithPostData> => {
+  const cookie: RequestCookie | undefined = (await cookies()).get("token");
+  const res: Response = await fetch(`http://localhost:5001/user/${user_id}`, {
+    method: "GET",
+    headers: {
+      Authorization: `Bearer ${cookie?.value}`,
+      "Content-Type": "application/json",
+    },
+  });
+  const data: UserWithPostData = await res.json();
+
+  return data;
+};
+
 export const getAllPost = async (): Promise<AllPostData> => {
   const res: Response = await fetch("http://localhost:5001/post");
   const data: AllPostData = await res.json();
@@ -37,6 +56,22 @@ export const getAllPost = async (): Promise<AllPostData> => {
     message: data.message,
     result: data.result,
   };
+};
+
+export const getFollowingAllPost = async (): Promise<AllPostData> => {
+  const cookie: RequestCookie | undefined = (await cookies()).get("token");
+  const res: Response = await fetch("http://localhost:5001/post/follow", {
+    method: "GET",
+    headers: {
+      Authorization: `Bearer ${cookie?.value}`,
+      "Content-type": "application/json",
+    },
+  });
+  const data: AllPostData = await res.json();
+
+  await new Promise((resolve) => setTimeout(resolve, 5000));
+
+  return data;
 };
 
 export const checkLiked = async (post_id: string): Promise<LikeReturnType> => {
@@ -97,7 +132,7 @@ export const createNewComment = async (
   return data;
 };
 
-export const getAllFollowing = async () => {
+export const getAllFollowing = async (): Promise<FollowData> => {
   const cookie: RequestCookie | undefined = (await cookies()).get("token");
   const res: Response = await fetch(`http://localhost:5001/follow/following`, {
     method: "GET",
@@ -108,6 +143,35 @@ export const getAllFollowing = async () => {
   });
   const data: FollowData = await res.json();
 
+  return data;
+};
+
+export const checkFollowing = async (user_id: string): Promise<boolean> => {
+  const cookie: RequestCookie | undefined = (await cookies()).get("token");
+  const res: Response = await fetch(`http://localhost:5001/follow/${user_id}`, {
+    method: "GET",
+    headers: {
+      Authorization: `Bearer ${cookie?.value}`,
+      "Content-Type": "application/json",
+    },
+  });
+  const data: CheckFollowData = await res.json();
+
+  return data ? true : false;
+};
+
+export const toggleFollow = async (
+  user_id: string
+): Promise<ToggleFollowData> => {
+  const cookie: RequestCookie | undefined = (await cookies()).get("token");
+  const res: Response = await fetch(`http://localhost:5001/follow/${user_id}`, {
+    method: "POST",
+    headers: {
+      Authorization: `Bearer ${cookie?.value}`,
+      "Content-Type": "application/json",
+    },
+  });
+  const data: ToggleFollowData = await res.json();
   console.log(data);
 
   return data;

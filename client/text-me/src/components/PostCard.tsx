@@ -5,16 +5,19 @@ import Image from "next/image";
 import LikeButton from "./LikeButton";
 import { Avatar, AvatarFallback, AvatarImage } from "./ui/avatar";
 import CommentDialog from "./CommentDialog";
+import Link from "next/link";
 
 const PostCard = ({ post }: { post: PostWithUser }) => {
   return (
-    <Card className="relative shadow-md border border-white w-[700px] h-[600px] overflow-hidden z-10">
+    <Card className="relative shadow-md border border-black dark:border-white w-[700px] h-[600px] overflow-hidden z-10">
       <CardHeader>
         <CardTitle className="flex items-center gap-5 text-lg mb-5">
-          <Avatar className="w-10 h-10 border-2 border-white">
-            <AvatarImage src={post.author.profile_image} />
-            <AvatarFallback>User</AvatarFallback>
-          </Avatar>
+          <Link href={`account/${post.author_id}`}>
+            <Avatar className="w-10 h-10 border-2 border-white">
+              <AvatarImage src={post.author.profile_image} />
+              <AvatarFallback>User</AvatarFallback>
+            </Avatar>
+          </Link>
 
           <p>{post.author.username}</p>
         </CardTitle>

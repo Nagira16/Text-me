@@ -1,11 +1,20 @@
-import { getAllPost } from "@/actions";
+import { getAllPost, getFollowingAllPost } from "@/actions";
 import PostCard from "./PostCard";
-import { AllPostData } from "@/types";
+import { AllPostData, PostWithUser } from "@/types";
 
 const PostList = async () => {
-  const posts: AllPostData = await getAllPost();
+  let posts: PostWithUser[] = [];
 
-  if (!posts?.result || posts.result.length === 0) {
+  const { result: followingPosts }: AllPostData = await getFollowingAllPost();
+
+  if (followingPosts && followingPosts.length > 0) {
+    posts = followingPosts;
+  } else {
+    const { result: allPosts }: AllPostData = await getAllPost();
+    if (allPosts) posts = allPosts;
+  }
+
+  if (!posts || posts.length === 0) {
     return (
       <div>
         <p>No posts found.</p>
@@ -15,14 +24,9 @@ const PostList = async () => {
 
   return (
     <div className="my-14 space-y-3">
-      {posts.result
-        .sort(
-          (a, b) =>
-            new Date(b.created_at).getTime() - new Date(a.created_at).getTime()
-        )
-        .map((post) => (
-          <PostCard key={post.id} post={post} />
-        ))}
+      {posts.map((post) => (
+        <PostCard key={post.id} post={post} />
+      ))}
     </div>
   );
 };

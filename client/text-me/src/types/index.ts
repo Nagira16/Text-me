@@ -40,6 +40,12 @@ export type UserWithoutPassword = Omit<User, "password">;
 
 type UserInfo = { id: string; username: string; profile_image: string };
 
+export type UsersInfo = {
+  id: string;
+  username: string;
+  profile_image: string;
+};
+
 type Post = {
   id: string;
   created_at: Date;
@@ -141,8 +147,20 @@ export type UseUserAuth = {
   refreshUser: () => Promise<void>;
 };
 
+export type UserInfoData = FetchData & {
+  result: UsersInfo[] | null;
+};
+
 export type UserData = FetchData & {
   result: UserWithoutPassword | null;
+};
+
+export type UserWithPostData = FetchData & {
+  result: {
+    user: UserWithPost;
+    followerCount: number;
+    followingCount: number;
+  };
 };
 
 export type AllPostData = FetchData & {
@@ -189,4 +207,24 @@ export type AllMessageData = FetchData & {
 
 export type MessageData = FetchData & {
   result: MessageWithUser | null;
+};
+
+export type UserWithPost = UserWithoutPassword & {
+  post: {
+    id: string;
+    created_at: Date;
+    updated_at: Date;
+    content: string | null;
+    photo: string;
+    likes_count: number;
+  }[];
+};
+
+export type CheckFollowData = FetchData & {
+  result: Follow | null;
+};
+
+export type ToggleFollowData = FetchData & {
+  result: null;
+  followed: boolean;
 };

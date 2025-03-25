@@ -1,6 +1,11 @@
 import { Request, Response } from "express";
 import prisma from "../lib/prisma";
-import { UserUpdateInput, UserWithoutPassword } from "../types";
+import {
+  UserInfo,
+  UserUpdateInput,
+  UserWithoutPassword,
+  UserWithPost,
+} from "../types";
 import { validateUsernameLength } from "./authController";
 import { User } from "@prisma/client";
 
@@ -36,6 +41,103 @@ export const getUser = async (req: Request, res: Response): Promise<void> => {
     res.status(500).json({
       success: false,
       message: "Server Error: Get User",
+      result: null,
+    });
+  }
+};
+
+export const getUserById = async (
+  req: Request,
+  res: Response
+): Promise<void> => {
+  try {
+    const user_id: string = req.params.id;
+
+    const user: UserWithPost | null = await prisma.user.findUnique({
+      where: { id: user_id },
+      omit: { password: true },
+      include: {
+        post: {
+          select: {
+            id: true,
+            photo: true,
+            content: true,
+            created_at: true,
+            likes_count: true,
+            updated_at: true,
+          },
+        },
+      },
+    });
+
+    const followerCount: number = await prisma.follow.count({
+      where: { following_id: user_id },
+    });
+
+    const followingCount: number = await prisma.follow.count({
+      where: { follower_id: user_id },
+    });
+
+    if (!user) {
+      res.status(404).json({
+        success: false,
+        message: "User Not Found",
+        result: null,
+      });
+      return;
+    }
+
+    res.status(200).json({
+      success: true,
+      message: "User Found Successfully",
+      result: { user, followerCount, followingCount },
+    });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({
+      success: false,
+      message: "Server Error: Get User By Id",
+      result: null,
+    });
+  }
+};
+
+export const queryUser = async (req: Request, res: Response) => {
+  try {
+    const query = req.query.q as string;
+    if (!query) {
+      res.status(400).json({
+        success: false,
+        message: "Search query is required",
+        result: null,
+      });
+      return;
+    }
+
+    const users: UserInfo[] = await prisma.user.findMany({
+      where: {
+        username: {
+          contains: query,
+          mode: "insensitive",
+        },
+      },
+      select: {
+        id: true,
+        username: true,
+        profile_image: true,
+      },
+    });
+
+    res.status(200).json({
+      success: true,
+      message: "Users Found Successfully",
+      result: users,
+    });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({
+      success: false,
+      message: "Server Error: Query User",
       result: null,
     });
   }

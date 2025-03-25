@@ -7,6 +7,7 @@ import {
   House,
   LogIn,
   MessageCircleMore,
+  Search,
   SquarePlus,
 } from "lucide-react";
 import Link from "next/link";
@@ -32,6 +33,7 @@ const Navbar = () => {
     },
     { title: "Home", path: "/", icon: <House /> },
     { title: "DM", path: "/dm", icon: <MessageCircleMore /> },
+    { title: "Search", path: "/search", icon: <Search /> },
     {
       title: "Notification",
       path: "/notification",
@@ -64,7 +66,7 @@ const Navbar = () => {
 
   return (
     <nav className="fixed top-0 left-0 flex flex-col h-full w-16 items-center bg-black border-r border-white">
-      <ul className="flex flex-col gap-16 items-center mt-16">
+      <ul className="flex flex-col gap-10 items-center mt-16">
         {NavLinks.map((link, i) => (
           <li key={i} className="text-white">
             <Link href={link.path}>{link.icon}</Link>
