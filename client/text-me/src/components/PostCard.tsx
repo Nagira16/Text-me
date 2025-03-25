@@ -9,7 +9,7 @@ import Link from "next/link";
 
 const PostCard = ({ post }: { post: PostWithUser }) => {
   return (
-    <Card className="relative shadow-md border border-white w-[700px] h-[600px] overflow-hidden z-10">
+    <Card className="relative shadow-md border border-black dark:border-white w-[700px] h-[600px] overflow-hidden z-10">
       <CardHeader>
         <CardTitle className="flex items-center gap-5 text-lg mb-5">
           <Link href={`account/${post.author_id}`}>

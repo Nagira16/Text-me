@@ -53,7 +53,7 @@ const PostForm = () => {
 
         <Button
           disabled={isSaving}
-          className={`${isSaving ? "bg-gray-500" : "bg-white"}`}
+          className={`${isSaving ? "bg-gray-500" : "dark:bg-white"}`}
         >
           Post
         </Button>

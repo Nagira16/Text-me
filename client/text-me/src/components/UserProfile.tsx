@@ -76,7 +76,7 @@ const UserProfile = () => {
   const selectedUser = userData.user;
 
   return (
-    <div className="min-h-screen flex flex-col items-center justify-center">
+    <div className="min-h-screen flex flex-col items-center justify-center my-10">
       <Card className="w-full max-w-screen-md p-6 mb-6">
         <CardHeader>
           <CardTitle className="flex items-center gap-4">

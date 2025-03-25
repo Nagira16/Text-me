@@ -42,7 +42,7 @@ const UserSearch = () => {
         />
         <Button
           onClick={handleSearch}
-          className={`${isSaving ? "bg-gray-500" : "bg-white"}`}
+          className={`${isSaving ? "bg-gray-500" : "dark:bg-white"}`}
           disabled={isSaving}
         >
           Search
@@ -61,7 +61,7 @@ const UserSearch = () => {
 
                 <span className="font-medium">{user.username}</span>
 
-                <hr className="absolute -bottom-3 right-0 left-0 border-white" />
+                <hr className="absolute -bottom-3 right-0 left-0 border-black dark:border-white" />
               </li>
             </Link>
           ))
