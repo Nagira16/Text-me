@@ -3,7 +3,7 @@
 import { getUserById } from "@/actions";
 import { UserWithPostData } from "@/types";
 import { useParams } from "next/navigation";
-import { useEffect, useState } from "react";
+import { JSX, useEffect, useState } from "react";
 import { Card, CardHeader, CardTitle, CardContent } from "./ui/card";
 import { Avatar, AvatarImage, AvatarFallback } from "./ui/avatar";
 import Image from "next/image";
@@ -12,7 +12,7 @@ import { useAuth } from "./provider/AuthContent";
 import FollowButton from "./FollowButton";
 import { useSocket } from "./provider/SocketContext";
 
-const UserProfile = () => {
+const UserProfile = (): JSX.Element => {
   const { user } = useAuth();
   const socket = useSocket();
   const { id }: { id: string } = useParams();
@@ -40,6 +40,8 @@ const UserProfile = () => {
   }, [id]);
 
   useEffect(() => {
+    if (!socket) return;
+
     socket.emit("joinUserProfile", id);
 
     socket.on(

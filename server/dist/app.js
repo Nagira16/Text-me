@@ -78,6 +78,12 @@ exports.io.on("connection", (socket) => {
         exports.io.to(message.conversation_id).emit("newMessage", message);
         console.log(`📨 Message sent to conversation ${message.conversation_id}`);
     });
+    socket.on("notification", (notification) => {
+        if (!notification)
+            return;
+        console.log({ notification });
+        exports.io.to(notification.userId).emit("newNotification", notification);
+    });
     socket.on("disconnect", () => {
         console.log("🔴 Disconnected:", socket.id);
     });

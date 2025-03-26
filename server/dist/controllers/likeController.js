@@ -15,7 +15,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.checkLikedByPostId = exports.toggleLikeByPostId = exports.getLikedUserByPostId = exports.getLikedPostByUserId = void 0;
 const prisma_1 = __importDefault(require("../lib/prisma"));
 const postController_1 = require("./postController");
-const app_1 = require("../app");
+const userController_1 = require("./userController");
 const getLikedPostByUserId = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     var _a;
     try {
@@ -117,6 +117,15 @@ const toggleLikeByPostId = (req, res) => __awaiter(void 0, void 0, void 0, funct
             });
             return;
         }
+        const user = yield (0, userController_1.findUserById)(user_id);
+        if (!user) {
+            res.status(404).json({
+                success: false,
+                message: "User Not Found",
+                result: null,
+            });
+            return;
+        }
         const post = yield (0, postController_1.findPostById)(post_id);
         if (!post) {
             res.status(404).json({
@@ -155,12 +164,6 @@ const toggleLikeByPostId = (req, res) => __awaiter(void 0, void 0, void 0, funct
             ]);
             message = "Post Liked";
             liked = true;
-            // notification for author user
-            app_1.io.to(post.author_id).emit("postLikedNotification", {
-                post,
-                user_id,
-                liked,
-            });
         }
         res.status(201).json({
             success: true,

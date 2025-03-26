@@ -1,4 +1,4 @@
-import React from "react";
+import React, { JSX } from "react";
 import { Card, CardFooter, CardHeader, CardTitle } from "./ui/card";
 import { PostWithUser } from "@/types";
 import Image from "next/image";
@@ -7,7 +7,7 @@ import { Avatar, AvatarFallback, AvatarImage } from "./ui/avatar";
 import CommentDialog from "./CommentDialog";
 import Link from "next/link";
 
-const PostCard = ({ post }: { post: PostWithUser }) => {
+const PostCard = ({ post }: { post: PostWithUser }): JSX.Element => {
   return (
     <Card className="relative shadow-md border border-black dark:border-white w-[700px] h-[600px] overflow-hidden z-10">
       <CardHeader>

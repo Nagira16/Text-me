@@ -1,10 +1,10 @@
 "use client";
 
-import { useState } from "react";
+import { JSX, useState } from "react";
 import ConversationList from "./ConversationList";
 import ChatWindow from "./ChatWindow";
 
-const Chat = () => {
+const Chat = (): JSX.Element => {
   const [selectedConversation, setSelectedConversation] = useState<
     string | null
   >(null);

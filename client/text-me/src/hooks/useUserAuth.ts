@@ -1,10 +1,15 @@
 "use client";
 
 import { useEffect, useState, useCallback } from "react";
-import { FetchData, UserData, UserWithoutPassword } from "../types";
+import {
+  FetchData,
+  UserData,
+  UserWithoutPassword,
+  UseUserAuth,
+} from "../types";
 import { getUser } from "@/actions";
 
-export const useUserAuth = () => {
+export const useUserAuth = (): UseUserAuth => {
   const [user, setUser] = useState<UserWithoutPassword | null>(null);
   const [isSignedIn, setIsSignedIn] = useState<boolean>(false);
 

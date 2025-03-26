@@ -1,13 +1,13 @@
 "use client";
 
-import { useState } from "react";
+import { JSX, useState } from "react";
 import { Input } from "./ui/input";
 import { Button } from "./ui/button";
 import { Avatar, AvatarFallback, AvatarImage } from "./ui/avatar";
 import { UserInfoData, UsersInfo } from "@/types";
 import Link from "next/link";
 
-const UserSearch = () => {
+const UserSearch = (): JSX.Element => {
   const [searchQuery, setSearchQuery] = useState<string>("");
   const [searchResults, setSearchResults] = useState<UsersInfo[]>([]);
   const [isSaving, setIsSaving] = useState<boolean>(false);

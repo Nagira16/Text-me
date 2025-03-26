@@ -228,3 +228,37 @@ export type ToggleFollowData = FetchData & {
   result: null;
   followed: boolean;
 };
+
+export type NotificationType =
+  | {
+      type: "Comment";
+      username: string;
+      comment: string;
+      post: PostWithUser;
+    }
+  | {
+      type: "Follow";
+      username: string;
+    }
+  | {
+      type: "Like";
+      username: string;
+      post: PostWithUser;
+    };
+
+// export type CommentNotification = {
+//   type: "Comment";
+//   username: string;
+//   comment: string;
+// };
+
+// export type FollowNotification = {
+//   type: "Follow";
+//   username: string;
+// };
+
+// export type LikeNotification = {
+//   type: "Like";
+//   username: string;
+//   post: PostWithUser;
+// };

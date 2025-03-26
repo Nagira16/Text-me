@@ -10,11 +10,11 @@ import {
 import { MessageCircle } from "lucide-react";
 import CommentList from "./CommentList";
 import CommentForm from "./CommentForm";
-import { useState } from "react";
+import { JSX, useState } from "react";
 import { CommentWithUser } from "@/types";
 import { Card } from "./ui/card";
 
-const CommentDialog = ({ post_id }: { post_id: string }) => {
+const CommentDialog = ({ post_id }: { post_id: string }): JSX.Element => {
   const [allComments, setComments] = useState<CommentWithUser[]>([]);
 
   return (

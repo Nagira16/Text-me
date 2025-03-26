@@ -12,7 +12,7 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 
-export function ModeToggle() {
+export function ModeToggle(): React.JSX.Element | null {
   const { setTheme } = useTheme();
   const [isClient, setIsClient] = React.useState<boolean>(false);
 

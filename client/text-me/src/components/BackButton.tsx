@@ -1,6 +1,7 @@
 import { ChevronLeft } from "lucide-react";
+import { JSX } from "react";
 
-const BackButton = () => {
+const BackButton = (): JSX.Element => {
   return (
     <ChevronLeft
       onClick={() => window.history.back()}
