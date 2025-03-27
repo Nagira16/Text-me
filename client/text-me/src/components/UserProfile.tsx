@@ -7,11 +7,11 @@ import { JSX, useEffect, useState } from "react";
 import { Card, CardHeader, CardTitle, CardContent } from "./ui/card";
 import { Avatar, AvatarImage, AvatarFallback } from "./ui/avatar";
 import Image from "next/image";
-import { Button } from "./ui/button";
 import { useAuth } from "./provider/AuthContent";
 import FollowButton from "./FollowButton";
 import { useSocket } from "./provider/SocketContext";
 import Link from "next/link";
+import { Button } from "./ui/button";
 
 const UserProfile = (): JSX.Element => {
   const { user } = useAuth();
@@ -97,7 +97,9 @@ const UserProfile = (): JSX.Element => {
             </div>
             <div>
               {user?.id === selectedUser.id ? (
-                <Button>Edit</Button>
+                <Button className="w-28 h-[35px]">
+                  <Link href={`/account/setting/${user.id}`}>Setting</Link>
+                </Button>
               ) : (
                 <FollowButton user_id={selectedUser.id} />
               )}

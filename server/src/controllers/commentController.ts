@@ -2,7 +2,6 @@ import { Request, Response } from "express";
 import prisma from "../lib/prisma";
 import { CommentInput, CommentWithUser, PostWithUser } from "../types";
 import { findPostById } from "./postController";
-import { io } from "../app";
 
 export const getCommentByPostId = async (
   req: Request,
