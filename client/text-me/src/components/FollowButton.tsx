@@ -46,7 +46,7 @@ const FollowButton = ({ user_id }: { user_id: string }): JSX.Element => {
         isFollowing
           ? "bg-black hover:bg-gray-700"
           : "bg-blue-500 hover:bg-blue-700"
-      } text-white border border-white w-28`}
+      } text-white border border-white w-28 h-[35px]`}
     >
       {isFollowing ? "Following" : "Follow"}
     </Button>

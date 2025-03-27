@@ -63,14 +63,16 @@ exports.io.on("connection", (socket) => {
     socket.on("joinUserProfile", (userId) => {
         if (!userId)
             return;
-        socket.join(userId);
-        console.log(`📄 Joined user profile: ${userId}`);
+        const roomName = `profile-${userId}`;
+        socket.join(roomName);
+        console.log(`📄 Joined user profile: ${roomName}`);
     });
-    socket.on("leaveRoom", (id) => {
-        if (!id)
+    socket.on("leaveRoom", (userId) => {
+        if (!userId)
             return;
-        socket.leave(id);
-        console.log(`🚪 Left : ${id}`);
+        const roomName = `profile-${userId}`;
+        socket.leave(roomName);
+        console.log(`🚪 Left : ${roomName}`);
     });
     socket.on("sendMessage", (message) => {
         if (!(message === null || message === void 0 ? void 0 : message.conversation_id))

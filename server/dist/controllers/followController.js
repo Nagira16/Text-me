@@ -164,7 +164,8 @@ const followUserByUserId = (req, res) => __awaiter(void 0, void 0, void 0, funct
             },
         });
         // update follower count for following user
-        app_1.io.to(following_id).emit("followerCountUpdate", {
+        const roomName = `profile-${followingUser.id}`;
+        app_1.io.to(roomName).emit("followerCountUpdate", {
             userId: following_id,
             count: followerConut,
         });

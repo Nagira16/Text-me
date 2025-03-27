@@ -39,7 +39,8 @@ const NotificationList = (): JSX.Element => {
                 )}
                 {notification.type === "Follow" && (
                   <>
-                    <strong>{notification.username}</strong> followed you.
+                    <strong>{notification.username}</strong>
+                    &nbsp;followed&nbsp;you.
                   </>
                 )}
                 {notification.type === "Like" && (
@@ -52,7 +53,7 @@ const NotificationList = (): JSX.Element => {
                       className="mr-4"
                     />
                     <div className="flex flex-col">
-                      <strong>{notification.username}</strong> liked your post.
+                      <strong>{notification.username}</strong>liked your post.
                     </div>
                   </>
                 )}

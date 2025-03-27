@@ -178,7 +178,8 @@ export const followUserByUserId = async (
     });
 
     // update follower count for following user
-    io.to(following_id).emit("followerCountUpdate", {
+    const roomName = `profile-${followingUser.id}`;
+    io.to(roomName).emit("followerCountUpdate", {
       userId: following_id,
       count: followerConut,
     });

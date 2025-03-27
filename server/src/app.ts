@@ -75,14 +75,20 @@ io.on("connection", (socket: Socket) => {
 
   socket.on("joinUserProfile", (userId: string) => {
     if (!userId) return;
-    socket.join(userId);
-    console.log(`📄 Joined user profile: ${userId}`);
+
+    const roomName = `profile-${userId}`;
+
+    socket.join(roomName);
+    console.log(`📄 Joined user profile: ${roomName}`);
   });
 
-  socket.on("leaveRoom", (id: string) => {
-    if (!id) return;
-    socket.leave(id);
-    console.log(`🚪 Left : ${id}`);
+  socket.on("leaveRoom", (userId: string) => {
+    if (!userId) return;
+
+    const roomName = `profile-${userId}`;
+
+    socket.leave(roomName);
+    console.log(`🚪 Left : ${roomName}`);
   });
 
   socket.on("sendMessage", (message) => {

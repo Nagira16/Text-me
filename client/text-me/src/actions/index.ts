@@ -174,7 +174,6 @@ export const toggleFollow = async (
     },
   });
   const data: ToggleFollowData = await res.json();
-  console.log(data);
 
   return data;
 };

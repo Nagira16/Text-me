@@ -109,8 +109,8 @@ const UserProfile = (): JSX.Element => {
       <div className="w-full max-w-screen-lg grid grid-cols-1 md:grid-cols-2 gap-6">
         {selectedUser.post.length > 0 ? (
           selectedUser.post.map((post) => (
-            <Link href={`/post/${post.id}`}>
-              <Card key={post.id} className="p-4 shadow-md w-full">
+            <Link href={`/post/${post.id}`} key={post.id}>
+              <Card className="p-4 shadow-md w-full">
                 {post.photo && (
                   <div className="relative w-full h-64 aspect-[4/3]">
                     <Image
