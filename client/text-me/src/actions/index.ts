@@ -7,6 +7,7 @@ import {
   CommentData,
   FollowData,
   LikeReturnType,
+  PostData,
   ToggleFollowData,
   ToggleLikeData,
   UserData,
@@ -56,6 +57,13 @@ export const getAllPost = async (): Promise<AllPostData> => {
     message: data.message,
     result: data.result,
   };
+};
+
+export const getPostById = async (post_id: string): Promise<PostData> => {
+  const res: Response = await fetch(`http://localhost:5001/post/${post_id}`);
+  const data: PostData = await res.json();
+
+  return data;
 };
 
 export const getFollowingAllPost = async (): Promise<AllPostData> => {

@@ -14,6 +14,7 @@ import followRouter from "./routes/followRouter";
 import conversationRouter from "./routes/conversationRouter";
 import path from "path";
 import messageRouter from "./routes/messageRouter";
+import { NotificationType } from "./types";
 
 const app: Express = express();
 
@@ -88,6 +89,14 @@ io.on("connection", (socket: Socket) => {
     if (!message?.conversation_id) return;
     io.to(message.conversation_id).emit("newMessage", message);
     console.log(`📨 Message sent to conversation ${message.conversation_id}`);
+  });
+
+  socket.on("notification", (notification: NotificationType) => {
+    if (!notification) return;
+
+    console.log({ notification });
+
+    io.to(notification.userId).emit("newNotification", notification);
   });
 
   socket.on("disconnect", () => {

@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { JSX, useEffect, useState } from "react";
 import { Card } from "./ui/card";
 import { Input } from "./ui/input";
 import { Button } from "./ui/button";
@@ -6,11 +6,12 @@ import { Send } from "lucide-react";
 import { AllMessageData, MessageData, MessageWithUser } from "@/types";
 import { useAuth } from "./provider/AuthContent";
 import { useSocket } from "./provider/SocketContext";
-import { Avatar, AvatarFallback } from "@radix-ui/react-avatar";
-import { AvatarImage } from "./ui/avatar";
-import Image from "next/image";
 
-const ChatWindow = ({ conversationId }: { conversationId: string }) => {
+const ChatWindow = ({
+  conversationId,
+}: {
+  conversationId: string;
+}): JSX.Element => {
   const [messages, setMessages] = useState<MessageWithUser[]>([]);
   const [newMessage, setNewMessage] = useState("");
   const { user } = useAuth();

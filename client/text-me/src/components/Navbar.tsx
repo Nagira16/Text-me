@@ -11,13 +11,15 @@ import {
   SquarePlus,
 } from "lucide-react";
 import Link from "next/link";
-import { useEffect, useState } from "react";
+import { JSX, useEffect, useState } from "react";
 import { ModeToggle } from "./ModeToggle";
 import { useAuth } from "./provider/AuthContent";
+import { useNotificationStore } from "@/store/useNotificationStore";
 
-const Navbar = () => {
+const Navbar = (): JSX.Element | null => {
   const { user } = useAuth();
   const [isClient, setIsClient] = useState<boolean>(false);
+  const notifications = useNotificationStore((state) => state.notifications);
 
   useEffect(() => {
     setIsClient(true);
@@ -68,7 +70,12 @@ const Navbar = () => {
     <nav className="fixed top-0 left-0 flex flex-col h-full w-16 items-center bg-black border-r border-white">
       <ul className="flex flex-col gap-10 items-center mt-16">
         {NavLinks.map((link, i) => (
-          <li key={i} className="text-white">
+          <li key={i} className="text-white relative">
+            {link.title === "Notification" && notifications.length > 0 && (
+              <span className="text-xs absolute -right-[3px] -top-2 bg-red-500 rounded-full px-[3px]">
+                {notifications.length}
+              </span>
+            )}
             <Link href={link.path}>{link.icon}</Link>
           </li>
         ))}

@@ -169,11 +169,6 @@ export const followUserByUserId = async (
 
       message = "User followed successfully";
       followed = true;
-
-      // notification for following user
-      io.to(following_id).emit("followedNotifiction", {
-        followerUser: followerUser.username,
-      });
     }
 
     const followerConut: number = await prisma.follow.count({

@@ -1,8 +1,9 @@
 import { getAllPost, getFollowingAllPost } from "@/actions";
 import PostCard from "./PostCard";
 import { AllPostData, PostWithUser } from "@/types";
+import { JSX } from "react";
 
-const PostList = async () => {
+const PostList = async (): Promise<JSX.Element> => {
   let posts: PostWithUser[] = [];
 
   const { result: followingPosts }: AllPostData = await getFollowingAllPost();

@@ -2,6 +2,7 @@
 
 import {
   createContext,
+  JSX,
   ReactNode,
   useContext,
   useEffect,
@@ -9,12 +10,21 @@ import {
 } from "react";
 import { io, Socket } from "socket.io-client";
 import { useAuth } from "./AuthContent";
+import { NotificationType } from "@/types";
+import { useNotificationStore } from "@/store/useNotificationStore";
 
 const SocketContext = createContext<Socket | null>(null);
 
-export const SocketProvider = ({ children }: { children: ReactNode }) => {
+export const SocketProvider = ({
+  children,
+}: {
+  children: ReactNode;
+}): JSX.Element => {
   const [socket, setSocket] = useState<Socket | null>(null);
   const { isSignedIn, user } = useAuth();
+  const addNewNotification = useNotificationStore(
+    (state) => state.addNewNotification
+  );
 
   useEffect(() => {
     const newSocket = io("http://localhost:5001");
@@ -31,15 +41,27 @@ export const SocketProvider = ({ children }: { children: ReactNode }) => {
     }
   }, [socket, isSignedIn, user]);
 
-  useEffect(() => {}, [socket]);
+  useEffect(() => {
+    if (!socket) return;
+
+    const handleNewNotification = (data: NotificationType) => {
+      addNewNotification(data);
+    };
+
+    socket.on("newNotification", handleNewNotification);
+
+    return () => {
+      socket.off("newNotification", handleNewNotification);
+    };
+  }, [socket]);
 
   return (
     <SocketContext.Provider value={socket}>{children}</SocketContext.Provider>
   );
 };
 
-export const useSocket = () => {
-  const context: Socket | null = useContext(SocketContext);
+export const useSocket = (): Socket => {
+  const context = useContext(SocketContext);
   if (!context) {
     throw new Error("useSocket must be used within a SocketProvider");
   }

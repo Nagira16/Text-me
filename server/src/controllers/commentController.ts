@@ -91,11 +91,6 @@ export const createNewComment = async (
       },
     });
 
-    io.to(post.author_id).emit("commentNotification", {
-      user: newComment.user.username,
-      comment: newComment.content,
-    });
-
     res.status(201).json({
       success: true,
       message: "Comment Created Successfully",

@@ -1,8 +1,9 @@
-import { Dispatch, SetStateAction } from "react";
+import { Dispatch, JSX, SetStateAction } from "react";
 import { Input } from "./ui/input";
 import { Send } from "lucide-react";
 import { CommentData, CommentWithUser } from "@/types";
-import { createNewComment } from "@/actions";
+import { createNewComment, getPostById } from "@/actions";
+import { useSocket } from "./provider/SocketContext";
 
 const CommentForm = ({
   post_id,
@@ -10,14 +11,31 @@ const CommentForm = ({
 }: {
   post_id: string;
   setComments: Dispatch<SetStateAction<CommentWithUser[]>>;
-}) => {
+}): JSX.Element => {
+  const socket = useSocket();
+
   const handlePostComment = async (formData: FormData) => {
+    if (!socket) return;
+
     const content = formData.get("content") as string;
-    const data: CommentData = await createNewComment(post_id, content);
-    if (data.success && data.result) {
-      setComments((prev) => [...prev, data.result!]);
+    const { success, result }: CommentData = await createNewComment(
+      post_id,
+      content
+    );
+    if (success && result) {
+      setComments((prev) => [...prev, result!]);
+      const data = await getPostById(post_id);
+      if (!data.result) return;
+      socket.emit("notification", {
+        type: "Comment",
+        username: result.user.username,
+        comment: result.content,
+        post: data.result,
+        userId: data.result.author_id,
+      });
     }
   };
+
   return (
     <form className="relative" action={handlePostComment}>
       <Input

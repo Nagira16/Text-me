@@ -1,9 +1,15 @@
 import { Request, Response } from "express";
 import prisma from "../lib/prisma";
-import { LikeWithPost, LikeWithUser, PostWithUser } from "../types";
+import {
+  LikeWithPost,
+  LikeWithUser,
+  PostWithUser,
+  UserWithoutPassword,
+} from "../types";
 import { Like, Post } from "@prisma/client";
 import { findPostById } from "./postController";
 import { io } from "../app";
+import { findUserById } from "./userController";
 
 export const getLikedPostByUserId = async (
   req: Request,
@@ -118,6 +124,15 @@ export const toggleLikeByPostId = async (
       return;
     }
 
+    const user: UserWithoutPassword | null = await findUserById(user_id);
+    if (!user) {
+      res.status(404).json({
+        success: false,
+        message: "User Not Found",
+        result: null,
+      });
+      return;
+    }
     const post: PostWithUser | null = await findPostById(post_id);
     if (!post) {
       res.status(404).json({
@@ -158,13 +173,6 @@ export const toggleLikeByPostId = async (
 
       message = "Post Liked";
       liked = true;
-
-      // notification for author user
-      io.to(post.author_id).emit("postLikedNotification", {
-        post,
-        user_id,
-        liked,
-      });
     }
 
     res.status(201).json({

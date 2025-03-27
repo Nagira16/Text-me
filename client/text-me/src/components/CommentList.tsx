@@ -2,7 +2,7 @@
 
 import { getCommentByPostId } from "@/actions";
 import { AllCommentData, CommentWithUser } from "@/types";
-import { Dispatch, SetStateAction, useEffect, useState } from "react";
+import { Dispatch, JSX, SetStateAction, useEffect, useState } from "react";
 import { Avatar, AvatarFallback, AvatarImage } from "./ui/avatar";
 
 const CommentList = ({
@@ -13,7 +13,7 @@ const CommentList = ({
   post_id: string;
   allComments: CommentWithUser[];
   setComments: Dispatch<SetStateAction<CommentWithUser[]>>;
-}) => {
+}): JSX.Element => {
   const [expandedComments, setExpandedComments] = useState<{
     [key: string]: boolean;
   }>({});

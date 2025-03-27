@@ -99,3 +99,23 @@ export type UserWithPost = UserWithoutPassword & {
     likes_count: number;
   }[];
 };
+
+export type NotificationType =
+  | {
+      type: "Comment";
+      username: string;
+      comment: string;
+      post: PostWithUser;
+      userId: string;
+    }
+  | {
+      type: "Follow";
+      username: string;
+      userId: string;
+    }
+  | {
+      type: "Like";
+      username: string;
+      post: PostWithUser;
+      userId: string;
+    };

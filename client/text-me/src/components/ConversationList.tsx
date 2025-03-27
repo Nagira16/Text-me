@@ -1,4 +1,4 @@
-import { Dispatch, SetStateAction, useEffect, useState } from "react";
+import { Dispatch, JSX, SetStateAction, useEffect, useState } from "react";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { AllConversationData, ConversationWithUser } from "@/types";
 import { useAuth } from "./provider/AuthContent";
@@ -8,7 +8,7 @@ const ConversationList = ({
   setSelectedConversation,
 }: {
   setSelectedConversation: Dispatch<SetStateAction<string | null>>;
-}) => {
+}): JSX.Element => {
   const [conversations, setConversations] = useState<ConversationWithUser[]>(
     []
   );

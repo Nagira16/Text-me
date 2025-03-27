@@ -2,7 +2,6 @@ import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "../globals.css";
 import Navbar from "@/components/Navbar";
-import ProtectWrapper from "@/components/ProtectWrapper";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -26,10 +25,8 @@ export default function RootLayout({
 }>) {
   return (
     <>
-      <ProtectWrapper>
-        <Navbar />
-        {children}
-      </ProtectWrapper>
+      <Navbar />
+      {children}
     </>
   );
 }

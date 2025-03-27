@@ -157,10 +157,6 @@ const followUserByUserId = (req, res) => __awaiter(void 0, void 0, void 0, funct
             });
             message = "User followed successfully";
             followed = true;
-            // notification for following user
-            app_1.io.to(following_id).emit("followedNotifiction", {
-                followerUser: followerUser.username,
-            });
         }
         const followerConut = yield prisma_1.default.follow.count({
             where: {
