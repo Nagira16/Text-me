@@ -4,6 +4,7 @@ import { getCommentByPostId } from "@/actions";
 import { AllCommentData, CommentWithUser } from "@/types";
 import { Dispatch, JSX, SetStateAction, useEffect, useState } from "react";
 import { Avatar, AvatarFallback, AvatarImage } from "./ui/avatar";
+import { Skeleton } from "./ui/skeleton";
 
 const CommentList = ({
   post_id,
@@ -17,6 +18,7 @@ const CommentList = ({
   const [expandedComments, setExpandedComments] = useState<{
     [key: string]: boolean;
   }>({});
+  const [isLoading, setIsLoading] = useState<boolean>(true);
 
   useEffect(() => {
     const fetchAllComments = async () => {
@@ -25,6 +27,7 @@ const CommentList = ({
       );
 
       if (success && result) {
+        setIsLoading(false);
         setComments(result);
       }
     };
@@ -38,6 +41,16 @@ const CommentList = ({
       [id]: !prev[id],
     }));
   };
+
+  if (isLoading) {
+    return (
+      <ul className="space-y-3 overflow-y-scroll h-[200px]">
+        {Array.from({ length: 5 }, (_, i) => (
+          <Skeleton key={i} className="w-full h-12" />
+        ))}
+      </ul>
+    );
+  }
 
   return (
     <>

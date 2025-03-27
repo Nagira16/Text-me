@@ -45,7 +45,6 @@ const PostCard = ({ post }: { post: PostWithUser }): JSX.Element => {
           <p>{post.author.username}</p>
           <p>{post.content}</p>
         </div>
-        {/* <CommentList post_id={post.id} /> */}
       </CardFooter>
     </Card>
   );

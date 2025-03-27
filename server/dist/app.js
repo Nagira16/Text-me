@@ -81,7 +81,6 @@ exports.io.on("connection", (socket) => {
     socket.on("notification", (notification) => {
         if (!notification)
             return;
-        console.log({ notification });
         exports.io.to(notification.userId).emit("newNotification", notification);
     });
     socket.on("disconnect", () => {

@@ -94,8 +94,6 @@ io.on("connection", (socket: Socket) => {
   socket.on("notification", (notification: NotificationType) => {
     if (!notification) return;
 
-    console.log({ notification });
-
     io.to(notification.userId).emit("newNotification", notification);
   });
 

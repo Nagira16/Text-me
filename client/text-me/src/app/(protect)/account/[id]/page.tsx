@@ -1,7 +1,7 @@
 import UserProfile from "@/components/UserProfile";
-import React from "react";
+import { JSX } from "react";
 
-const Account = () => {
+const Account = (): JSX.Element => {
   return (
     <div className="min-h-screen w-full grid place-items-center">
       <UserProfile />

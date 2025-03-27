@@ -48,7 +48,7 @@ const Navbar = (): JSX.Element | null => {
     },
     {
       title: "Account",
-      path: "/account",
+      path: `/account/${user?.id}`,
       icon: user && (
         <Image
           src={user.profile_image}

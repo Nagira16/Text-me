@@ -50,13 +50,7 @@ export const getAllPost = async (): Promise<AllPostData> => {
   const res: Response = await fetch("http://localhost:5001/post");
   const data: AllPostData = await res.json();
 
-  await new Promise((resolve) => setTimeout(resolve, 5000));
-
-  return {
-    success: data.success,
-    message: data.message,
-    result: data.result,
-  };
+  return data;
 };
 
 export const getPostById = async (post_id: string): Promise<PostData> => {
