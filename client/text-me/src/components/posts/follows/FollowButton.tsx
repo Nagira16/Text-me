@@ -1,10 +1,10 @@
 import { checkFollowing, toggleFollow } from "@/actions";
 import React, { JSX, useEffect, useState } from "react";
-import { Button } from "./ui/button";
 import { ToggleFollowData } from "@/types";
-import { Skeleton } from "./ui/skeleton";
-import { useAuth } from "./provider/AuthContent";
-import { useSocket } from "./provider/SocketContext";
+import { useAuth } from "@/components/provider/AuthContent";
+import { useSocket } from "@/components/provider/SocketContext";
+import { Button } from "@/components/ui/button";
+import { Skeleton } from "@/components/ui/skeleton";
 
 const FollowButton = ({ user_id }: { user_id: string }): JSX.Element => {
   const { user } = useAuth();

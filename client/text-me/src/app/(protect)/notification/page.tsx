@@ -1,4 +1,4 @@
-import NotificationList from "@/components/NotificationList";
+import NotificationList from "@/components/notifications/NotificationList";
 import React from "react";
 
 const Notification = () => {

@@ -4,13 +4,13 @@ import { getPostById } from "@/actions";
 import { CommentWithUser, PostWithUser } from "@/types";
 import { useParams } from "next/navigation";
 import { useEffect, useState } from "react";
-import { Card, CardFooter, CardHeader, CardTitle } from "./ui/card";
-import { Avatar, AvatarFallback, AvatarImage } from "./ui/avatar";
+import { Card, CardFooter, CardHeader, CardTitle } from "../ui/card";
+import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
 import Image from "next/image";
-import LikeButton from "./LikeButton";
+import LikeButton from "./likes/LikeButton";
 import Link from "next/link";
-import CommentList from "./CommentList";
-import CommentForm from "./CommentForm";
+import CommentList from "./comments/CommentList";
+import CommentForm from "./comments/CommentForm";
 
 const SinglePost = () => {
   const { postId }: { postId: string } = useParams();

@@ -1,8 +1,9 @@
 "use client";
 
 import { JSX, useState } from "react";
-import ConversationList from "./ConversationList";
+
 import ChatWindow from "./ChatWindow";
+import ConversationList from "./ConversationList";
 
 const Chat = (): JSX.Element => {
   const [selectedConversation, setSelectedConversation] = useState<

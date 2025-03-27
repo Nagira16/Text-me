@@ -1,11 +1,12 @@
 import { JSX, useEffect, useState } from "react";
-import { Card } from "./ui/card";
-import { Input } from "./ui/input";
-import { Button } from "./ui/button";
+
 import { Send } from "lucide-react";
 import { AllMessageData, MessageData, MessageWithUser } from "@/types";
-import { useAuth } from "./provider/AuthContent";
-import { useSocket } from "./provider/SocketContext";
+import { useAuth } from "../provider/AuthContent";
+import { useSocket } from "../provider/SocketContext";
+import { Card } from "../ui/card";
+import { Input } from "../ui/input";
+import { Button } from "../ui/button";
 
 const ChatWindow = ({
   conversationId,

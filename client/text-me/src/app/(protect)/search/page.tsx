@@ -1,4 +1,4 @@
-import UserSearch from "@/components/UserSearch";
+import UserSearch from "@/components/Users/UserSearch";
 import React from "react";
 
 const Search = () => {

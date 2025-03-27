@@ -246,19 +246,9 @@ export type NotificationType =
       post: PostWithUser;
     };
 
-// export type CommentNotification = {
-//   type: "Comment";
-//   username: string;
-//   comment: string;
-// };
-
-// export type FollowNotification = {
-//   type: "Follow";
-//   username: string;
-// };
-
-// export type LikeNotification = {
-//   type: "Like";
-//   username: string;
-//   post: PostWithUser;
-// };
+export type SettingTitle =
+  | "User_Profile"
+  | "Post"
+  | "Liked_Post"
+  | "Follow"
+  | "Change_Password";

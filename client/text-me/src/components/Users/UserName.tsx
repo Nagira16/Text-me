@@ -1,7 +1,7 @@
 "use client";
 
 import { useParams, useRouter } from "next/navigation";
-import { useAuth } from "./provider/AuthContent";
+import { useAuth } from "../provider/AuthContent";
 import { AppRouterInstance } from "next/dist/shared/lib/app-router-context.shared-runtime";
 
 const UserName = () => {

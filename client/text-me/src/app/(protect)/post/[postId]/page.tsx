@@ -1,4 +1,4 @@
-import SinglePost from "@/components/SinglePost";
+import SinglePost from "@/components/posts/SinglePost";
 
 const Post = () => {
   return (

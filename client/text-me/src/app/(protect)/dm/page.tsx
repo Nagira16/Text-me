@@ -1,4 +1,4 @@
-import Chat from "@/components/Chat";
+import Chat from "@/components/chats/Chat";
 import React from "react";
 
 const DirectMessage = () => {

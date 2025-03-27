@@ -4,14 +4,14 @@ import { getUserById } from "@/actions";
 import { UserWithPostData } from "@/types";
 import { useParams } from "next/navigation";
 import { JSX, useEffect, useState } from "react";
-import { Card, CardHeader, CardTitle, CardContent } from "./ui/card";
-import { Avatar, AvatarImage, AvatarFallback } from "./ui/avatar";
+import { Card, CardHeader, CardTitle, CardContent } from "../ui/card";
+import { Avatar, AvatarImage, AvatarFallback } from "../ui/avatar";
 import Image from "next/image";
-import { useAuth } from "./provider/AuthContent";
-import FollowButton from "./FollowButton";
-import { useSocket } from "./provider/SocketContext";
+import { useAuth } from "../provider/AuthContent";
+import FollowButton from "../posts/follows/FollowButton";
+import { useSocket } from "../provider/SocketContext";
 import Link from "next/link";
-import { Button } from "./ui/button";
+import { Button } from "../ui/button";
 
 const UserProfile = (): JSX.Element => {
   const { user } = useAuth();

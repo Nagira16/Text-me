@@ -1,3 +1,4 @@
+import { SettingTitle } from "@/types";
 import {
   Heart,
   Images,
@@ -10,14 +11,14 @@ import React, { Dispatch, JSX, SetStateAction } from "react";
 const AccountSettingList = ({
   setSelectedList,
 }: {
-  setSelectedList: Dispatch<SetStateAction<string | null>>;
+  setSelectedList: Dispatch<SetStateAction<SettingTitle | null>>;
 }) => {
   const SettingLinks: {
-    title: string;
+    title: SettingTitle;
     icon: JSX.Element;
   }[] = [
     {
-      title: "User Profile",
+      title: "User_Profile",
       icon: <Settings2 />,
     },
     {
@@ -25,7 +26,7 @@ const AccountSettingList = ({
       icon: <Images />,
     },
     {
-      title: "Liked Post",
+      title: "Liked_Post",
       icon: <Heart />,
     },
     {
@@ -33,7 +34,7 @@ const AccountSettingList = ({
       icon: <UserRoundPlus />,
     },
     {
-      title: "Change Password",
+      title: "Change_Password",
       icon: <LockKeyhole />,
     },
   ];

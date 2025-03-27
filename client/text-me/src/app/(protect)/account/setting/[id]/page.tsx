@@ -1,6 +1,6 @@
-import Setting from "@/components/Setting";
+import Setting from "@/components/settings/Setting";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import UserName from "@/components/UserName";
+import UserName from "@/components/Users/UserName";
 
 const AccountSetting = () => {
   return (

@@ -2,9 +2,9 @@
 
 import { checkLiked, getPostById, toggleLike } from "@/actions";
 import { JSX, useEffect, useState } from "react";
-import { useAuth } from "./provider/AuthContent";
 import { LikeReturnType, ToggleLikeData } from "@/types";
-import { useSocket } from "./provider/SocketContext";
+import { useAuth } from "@/components/provider/AuthContent";
+import { useSocket } from "@/components/provider/SocketContext";
 
 const LikeButton = ({ post_id }: { post_id: string }): JSX.Element => {
   const { isSignedIn, user } = useAuth();

@@ -1,7 +1,7 @@
 import { Dispatch, JSX, SetStateAction, useEffect, useState } from "react";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { AllConversationData, ConversationWithUser } from "@/types";
-import { useAuth } from "./provider/AuthContent";
+import { useAuth } from "../provider/AuthContent";
 import Link from "next/link";
 
 const ConversationList = ({

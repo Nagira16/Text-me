@@ -1,9 +1,9 @@
 import { Dispatch, JSX, SetStateAction } from "react";
-import { Input } from "./ui/input";
+import { Input } from "../../ui/input";
 import { Send } from "lucide-react";
 import { CommentData, CommentWithUser } from "@/types";
 import { createNewComment, getPostById } from "@/actions";
-import { useSocket } from "./provider/SocketContext";
+import { useSocket } from "../../provider/SocketContext";
 
 const CommentForm = ({
   post_id,

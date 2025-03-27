@@ -1,9 +1,9 @@
 "use client";
 
 import { JSX, useState } from "react";
-import { Input } from "./ui/input";
-import { Button } from "./ui/button";
-import { Avatar, AvatarFallback, AvatarImage } from "./ui/avatar";
+import { Input } from "../ui/input";
+import { Button } from "../ui/button";
+import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
 import { UserInfoData, UsersInfo } from "@/types";
 import Link from "next/link";
 

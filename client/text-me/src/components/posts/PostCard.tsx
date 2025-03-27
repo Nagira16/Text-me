@@ -1,11 +1,11 @@
 import React, { JSX } from "react";
-import { Card, CardFooter, CardHeader, CardTitle } from "./ui/card";
+import { Card, CardFooter, CardHeader, CardTitle } from "../ui/card";
 import { PostWithUser } from "@/types";
 import Image from "next/image";
-import LikeButton from "./LikeButton";
-import { Avatar, AvatarFallback, AvatarImage } from "./ui/avatar";
-import CommentDialog from "./CommentDialog";
+import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
+import CommentDialog from "./comments/CommentDialog";
 import Link from "next/link";
+import LikeButton from "./likes/LikeButton";
 
 const PostCard = ({ post }: { post: PostWithUser }): JSX.Element => {
   return (

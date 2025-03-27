@@ -3,8 +3,8 @@
 import { getCommentByPostId } from "@/actions";
 import { AllCommentData, CommentWithUser } from "@/types";
 import { Dispatch, JSX, SetStateAction, useEffect, useState } from "react";
-import { Avatar, AvatarFallback, AvatarImage } from "./ui/avatar";
-import { Skeleton } from "./ui/skeleton";
+import { Avatar, AvatarFallback, AvatarImage } from "../../ui/avatar";
+import { Skeleton } from "../../ui/skeleton";
 
 const CommentList = ({
   post_id,
