@@ -22,6 +22,7 @@ const SignUp = () => {
   const [username, setUsername] = useState<string>("");
   const [email, setEmail] = useState<string>("");
   const [password, setPassword] = useState<string>("");
+  const [confirmPassword, setConfirmPassword] = useState<string>("");
   const [profileImage, setProfileImage] = useState<File | null>(null);
   const router: AppRouterInstance = useRouter();
   const [isClient, setIsClient] = useState<boolean>(false);
@@ -36,6 +37,17 @@ const SignUp = () => {
   const prevStep = (): void => setStep((prev) => prev - 1);
 
   const signUpHandle = async () => {
+    if (password !== confirmPassword) {
+      Swal.fire({
+        text: "Password Does Not Match With Confirm Password",
+        icon: "warning",
+        position: "top-right",
+        toast: true,
+        timer: 3000,
+        showConfirmButton: false,
+      });
+    }
+
     setIsSaving(true);
 
     const { message, success }: FetchData = await register(
@@ -171,6 +183,22 @@ const SignUp = () => {
                     }
                     type="password"
                     placeholder="Password"
+                    minLength={8}
+                    required
+                  />
+                </div>
+                <div className="space-y-1">
+                  <Label htmlFor="password" className="text-xs">
+                    Confirm Password
+                  </Label>
+                  <Input
+                    className="rounded-3xl"
+                    value={confirmPassword}
+                    onChange={(e: ChangeEvent<HTMLInputElement>) =>
+                      setConfirmPassword(e.target.value)
+                    }
+                    type="password"
+                    placeholder="Confirm Password"
                     minLength={8}
                     required
                   />

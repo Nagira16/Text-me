@@ -32,7 +32,6 @@ export type UserUpdateInput = {
   first_name?: string;
   last_name?: string;
   username?: string;
-  profile_image?: string;
 };
 
 export type PostInput = {

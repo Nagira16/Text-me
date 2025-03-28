@@ -177,3 +177,47 @@ export const toggleFollow = async (
 
   return data;
 };
+
+export const updateUser = async (
+  formData: FormData,
+  user_id: string
+): Promise<UserData> => {
+  const updateData = generateUpdateUserData(formData);
+  if (!updateData) {
+    return { success: false, message: "No Data To Update", result: null };
+  }
+
+  const cookie: RequestCookie | undefined = (await cookies()).get("token");
+
+  const res: Response = await fetch(`http://localhost:5001/user/${user_id}`, {
+    method: "PUT",
+    body: updateData,
+    headers: {
+      Authorization: `Bearer ${cookie?.value}`,
+    },
+  });
+
+  const data: UserData = await res.json();
+
+  return data;
+};
+
+const generateUpdateUserData = (formData: FormData): FormData | null => {
+  const username = formData.get("username") as string;
+  const profile_image = formData.get("profile_image") as File | null;
+  const firstName = formData.get("firstName") as string;
+  const lastName = formData.get("lastName") as string;
+
+  if (!username && profile_image?.size === 0 && !firstName && !lastName)
+    return null;
+
+  const data = new FormData();
+  if (username) data.append("username", username);
+  if (profile_image && profile_image.size > 0) {
+    data.append("profile_image", profile_image);
+  }
+  if (firstName) data.append("firstName", firstName);
+  if (lastName) data.append("lastName", lastName);
+
+  return data;
+};

@@ -2,18 +2,27 @@
 
 import { useParams, useRouter } from "next/navigation";
 import { useAuth } from "../provider/AuthContent";
-import { AppRouterInstance } from "next/dist/shared/lib/app-router-context.shared-runtime";
+import { JSX, useEffect, useState } from "react";
 
-const UserName = () => {
+const UserName = (): JSX.Element | null => {
   const { id }: { id: string } = useParams();
-  const router: AppRouterInstance = useRouter();
+  const router = useRouter();
   const { user } = useAuth();
+  const [username, setUsername] = useState<string | null>(null);
 
-  if (id !== user?.id) {
-    router.push("/");
-  }
+  useEffect(() => {
+    if (!user) return;
 
-  return <strong>{user?.username}</strong>;
+    if (id !== user.id) {
+      router.push("/");
+    } else {
+      setUsername(user.username);
+    }
+  }, [id, user, router]);
+
+  if (!username) return null;
+
+  return <strong>{username}</strong>;
 };
 
 export default UserName;

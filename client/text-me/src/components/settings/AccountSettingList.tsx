@@ -39,17 +39,18 @@ const AccountSettingList = ({
     },
   ];
   return (
-    <ul className="ml-10">
-      {SettingLinks.map((link) => (
-        <li
-          className="flex items-center gap-2 hover:bg-gray-500 p-3 text-lg"
+    <aside className="w-1/4 p-4 border-r ml-10">
+      {SettingLinks.map((link, i) => (
+        <div
+          key={i}
+          className="flex items-center gap-2 hover:bg-gray-500 p-3 text-lg cursor-pointer"
           onClick={() => setSelectedList(link.title)}
         >
           {link.icon}
           {link.title}
-        </li>
+        </div>
       ))}
-    </ul>
+    </aside>
   );
 };
 

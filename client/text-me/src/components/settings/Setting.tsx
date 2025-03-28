@@ -3,7 +3,7 @@
 import { useState } from "react";
 import AccountSettingList from "./AccountSettingList";
 import { SettingTitle } from "@/types";
-import UserProfileSetting from "./UserProfileSetting";
+import ProfileSetting from "./ProfileSetting";
 import PostSetting from "./PostSetting";
 import LikedSetting from "./LikedSetting";
 import FollowSetting from "./FollowSetting";
@@ -18,7 +18,7 @@ const Setting = () => {
       <main className="flex-1 flex flex-col p-4">
         {selectedList ? (
           <>
-            {selectedList === "User_Profile" && <UserProfileSetting />}
+            {selectedList === "User_Profile" && <ProfileSetting />}
             {selectedList === "Post" && <PostSetting />}
             {selectedList === "Liked_Post" && <LikedSetting />}
             {selectedList === "Follow" && <FollowSetting />}

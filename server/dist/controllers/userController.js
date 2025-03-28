@@ -144,7 +144,8 @@ exports.queryUser = queryUser;
 const updateUserById = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     var _b;
     try {
-        const { first_name, last_name, profile_image, username } = req.body;
+        const { first_name, last_name, username } = req.body;
+        const image = req.file;
         const user_id = (_b = req.user) === null || _b === void 0 ? void 0 : _b.id;
         if (!user_id) {
             res.status(401).json({
@@ -183,12 +184,15 @@ const updateUserById = (req, res) => __awaiter(void 0, void 0, void 0, function*
                 return;
             }
         }
+        const image_url = image
+            ? `http://localhost:5001/uploads/${image.filename}`
+            : user.profile_image;
         const updatedUser = yield prisma_1.default.user.update({
             where: { id: user.id },
             data: {
                 first_name: (first_name === null || first_name === void 0 ? void 0 : first_name.trim()) || user.first_name,
                 last_name: (last_name === null || last_name === void 0 ? void 0 : last_name.trim()) || user.last_name,
-                profile_image: (profile_image === null || profile_image === void 0 ? void 0 : profile_image.trim()) || user.profile_image,
+                profile_image: image_url,
                 username: (username === null || username === void 0 ? void 0 : username.trim()) || user.username,
             },
             omit: {
