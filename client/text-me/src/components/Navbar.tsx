@@ -70,7 +70,10 @@ const Navbar = (): JSX.Element | null => {
     <nav className="fixed top-0 left-0 flex flex-col h-full w-16 items-center bg-black border-r border-white">
       <ul className="flex flex-col gap-10 items-center mt-16">
         {NavLinks.map((link, i) => (
-          <li key={i} className="text-white relative">
+          <li
+            key={i}
+            className="text-white relative transition-transform duration-300 hover:scale-[120%] "
+          >
             {link.title === "Notification" && notifications.length > 0 && (
               <span className="text-xs absolute -right-[3px] -top-2 bg-red-500 rounded-full px-[3px]">
                 {notifications.length}

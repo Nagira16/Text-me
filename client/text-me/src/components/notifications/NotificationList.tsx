@@ -8,7 +8,7 @@ const NotificationList = (): JSX.Element => {
   const notifications = useNotificationStore((state) => state.notifications);
 
   return (
-    <div className="p-6 min-w-screen ml-16">
+    <section className="p-6 min-w-screen ml-16">
       <h2 className="text-2xl font-bold mb-4">Notifications</h2>
       {notifications.length === 0 ? (
         <p className="text-lg text-gray-500">No new notifications</p>
@@ -19,7 +19,7 @@ const NotificationList = (): JSX.Element => {
               key={`${notification.username}-${notification.type}`}
               className=" p-4 rounded-lg shadow-md hover:bg-gray-500 transition w-full"
             >
-              <div className="flex items-center">
+              <article className="flex items-center">
                 {notification.type === "Comment" && (
                   <>
                     <Image
@@ -57,12 +57,12 @@ const NotificationList = (): JSX.Element => {
                     </div>
                   </>
                 )}
-              </div>
+              </article>
             </li>
           ))}
         </ul>
       )}
-    </div>
+    </section>
   );
 };
 

@@ -13,7 +13,7 @@ interface SmallPostCardProps {
 
 const SmallPostCard = ({ post }: { post: SmallPostCardProps }) => {
   return (
-    <Card className="p-4 shadow-md w-full border-black dark:border-white">
+    <Card className="p-4 shadow-md border-black dark:border-white size-[360px]">
       {post.photo && (
         <div className="relative w-full h-64 aspect-[4/3]">
           <Image

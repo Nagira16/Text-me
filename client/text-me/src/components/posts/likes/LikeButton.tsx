@@ -9,12 +9,14 @@ import { useSocket } from "@/components/provider/SocketContext";
 const LikeButton = ({ post_id }: { post_id: string }): JSX.Element => {
   const { isSignedIn, user } = useAuth();
   const [isLoading, setIsLoading] = useState<boolean>(true);
+  const [isAnimating, setIsAnimating] = useState<boolean>(false);
   const [isLiked, setIsLiked] = useState<boolean>(false);
   const socket = useSocket();
 
   const handleLike = async (): Promise<void> => {
     if (!socket) return;
-
+    setIsAnimating(true);
+    setTimeout(() => setIsAnimating(false), 1000);
     const { liked }: ToggleLikeData = await toggleLike(post_id);
 
     setIsLiked(liked);
@@ -45,7 +47,12 @@ const LikeButton = ({ post_id }: { post_id: string }): JSX.Element => {
   return (
     <>
       {isSignedIn && (
-        <button onClick={handleLike} className="text-2xl">
+        <button
+          onClick={handleLike}
+          className={`text-2xl cursor-pointer transition-transform duration-1000 ${
+            isAnimating && "animate-ping"
+          }`}
+        >
           {isLiked ? "❤️" : "🤍"}
         </button>
       )}

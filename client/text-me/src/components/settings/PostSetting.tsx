@@ -39,7 +39,7 @@ const PostSetting = () => {
         <p className="text-3xl font-semibold">PostSetting</p>
         <section className="p-10 flex justify-center items-center flex-wrap ">
           {Array.from({ length: 10 }, (_, i) => (
-            <Skeleton key={i} className="m-5 w-[370px] h-[350px]" />
+            <Skeleton key={i} className="m-5 size-[360px]" />
           ))}
         </section>
       </div>

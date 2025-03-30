@@ -103,7 +103,9 @@ const ProfileSetting = () => {
 
         <Button
           disabled={isSaving}
-          className={`${isSaving ? "bg-gray-500" : "dark:bg-white"}`}
+          className={`${
+            isSaving && "bg-gray-500"
+          } dark:bg-white bg-black dark:hover:bg-gray-300 hover:bg-gray-500`}
         >
           Save Change
         </Button>

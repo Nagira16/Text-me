@@ -10,11 +10,9 @@ import Link from "next/link";
 const UserSearch = (): JSX.Element => {
   const [searchQuery, setSearchQuery] = useState<string>("");
   const [searchResults, setSearchResults] = useState<UsersInfo[]>([]);
-  const [isSaving, setIsSaving] = useState<boolean>(false);
 
   const handleSearch = async () => {
     if (!searchQuery.trim()) return;
-    setIsSaving(true);
 
     const res = await fetch(
       `http://localhost:5001/user/search?q=${searchQuery}`,
@@ -27,7 +25,6 @@ const UserSearch = (): JSX.Element => {
 
     if (success && result) {
       setSearchResults(result);
-      setIsSaving(false);
     }
   };
 
@@ -42,8 +39,7 @@ const UserSearch = (): JSX.Element => {
         />
         <Button
           onClick={handleSearch}
-          className={`${isSaving ? "bg-gray-500" : "dark:bg-white"}`}
-          disabled={isSaving}
+          className="dark:bg-white bg-black dark:hover:bg-gray-300 hover:bg-gray-500"
         >
           Search
         </Button>

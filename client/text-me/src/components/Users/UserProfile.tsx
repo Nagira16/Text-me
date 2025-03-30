@@ -6,7 +6,6 @@ import { useParams } from "next/navigation";
 import { JSX, useEffect, useState } from "react";
 import { Card, CardHeader, CardTitle, CardContent } from "../ui/card";
 import { Avatar, AvatarImage, AvatarFallback } from "../ui/avatar";
-import Image from "next/image";
 import { useAuth } from "../provider/AuthContent";
 import FollowButton from "../posts/follows/FollowButton";
 import { useSocket } from "../provider/SocketContext";
@@ -81,10 +80,10 @@ const UserProfile = (): JSX.Element => {
 
   return (
     <div className="min-h-screen flex flex-col items-center justify-center my-10">
-      <Card className="w-full max-w-screen-md p-6 mb-6">
+      <Card className="w-full max-w-screen-md p-6 mb-6 border-black dark:border-white">
         <CardHeader>
           <CardTitle className="flex items-center gap-4">
-            <Avatar className="w-16 h-16 border-2 border-white p-1">
+            <Avatar className="w-16 h-16 border-2 border-white">
               <AvatarImage
                 src={selectedUser.profile_image || "/default-avatar.png"}
               />

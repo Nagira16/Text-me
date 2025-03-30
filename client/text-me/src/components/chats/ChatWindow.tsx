@@ -94,8 +94,11 @@ const ChatWindow = ({
           onChange={(e) => setNewMessage(e.target.value)}
           placeholder="Message..."
         />
-        <Button onClick={sendMessage}>
-          <Send className="w-5 h-5" />
+        <Button
+          onClick={sendMessage}
+          className="grid place-items-center text-white bg-blue-500 hover:bg-blue-700"
+        >
+          <Send className="size-5" />
         </Button>
       </div>
     </Card>
