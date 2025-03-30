@@ -46,8 +46,19 @@ export const getUserById = async (
   return data;
 };
 
-export const getAllPost = async (): Promise<AllPostData> => {
+export const getAllPosts = async (): Promise<AllPostData> => {
   const res: Response = await fetch("http://localhost:5001/post");
+  const data: AllPostData = await res.json();
+
+  return data;
+};
+
+export const getAllPostsByUserId = async (
+  user_id: string
+): Promise<AllPostData> => {
+  const res: Response = await fetch(
+    `http://localhost:5001/post/user/${user_id}`
+  );
   const data: AllPostData = await res.json();
 
   return data;
@@ -55,6 +66,40 @@ export const getAllPost = async (): Promise<AllPostData> => {
 
 export const getPostById = async (post_id: string): Promise<PostData> => {
   const res: Response = await fetch(`http://localhost:5001/post/${post_id}`);
+  const data: PostData = await res.json();
+
+  return data;
+};
+
+export const updatePostById = async (
+  post_id: string,
+  formData: FormData
+): Promise<PostData> => {
+  const content = formData.get("content") as string;
+
+  const cookie: RequestCookie | undefined = (await cookies()).get("token");
+  const res: Response = await fetch(`http://localhost:5001/post/${post_id}`, {
+    method: "PUT",
+    headers: {
+      Authorization: `Bearer ${cookie?.value}`,
+      "Content-type": "application/json",
+    },
+    body: JSON.stringify({ content }),
+  });
+  const data: PostData = await res.json();
+
+  return data;
+};
+
+export const deletePostById = async (post_id: string): Promise<PostData> => {
+  const cookie: RequestCookie | undefined = (await cookies()).get("token");
+  const res: Response = await fetch(`http://localhost:5001/post/${post_id}`, {
+    method: "DELETE",
+    headers: {
+      Authorization: `Bearer ${cookie?.value}`,
+      "Content-type": "application/json",
+    },
+  });
   const data: PostData = await res.json();
 
   return data;

@@ -12,7 +12,7 @@ import PasswordSetting from "./PasswordSetting";
 const Setting = () => {
   const [selectedList, setSelectedList] = useState<SettingTitle | null>(null);
   return (
-    <div className="flex h-screen w-full">
+    <div className="flex  w-full">
       <AccountSettingList setSelectedList={setSelectedList} />
 
       <main className="flex-1 flex flex-col p-4">

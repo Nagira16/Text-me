@@ -12,6 +12,7 @@ import FollowButton from "../posts/follows/FollowButton";
 import { useSocket } from "../provider/SocketContext";
 import Link from "next/link";
 import { Button } from "../ui/button";
+import SmallPostCard from "../posts/SmallPostCard";
 
 const UserProfile = (): JSX.Element => {
   const { user } = useAuth();
@@ -112,26 +113,7 @@ const UserProfile = (): JSX.Element => {
         {selectedUser.post.length > 0 ? (
           selectedUser.post.map((post) => (
             <Link href={`/post/${post.id}`} key={post.id}>
-              <Card className="p-4 shadow-md w-full">
-                {post.photo && (
-                  <div className="relative w-full h-64 aspect-[4/3]">
-                    <Image
-                      src={post.photo}
-                      alt="Post"
-                      layout="fill"
-                      objectFit="cover"
-                      className="rounded-lg"
-                    />
-                  </div>
-                )}
-                <CardContent>
-                  <p className="mt-2 text-gray-700">{post.content}</p>
-                  <p className="text-sm text-gray-500">
-                    {new Date(post.created_at).toLocaleDateString()} ・{" "}
-                    {post.likes_count} Likes
-                  </p>
-                </CardContent>
-              </Card>
+              <SmallPostCard post={post} />
             </Link>
           ))
         ) : (

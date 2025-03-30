@@ -1,7 +1,8 @@
 import { Request, Response } from "express";
 import prisma from "../lib/prisma";
-import { PostInput, PostWithUser } from "../types";
+import { PostInput, PostWithUser, UserWithoutPassword } from "../types";
 import { Follow } from "@prisma/client";
+import { findUserById } from "./userController";
 
 export const getAllPosts = async (_: Request, res: Response): Promise<void> => {
   try {
@@ -28,6 +29,54 @@ export const getAllPosts = async (_: Request, res: Response): Promise<void> => {
     res.status(500).json({
       success: false,
       message: "Server Error: Get All Posts",
+      result: null,
+    });
+  }
+};
+
+export const getAllPostsByUserId = async (
+  req: Request,
+  res: Response
+): Promise<void> => {
+  try {
+    const user_id: string = req.params.userId;
+
+    const user: UserWithoutPassword | null = await findUserById(user_id);
+    if (!user) {
+      res.status(404).json({
+        success: false,
+        message: "User Not Found",
+        result: null,
+      });
+      return;
+    }
+
+    const post: PostWithUser[] = await prisma.post.findMany({
+      where: {
+        author_id: user.id,
+      },
+      include: {
+        author: {
+          select: {
+            id: true,
+            username: true,
+            profile_image: true,
+          },
+        },
+      },
+      orderBy: { created_at: "desc" },
+    });
+
+    res.status(200).json({
+      success: true,
+      message: "Post Found Successfully",
+      result: post,
+    });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({
+      success: false,
+      message: "Server Error: Get All Posts By User Id",
       result: null,
     });
   }
@@ -185,7 +234,7 @@ export const updatePostById = async (
 ): Promise<void> => {
   try {
     const post_id: string = req.params.id;
-    const { content }: { content?: string } = req.body;
+    const { content }: { content: string } = req.body;
 
     const post: PostWithUser | null = await findPostById(post_id);
     if (!post) {
@@ -202,7 +251,7 @@ export const updatePostById = async (
         id: post.id,
       },
       data: {
-        content: content || post.content,
+        content: content,
       },
       include: {
         author: {
@@ -246,6 +295,10 @@ export const deletePostById = async (
       });
       return;
     }
+
+    await prisma.like.deleteMany({ where: { post_id: post.id } });
+
+    await prisma.comment.deleteMany({ where: { post_id: post.id } });
 
     const deletedPost: PostWithUser = await prisma.post.delete({
       where: {

@@ -7,8 +7,10 @@ import Image from "next/image";
 import { Button } from "../ui/button";
 import { updateUser } from "@/actions";
 import Swal from "sweetalert2";
+import { useState } from "react";
 
 const ProfileSetting = () => {
+  const [isSaving, setIsSaving] = useState<boolean>(false);
   const { user } = useAuth();
   if (!user) {
     return (
@@ -19,6 +21,7 @@ const ProfileSetting = () => {
   }
 
   const handleForm = async (formData: FormData) => {
+    setIsSaving(true);
     const { success, message } = await updateUser(formData, user.id);
 
     if (success) {
@@ -40,6 +43,8 @@ const ProfileSetting = () => {
         showConfirmButton: false,
       });
     }
+
+    setIsSaving(false);
   };
 
   return (
@@ -96,7 +101,12 @@ const ProfileSetting = () => {
           </div>
         </section>
 
-        <Button>Save Change</Button>
+        <Button
+          disabled={isSaving}
+          className={`${isSaving ? "bg-gray-500" : "dark:bg-white"}`}
+        >
+          Save Change
+        </Button>
       </form>
     </div>
   );

@@ -5,6 +5,7 @@ import {
   createNewPost,
   deletePostById,
   getAllPosts,
+  getAllPostsByUserId,
   getFollowingUsersAllPosts,
   getPostById,
   updatePostById,
@@ -30,10 +31,11 @@ const upload: Multer = multer({
 });
 
 postRouter.get("/", getAllPosts);
+postRouter.get("/user/:userId", getAllPostsByUserId);
 postRouter.get("/follow", authMiddleware, getFollowingUsersAllPosts);
 postRouter.post("/", authMiddleware, upload.single("image"), createNewPost);
 postRouter.get("/:id", getPostById);
 postRouter.put("/:id", authMiddleware, updatePostById);
-postRouter.put("/:id", authMiddleware, deletePostById);
+postRouter.delete("/:id", authMiddleware, deletePostById);
 
 export default postRouter;
