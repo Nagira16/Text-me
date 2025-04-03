@@ -7,10 +7,10 @@ import { PostData } from "@/types";
 import { AppRouterInstance } from "next/dist/shared/lib/app-router-context.shared-runtime";
 import Form from "next/form";
 import { useRouter } from "next/navigation";
-import React, { useState } from "react";
+import React, { JSX, useState } from "react";
 import Swal from "sweetalert2";
 
-const PostForm = () => {
+const PostForm = (): JSX.Element => {
   const router: AppRouterInstance = useRouter();
   const [isSaving, setIsSaving] = useState<boolean>(false);
 

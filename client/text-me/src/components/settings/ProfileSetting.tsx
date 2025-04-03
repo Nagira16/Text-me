@@ -7,9 +7,9 @@ import Image from "next/image";
 import { Button } from "../ui/button";
 import { updateUser } from "@/actions";
 import Swal from "sweetalert2";
-import { useState } from "react";
+import { JSX, useState } from "react";
 
-const ProfileSetting = () => {
+const ProfileSetting = (): JSX.Element => {
   const [isSaving, setIsSaving] = useState<boolean>(false);
   const { user } = useAuth();
   if (!user) {
@@ -20,7 +20,7 @@ const ProfileSetting = () => {
     );
   }
 
-  const handleForm = async (formData: FormData) => {
+  const handleForm = async (formData: FormData): Promise<void> => {
     setIsSaving(true);
     const { success, message } = await updateUser(formData, user.id);
 
@@ -105,7 +105,7 @@ const ProfileSetting = () => {
           disabled={isSaving}
           className={`${
             isSaving && "bg-gray-500"
-          } dark:bg-white bg-black dark:hover:bg-gray-300 hover:bg-gray-500`}
+          } dark:bg-white bg-black dark:hover:bg-gray-300 hover:bg-gray-500 rounded-2xl`}
         >
           Save Change
         </Button>

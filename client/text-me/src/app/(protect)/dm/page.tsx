@@ -1,7 +1,7 @@
 import Chat from "@/components/chats/Chat";
-import React from "react";
+import React, { JSX } from "react";
 
-const DirectMessage = () => {
+const DirectMessage = (): JSX.Element => {
   return (
     <div className="min-h-screen min-w-screen grid place-items-center">
       <Chat />

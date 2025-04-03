@@ -1,9 +1,9 @@
-import React from "react";
+import { JSX } from "react";
 import { Label } from "../ui/label";
 import { Input } from "../ui/input";
 import { Button } from "../ui/button";
 
-const PasswordSetting = () => {
+const PasswordSetting = (): JSX.Element => {
   const handleForm = async (formData: FormData) => {};
 
   return (
@@ -25,7 +25,9 @@ const PasswordSetting = () => {
           </div>
         </section>
 
-        <Button>Save Change</Button>
+        <Button className="dark:bg-white bg-black dark:hover:bg-gray-300 hover:bg-gray-500 rounded-2xl">
+          Save Change
+        </Button>
       </form>
     </div>
   );

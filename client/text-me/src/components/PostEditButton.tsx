@@ -1,5 +1,5 @@
 import { PostWithUser } from "@/types";
-import { Dispatch, SetStateAction, useState } from "react";
+import { Dispatch, JSX, SetStateAction, useState } from "react";
 import {
   Dialog,
   DialogContent,
@@ -20,10 +20,13 @@ type PostEditButtonProps = {
   setPosts: Dispatch<SetStateAction<PostWithUser[]>>;
 };
 
-const PostEditButton = ({ post_id, setPosts }: PostEditButtonProps) => {
+const PostEditButton = ({
+  post_id,
+  setPosts,
+}: PostEditButtonProps): JSX.Element => {
   const [isSaving, setIsSaving] = useState<boolean>(false);
 
-  const handleEdit = async (formData: FormData) => {
+  const handleEdit = async (formData: FormData): Promise<void> => {
     setIsSaving(true);
     const { success, result, message } = await updatePostById(
       post_id,
@@ -60,7 +63,7 @@ const PostEditButton = ({ post_id, setPosts }: PostEditButtonProps) => {
 
   return (
     <Dialog>
-      <DialogTrigger>
+      <DialogTrigger asChild>
         <Button
           className="absolute top-7 right-20 z-10 text-white bg-blue-500 hover:bg-blue-700"
           type="button"

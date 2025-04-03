@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { JSX, useEffect, useState } from "react";
 import { useAuth } from "../provider/AuthContent";
 import { getAllPostsByUserId } from "@/actions";
 import { PostWithUser } from "@/types";
@@ -9,7 +9,7 @@ import PostEditButton from "../PostEditButton";
 import SmallPostCard from "../posts/SmallPostCard";
 import { Skeleton } from "../ui/skeleton";
 
-const PostSetting = () => {
+const PostSetting = (): JSX.Element => {
   const [posts, setPosts] = useState<PostWithUser[]>([]);
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const { user } = useAuth();
@@ -23,7 +23,7 @@ const PostSetting = () => {
   }
 
   useEffect(() => {
-    const fetchAllPost = async () => {
+    const fetchAllPost = async (): Promise<void> => {
       const { success, result } = await getAllPostsByUserId(user.id);
       if (success && result) {
         setIsLoading(false);
@@ -45,6 +45,7 @@ const PostSetting = () => {
       </div>
     );
   }
+
   return (
     <div className="flex flex-col justify-center items-center">
       <p className="text-3xl font-semibold">PostSetting</p>

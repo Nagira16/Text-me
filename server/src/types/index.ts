@@ -50,9 +50,10 @@ export type UserInfo = { id: string; username: string; profile_image: string };
 type PostInfo = {
   id: string;
   content: string | null;
-  created_at: Date;
   photo: string;
   likes_count: number;
+  created_at: Date;
+  updated_at: Date;
 };
 
 export type CommentWithUser = Comment & {

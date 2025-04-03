@@ -2,6 +2,7 @@
 
 import {
   AllCommentData,
+  AllLikeData,
   AllPostData,
   CheckFollowData,
   CommentData,
@@ -263,6 +264,20 @@ const generateUpdateUserData = (formData: FormData): FormData | null => {
   }
   if (firstName) data.append("firstName", firstName);
   if (lastName) data.append("lastName", lastName);
+
+  return data;
+};
+
+export const getAllLikedPost = async (): Promise<AllLikeData> => {
+  const cookie: RequestCookie | undefined = (await cookies()).get("token");
+  const res: Response = await fetch("http://localhost:5001/like", {
+    method: "GET",
+    headers: {
+      Authorization: `Bearer ${cookie?.value}`,
+      "Content-Type": "application/json",
+    },
+  });
+  const data: AllLikeData = await res.json();
 
   return data;
 };

@@ -1,6 +1,6 @@
-import React from "react";
+import React, { JSX } from "react";
 
-const FollowSetting = () => {
+const FollowSetting = (): JSX.Element => {
   return <div>FollowSetting</div>;
 };
 

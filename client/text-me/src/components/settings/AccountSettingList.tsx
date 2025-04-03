@@ -12,7 +12,7 @@ const AccountSettingList = ({
   setSelectedList,
 }: {
   setSelectedList: Dispatch<SetStateAction<SettingTitle | null>>;
-}) => {
+}): JSX.Element => {
   const SettingLinks: {
     title: SettingTitle;
     icon: JSX.Element;

@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { JSX, useState } from "react";
 import AccountSettingList from "./AccountSettingList";
 import { SettingTitle } from "@/types";
 import ProfileSetting from "./ProfileSetting";
@@ -9,7 +9,7 @@ import LikedSetting from "./LikedSetting";
 import FollowSetting from "./FollowSetting";
 import PasswordSetting from "./PasswordSetting";
 
-const Setting = () => {
+const Setting = (): JSX.Element => {
   const [selectedList, setSelectedList] = useState<SettingTitle | null>(null);
   return (
     <div className="flex  w-full">

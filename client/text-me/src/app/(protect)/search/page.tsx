@@ -1,7 +1,7 @@
 import UserSearch from "@/components/Users/UserSearch";
-import React from "react";
+import React, { JSX } from "react";
 
-const Search = () => {
+const Search = (): JSX.Element => {
   return (
     <div className="min-h-screen min-w-screen grid place-items-center">
       <UserSearch />

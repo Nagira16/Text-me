@@ -56,12 +56,13 @@ type Post = {
   likes_count: number;
 };
 
-type PostInfo = {
+export type PostInfo = {
   id: string;
   content: string | null;
-  created_at: Date;
   photo: string;
   likes_count: number;
+  created_at: Date;
+  updated_at: Date;
 };
 
 export type PostWithUser = Post & {
@@ -252,3 +253,7 @@ export type SettingTitle =
   | "Liked_Post"
   | "Follow"
   | "Change_Password";
+
+export type AllLikeData = FetchData & {
+  result: LikeWithPost[] | null;
+};

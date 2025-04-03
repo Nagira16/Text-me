@@ -1,4 +1,4 @@
-import React, { Dispatch, SetStateAction, useState } from "react";
+import React, { Dispatch, JSX, SetStateAction, useState } from "react";
 import { Button } from "./ui/button";
 import Swal from "sweetalert2";
 import { Trash2 } from "lucide-react";
@@ -10,10 +10,13 @@ type PostDeleteButtonProps = {
   setPosts: Dispatch<SetStateAction<PostWithUser[]>>;
 };
 
-const PostDeleteButton = ({ post_id, setPosts }: PostDeleteButtonProps) => {
+const PostDeleteButton = ({
+  post_id,
+  setPosts,
+}: PostDeleteButtonProps): JSX.Element => {
   const [isSaving, setIsSaving] = useState<boolean>(false);
 
-  const handleDelete = async () => {
+  const handleDelete = async (): Promise<void> => {
     setIsSaving(true);
     const result = await Swal.fire({
       title: "Are you sure?",
