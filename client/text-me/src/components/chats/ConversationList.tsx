@@ -46,7 +46,9 @@ const ConversationList = ({
               className="border border-white rounded-full p-1"
             >
               <Avatar className="w-10 h-10">
-                <AvatarImage src={chatPartner.profile_image} />
+                <AvatarImage
+                  src={chatPartner.profile_image || "/user-icon.jpeg"}
+                />
                 <AvatarFallback>{chatPartner.username[0]}</AvatarFallback>
               </Avatar>
             </Link>

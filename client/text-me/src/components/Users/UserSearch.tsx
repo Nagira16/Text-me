@@ -11,7 +11,7 @@ const UserSearch = (): JSX.Element => {
   const [searchQuery, setSearchQuery] = useState<string>("");
   const [searchResults, setSearchResults] = useState<UsersInfo[]>([]);
 
-  const handleSearch = async () => {
+  const handleSearch = async (): Promise<void> => {
     if (!searchQuery.trim()) return;
 
     const res = await fetch(
@@ -51,7 +51,7 @@ const UserSearch = (): JSX.Element => {
             <Link key={user.id} href={`/account/${user.id}`} passHref>
               <li className="relative flex items-center gap-2 p-2 hover:bg-gray-400 rounded-xl cursor-pointer mb-5">
                 <Avatar className="w-10 h-10 border-2 border-white">
-                  <AvatarImage src={user.profile_image} />
+                  <AvatarImage src={user.profile_image || "/user-icon.jpeg"} />
                   <AvatarFallback>User</AvatarFallback>
                 </Avatar>
 

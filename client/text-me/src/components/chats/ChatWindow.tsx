@@ -14,7 +14,7 @@ const ChatWindow = ({
   conversationId: string;
 }): JSX.Element => {
   const [messages, setMessages] = useState<MessageWithUser[]>([]);
-  const [newMessage, setNewMessage] = useState("");
+  const [newMessage, setNewMessage] = useState<string>("");
   const { user } = useAuth();
   const socket = useSocket();
 

@@ -1,5 +1,5 @@
 import { checkFollowing, toggleFollow } from "@/actions";
-import React, { JSX, useEffect, useState } from "react";
+import { JSX, useEffect, useState } from "react";
 import { ToggleFollowData } from "@/types";
 import { useAuth } from "@/components/provider/AuthContent";
 import { useSocket } from "@/components/provider/SocketContext";
@@ -12,7 +12,7 @@ const FollowButton = ({ user_id }: { user_id: string }): JSX.Element => {
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [isFollowing, setIsFollowing] = useState<boolean>(false);
 
-  const handleFollow = async () => {
+  const handleFollow = async (): Promise<void> => {
     const { followed }: ToggleFollowData = await toggleFollow(user_id);
 
     setIsFollowing(followed);
@@ -26,7 +26,7 @@ const FollowButton = ({ user_id }: { user_id: string }): JSX.Element => {
   };
 
   useEffect(() => {
-    const fetchFollow = async () => {
+    const fetchFollow = async (): Promise<void> => {
       const result: boolean = await checkFollowing(user_id);
       setIsLoading(false);
       setIsFollowing(result);

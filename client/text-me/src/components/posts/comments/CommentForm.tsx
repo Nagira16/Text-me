@@ -17,7 +17,7 @@ const CommentForm = ({
   const socket = useSocket();
   const { isSignedIn } = useAuth();
 
-  const handlePostComment = async (formData: FormData) => {
+  const handlePostComment = async (formData: FormData): Promise<void> => {
     if (!socket) return;
 
     const content = formData.get("content") as string;

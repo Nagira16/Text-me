@@ -6,7 +6,8 @@ import {
   AllPostData,
   CheckFollowData,
   CommentData,
-  FollowData,
+  FollowerData,
+  FollowingData,
   LikeReturnType,
   PostData,
   ToggleFollowData,
@@ -180,7 +181,21 @@ export const createNewComment = async (
   return data;
 };
 
-export const getAllFollowing = async (): Promise<FollowData> => {
+export const getAllFollower = async (): Promise<FollowerData> => {
+  const cookie: RequestCookie | undefined = (await cookies()).get("token");
+  const res: Response = await fetch("http://localhost:5001/follow/follower", {
+    method: "GET",
+    headers: {
+      Authorization: `Bearer ${cookie?.value}`,
+      "Content-Type": "application/json",
+    },
+  });
+  const data: FollowerData = await res.json();
+
+  return data;
+};
+
+export const getAllFollowing = async (): Promise<FollowingData> => {
   const cookie: RequestCookie | undefined = (await cookies()).get("token");
   const res: Response = await fetch(`http://localhost:5001/follow/following`, {
     method: "GET",
@@ -189,7 +204,7 @@ export const getAllFollowing = async (): Promise<FollowData> => {
       "Content-Type": "application/json",
     },
   });
-  const data: FollowData = await res.json();
+  const data: FollowingData = await res.json();
 
   return data;
 };

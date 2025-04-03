@@ -21,7 +21,7 @@ const CommentList = ({
   const [isLoading, setIsLoading] = useState<boolean>(true);
 
   useEffect(() => {
-    const fetchAllComments = async () => {
+    const fetchAllComments = async (): Promise<void> => {
       const { success, result }: AllCommentData = await getCommentByPostId(
         post_id
       );
@@ -66,7 +66,9 @@ const CommentList = ({
               <div className="flex items-center gap-4">
                 <div className="flex items-center gap-2">
                   <Avatar className="w-7 h-7 border border-white">
-                    <AvatarImage src={comment.user.profile_image} />
+                    <AvatarImage
+                      src={comment.user.profile_image || "/user-icon.jpeg"}
+                    />
                     <AvatarFallback>User</AvatarFallback>
                   </Avatar>
                   <p className="font-semibold text-sm">

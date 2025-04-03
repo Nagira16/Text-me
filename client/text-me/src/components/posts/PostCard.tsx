@@ -14,7 +14,9 @@ const PostCard = ({ post }: { post: PostWithUser }): JSX.Element => {
         <CardTitle className="flex items-center gap-5 text-lg mb-5">
           <Link href={`account/${post.author_id}`}>
             <Avatar className="w-10 h-10 border-2 border-white">
-              <AvatarImage src={post.author.profile_image} />
+              <AvatarImage
+                src={post.author.profile_image || "/user-icon.jpeg"}
+              />
               <AvatarFallback>User</AvatarFallback>
             </Avatar>
           </Link>

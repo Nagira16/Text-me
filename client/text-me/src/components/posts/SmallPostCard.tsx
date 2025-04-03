@@ -1,4 +1,4 @@
-import React from "react";
+import React, { JSX } from "react";
 import { Card, CardContent } from "../ui/card";
 import Image from "next/image";
 
@@ -11,7 +11,7 @@ interface SmallPostCardProps {
   likes_count: number;
 }
 
-const SmallPostCard = ({ post }: { post: SmallPostCardProps }) => {
+const SmallPostCard = ({ post }: { post: SmallPostCardProps }): JSX.Element => {
   return (
     <Card className="p-4 shadow-md border-black dark:border-white size-[360px]">
       {post.photo && (

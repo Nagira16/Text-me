@@ -38,7 +38,7 @@ type User = {
 
 export type UserWithoutPassword = Omit<User, "password">;
 
-type UserInfo = { id: string; username: string; profile_image: string };
+export type UserInfo = { id: string; username: string; profile_image: string };
 
 export type UsersInfo = {
   id: string;
@@ -93,6 +93,10 @@ type Follow = {
 
 export type FollowingWithUser = Follow & {
   following: UserInfo;
+};
+
+export type FollowerWithUser = Follow & {
+  follower: UserInfo;
 };
 
 type Conversation = {
@@ -194,8 +198,12 @@ export type ToggleLikeData = FetchData & {
   result: null;
 };
 
-export type FollowData = FetchData & {
-  result: FollowingWithUser;
+export type FollowerData = FetchData & {
+  result: FollowerWithUser[];
+};
+
+export type FollowingData = FetchData & {
+  result: FollowingWithUser[];
 };
 
 export type AllConversationData = FetchData & {

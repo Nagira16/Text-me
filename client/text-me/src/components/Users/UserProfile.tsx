@@ -7,7 +7,7 @@ import { JSX, useEffect, useState } from "react";
 import { Card, CardHeader, CardTitle, CardContent } from "../ui/card";
 import { Avatar, AvatarImage, AvatarFallback } from "../ui/avatar";
 import { useAuth } from "../provider/AuthContent";
-import FollowButton from "../posts/follows/FollowButton";
+import FollowButton from "../follows/FollowButton";
 import { useSocket } from "../provider/SocketContext";
 import Link from "next/link";
 import { Button } from "../ui/button";
@@ -27,7 +27,7 @@ const UserProfile = (): JSX.Element => {
   useEffect(() => {
     if (!id) return;
 
-    const fetchUser = async () => {
+    const fetchUser = async (): Promise<void> => {
       const { success, result }: UserWithPostData = await getUserById(id);
       if (success && result) {
         setUserData(result);
@@ -85,7 +85,7 @@ const UserProfile = (): JSX.Element => {
           <CardTitle className="flex items-center gap-4">
             <Avatar className="w-16 h-16 border-2 border-white">
               <AvatarImage
-                src={selectedUser.profile_image || "/default-avatar.png"}
+                src={selectedUser.profile_image || "/user-icon.jpeg"}
               />
               <AvatarFallback>{selectedUser.username.charAt(0)}</AvatarFallback>
             </Avatar>

@@ -10,10 +10,10 @@ import { FetchData } from "@/types";
 import { AppRouterInstance } from "next/dist/shared/lib/app-router-context.shared-runtime";
 import Form from "next/form";
 import { useRouter } from "next/navigation";
-import { ChangeEvent, useEffect, useState } from "react";
+import { ChangeEvent, JSX, useEffect, useState } from "react";
 import Swal from "sweetalert2";
 
-const SignUp = () => {
+const SignUp = (): JSX.Element | null => {
   const { register } = useAuth();
   const [isSaving, setIsSaving] = useState<boolean>(false);
   const [step, setStep] = useState<number>(1);

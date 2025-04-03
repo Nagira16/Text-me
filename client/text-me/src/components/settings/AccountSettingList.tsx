@@ -6,7 +6,7 @@ import {
   Settings2,
   UserRoundPlus,
 } from "lucide-react";
-import React, { Dispatch, JSX, SetStateAction } from "react";
+import { Dispatch, JSX, SetStateAction } from "react";
 
 const AccountSettingList = ({
   setSelectedList,

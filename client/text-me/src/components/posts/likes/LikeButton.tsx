@@ -32,7 +32,7 @@ const LikeButton = ({ post_id }: { post_id: string }): JSX.Element => {
   };
 
   useEffect(() => {
-    const fetchLike = async () => {
+    const fetchLike = async (): Promise<void> => {
       const { liked }: LikeReturnType = await checkLiked(post_id);
       setIsLoading(false);
       setIsLiked(liked ? true : false);
