@@ -42,7 +42,7 @@ const CommentForm = ({
   return (
     <form className="relative" action={handlePostComment}>
       <Input
-        className="w-full h-8 border-white rounded-full text-left"
+        className="w-full h-8 border-black dark:border-white rounded-full text-left"
         required
         placeholder="your comment ..."
         name="content"
@@ -56,7 +56,7 @@ const CommentForm = ({
         <Send
           size={20}
           className={`${
-            isSignedIn ? "text-white hover:text-blue-500" : "text-gray-500"
+            isSignedIn ? "dark:text-white hover:text-blue-500" : "text-gray-500"
           }`}
         />
       </button>

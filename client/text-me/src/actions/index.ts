@@ -211,16 +211,36 @@ export const getAllFollowing = async (): Promise<FollowingData> => {
 
 export const checkFollowing = async (user_id: string): Promise<boolean> => {
   const cookie: RequestCookie | undefined = (await cookies()).get("token");
-  const res: Response = await fetch(`http://localhost:5001/follow/${user_id}`, {
-    method: "GET",
-    headers: {
-      Authorization: `Bearer ${cookie?.value}`,
-      "Content-Type": "application/json",
-    },
-  });
+  const res: Response = await fetch(
+    `http://localhost:5001/follow/following/${user_id}`,
+    {
+      method: "GET",
+      headers: {
+        Authorization: `Bearer ${cookie?.value}`,
+        "Content-Type": "application/json",
+      },
+    }
+  );
   const data: CheckFollowData = await res.json();
 
-  return data ? true : false;
+  return data.result ? true : false;
+};
+
+export const checkFollower = async (user_id: string): Promise<boolean> => {
+  const cookie: RequestCookie | undefined = (await cookies()).get("token");
+  const res: Response = await fetch(
+    `http://localhost:5001/follow/follower/${user_id}`,
+    {
+      method: "GET",
+      headers: {
+        Authorization: `Bearer ${cookie?.value}`,
+        "Content-Type": "application/json",
+      },
+    }
+  );
+  const data: CheckFollowData = await res.json();
+
+  return data.result ? true : false;
 };
 
 export const toggleFollow = async (

@@ -61,7 +61,7 @@ const CommentList = ({
           {allComments.map((comment) => (
             <li
               key={comment.id}
-              className="flex flex-wrap justify-between items-center gap-4 border-b border-gray-200 pb-2"
+              className="flex flex-wrap justify-between items-center gap-4 border-b border-black dark:border-gray-200 pb-2"
             >
               <div className="flex items-center gap-4">
                 <div className="flex items-center gap-2">

@@ -11,7 +11,7 @@ import { JSX, useState } from "react";
 
 const ProfileSetting = (): JSX.Element => {
   const [isSaving, setIsSaving] = useState<boolean>(false);
-  const { user } = useAuth();
+  const { user, refreshUser } = useAuth();
   if (!user) {
     return (
       <div className="flex justify-center items-center min-h-screen">
@@ -25,6 +25,7 @@ const ProfileSetting = (): JSX.Element => {
     const { success, message } = await updateUser(formData, user.id);
 
     if (success) {
+      refreshUser();
       Swal.fire({
         text: message,
         icon: "success",

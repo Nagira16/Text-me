@@ -50,13 +50,17 @@ const PostSetting = (): JSX.Element => {
     <div className="flex flex-col justify-center items-center">
       <p className="text-3xl font-semibold">PostSetting</p>
       <section className="p-10 flex justify-center items-center flex-wrap ">
-        {posts.map((post) => (
-          <div key={post.id} className="relative m-5">
-            <SmallPostCard post={post} />
-            <PostEditButton post_id={post.id} setPosts={setPosts} />
-            <PostDeleteButton post_id={post.id} setPosts={setPosts} />
-          </div>
-        ))}
+        {posts.length === 0 ? (
+          <p>No posts found.</p>
+        ) : (
+          posts.map((post) => (
+            <div key={post.id} className="relative m-5">
+              <SmallPostCard post={post} />
+              <PostEditButton post_id={post.id} setPosts={setPosts} />
+              <PostDeleteButton post_id={post.id} setPosts={setPosts} />
+            </div>
+          ))
+        )}
       </section>
     </div>
   );
