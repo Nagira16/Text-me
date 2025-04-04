@@ -93,7 +93,7 @@ const ChatListSideBar = ({
                     >
                       <div className="flex items-center gap-3 py-6 sm:py-10 rounded-lg cursor-pointer hover:bg-gray-400">
                         <Link
-                          href={`account/${chatPartner.id}`}
+                          href={`/account/${chatPartner.id}`}
                           className="border border-white rounded-full p-1"
                         >
                           <Avatar className="size-5 sm:size-10">
