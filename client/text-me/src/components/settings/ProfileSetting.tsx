@@ -22,7 +22,7 @@ const ProfileSetting = (): JSX.Element => {
 
   const handleForm = async (formData: FormData): Promise<void> => {
     setIsSaving(true);
-    const { success, message } = await updateUser(formData, user.id);
+    const { success, message } = await updateUser(formData);
 
     if (success) {
       refreshUser();

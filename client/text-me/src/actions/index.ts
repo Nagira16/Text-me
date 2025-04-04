@@ -259,10 +259,7 @@ export const toggleFollow = async (
   return data;
 };
 
-export const updateUser = async (
-  formData: FormData,
-  user_id: string
-): Promise<UserData> => {
+export const updateUser = async (formData: FormData): Promise<UserData> => {
   const updateData = generateUpdateUserData(formData);
   if (!updateData) {
     return { success: false, message: "No Data To Update", result: null };
@@ -270,7 +267,7 @@ export const updateUser = async (
 
   const cookie: RequestCookie | undefined = (await cookies()).get("token");
 
-  const res: Response = await fetch(`http://localhost:5001/user/${user_id}`, {
+  const res: Response = await fetch(`http://localhost:5001/user`, {
     method: "PUT",
     body: updateData,
     headers: {
@@ -313,6 +310,32 @@ export const getAllLikedPost = async (): Promise<AllLikeData> => {
     },
   });
   const data: AllLikeData = await res.json();
+
+  return data;
+};
+
+export const updatePassword = async (
+  prevState: UserData,
+  formData: FormData
+): Promise<UserData> => {
+  const current_password = formData.get("current_password") as string;
+  const new_password = formData.get("new_password") as string;
+  const confirm_password = formData.get("confirm_password") as string;
+
+  const cookie: RequestCookie | undefined = (await cookies()).get("token");
+  const res: Response = await fetch(`http://localhost:5001/user/password`, {
+    method: "PUT",
+    headers: {
+      Authorization: `Bearer ${cookie?.value}`,
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+      current_password,
+      new_password,
+      confirm_password,
+    }),
+  });
+  const data: UserData = await res.json();
 
   return data;
 };

@@ -23,6 +23,7 @@ const upload = (0, multer_1.default)({
 userRouter.get("/", userController_1.getUser);
 userRouter.get("/search", userController_1.queryUser);
 userRouter.get("/:id", userController_1.getUserById);
-userRouter.put("/:id", upload.single("profile_image"), userController_1.updateUserById);
+userRouter.put("/", upload.single("profile_image"), userController_1.updateUserById);
+userRouter.put("/password", userController_1.updatePasspordById);
 userRouter.delete("/:id", userController_1.deleteUserById);
 exports.default = userRouter;

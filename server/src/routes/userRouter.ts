@@ -4,6 +4,7 @@ import {
   getUser,
   getUserById,
   queryUser,
+  updatePasspordById,
   updateUserById,
 } from "../controllers/userController";
 import path from "path";
@@ -29,7 +30,8 @@ const upload: Multer = multer({
 userRouter.get("/", getUser);
 userRouter.get("/search", queryUser);
 userRouter.get("/:id", getUserById);
-userRouter.put("/:id", upload.single("profile_image"), updateUserById);
+userRouter.put("/", upload.single("profile_image"), updateUserById);
+userRouter.put("/password", updatePasspordById);
 userRouter.delete("/:id", deleteUserById);
 
 export default userRouter;

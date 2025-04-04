@@ -34,6 +34,12 @@ export type UserUpdateInput = {
   username?: string;
 };
 
+export type UserUpdatePasswordInput = {
+  current_password: string;
+  new_password: string;
+  confirm_password: string;
+};
+
 export type PostInput = {
   content?: string;
 };
