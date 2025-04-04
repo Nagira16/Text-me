@@ -11,10 +11,10 @@ import { AppRouterInstance } from "next/dist/shared/lib/app-router-context.share
 import Form from "next/form";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { useEffect, useState } from "react";
+import { JSX, useEffect, useState } from "react";
 import Swal from "sweetalert2";
 
-const SignIn = () => {
+const SignIn = (): JSX.Element | null => {
   const { login } = useAuth();
   const [isSaving, setIsSaving] = useState<boolean>(false);
   const router: AppRouterInstance = useRouter();

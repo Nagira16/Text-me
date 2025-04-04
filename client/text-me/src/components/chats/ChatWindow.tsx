@@ -1,11 +1,12 @@
 import { JSX, useEffect, useState } from "react";
-import { Card } from "./ui/card";
-import { Input } from "./ui/input";
-import { Button } from "./ui/button";
+
 import { Send } from "lucide-react";
 import { AllMessageData, MessageData, MessageWithUser } from "@/types";
-import { useAuth } from "./provider/AuthContent";
-import { useSocket } from "./provider/SocketContext";
+import { useAuth } from "../provider/AuthContent";
+import { useSocket } from "../provider/SocketContext";
+import { Card } from "../ui/card";
+import { Input } from "../ui/input";
+import { Button } from "../ui/button";
 
 const ChatWindow = ({
   conversationId,
@@ -13,7 +14,7 @@ const ChatWindow = ({
   conversationId: string;
 }): JSX.Element => {
   const [messages, setMessages] = useState<MessageWithUser[]>([]);
-  const [newMessage, setNewMessage] = useState("");
+  const [newMessage, setNewMessage] = useState<string>("");
   const { user } = useAuth();
   const socket = useSocket();
 
@@ -93,8 +94,11 @@ const ChatWindow = ({
           onChange={(e) => setNewMessage(e.target.value)}
           placeholder="Message..."
         />
-        <Button onClick={sendMessage}>
-          <Send className="w-5 h-5" />
+        <Button
+          onClick={sendMessage}
+          className="grid place-items-center text-white bg-blue-500 hover:bg-blue-700"
+        >
+          <Send className="size-5" />
         </Button>
       </div>
     </Card>

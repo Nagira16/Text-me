@@ -1,11 +1,11 @@
 import React, { JSX } from "react";
-import { Card, CardFooter, CardHeader, CardTitle } from "./ui/card";
+import { Card, CardFooter, CardHeader, CardTitle } from "../ui/card";
 import { PostWithUser } from "@/types";
 import Image from "next/image";
-import LikeButton from "./LikeButton";
-import { Avatar, AvatarFallback, AvatarImage } from "./ui/avatar";
-import CommentDialog from "./CommentDialog";
+import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
+import CommentDialog from "./comments/CommentDialog";
 import Link from "next/link";
+import LikeButton from "./likes/LikeButton";
 
 const PostCard = ({ post }: { post: PostWithUser }): JSX.Element => {
   return (
@@ -14,7 +14,9 @@ const PostCard = ({ post }: { post: PostWithUser }): JSX.Element => {
         <CardTitle className="flex items-center gap-5 text-lg mb-5">
           <Link href={`account/${post.author_id}`}>
             <Avatar className="w-10 h-10 border-2 border-white">
-              <AvatarImage src={post.author.profile_image} />
+              <AvatarImage
+                src={post.author.profile_image || "/user-icon.jpeg"}
+              />
               <AvatarFallback>User</AvatarFallback>
             </Avatar>
           </Link>

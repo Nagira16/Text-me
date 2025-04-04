@@ -1,4 +1,4 @@
-import { getAllPost, getFollowingAllPost } from "@/actions";
+import { getAllPosts, getFollowingAllPost } from "@/actions";
 import PostCard from "./PostCard";
 import { AllPostData, PostWithUser } from "@/types";
 import { JSX } from "react";
@@ -11,7 +11,7 @@ const PostList = async (): Promise<JSX.Element> => {
   if (followingPosts && followingPosts.length > 0) {
     posts = followingPosts;
   } else {
-    const { result: allPosts }: AllPostData = await getAllPost();
+    const { result: allPosts }: AllPostData = await getAllPosts();
     if (allPosts) posts = allPosts;
   }
 

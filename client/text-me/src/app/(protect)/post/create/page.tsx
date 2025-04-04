@@ -7,10 +7,10 @@ import { PostData } from "@/types";
 import { AppRouterInstance } from "next/dist/shared/lib/app-router-context.shared-runtime";
 import Form from "next/form";
 import { useRouter } from "next/navigation";
-import React, { useState } from "react";
+import React, { JSX, useState } from "react";
 import Swal from "sweetalert2";
 
-const PostForm = () => {
+const PostForm = (): JSX.Element => {
   const router: AppRouterInstance = useRouter();
   const [isSaving, setIsSaving] = useState<boolean>(false);
 
@@ -53,7 +53,9 @@ const PostForm = () => {
 
         <Button
           disabled={isSaving}
-          className={`${isSaving ? "bg-gray-500" : "dark:bg-white"}`}
+          className={`dark:bg-white bg-black dark:hover:bg-gray-300 hover:bg-gray-500 ${
+            isSaving && "bg-gray-500"
+          }`}
         >
           Post
         </Button>

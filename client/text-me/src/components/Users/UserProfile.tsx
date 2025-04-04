@@ -4,14 +4,14 @@ import { getUserById } from "@/actions";
 import { UserWithPostData } from "@/types";
 import { useParams } from "next/navigation";
 import { JSX, useEffect, useState } from "react";
-import { Card, CardHeader, CardTitle, CardContent } from "./ui/card";
-import { Avatar, AvatarImage, AvatarFallback } from "./ui/avatar";
-import Image from "next/image";
-import { Button } from "./ui/button";
-import { useAuth } from "./provider/AuthContent";
-import FollowButton from "./FollowButton";
-import { useSocket } from "./provider/SocketContext";
+import { Card, CardHeader, CardTitle, CardContent } from "../ui/card";
+import { Avatar, AvatarImage, AvatarFallback } from "../ui/avatar";
+import { useAuth } from "../provider/AuthContent";
+import FollowButton from "../follows/FollowButton";
+import { useSocket } from "../provider/SocketContext";
 import Link from "next/link";
+import { Button } from "../ui/button";
+import SmallPostCard from "../posts/SmallPostCard";
 
 const UserProfile = (): JSX.Element => {
   const { user } = useAuth();
@@ -27,7 +27,7 @@ const UserProfile = (): JSX.Element => {
   useEffect(() => {
     if (!id) return;
 
-    const fetchUser = async () => {
+    const fetchUser = async (): Promise<void> => {
       const { success, result }: UserWithPostData = await getUserById(id);
       if (success && result) {
         setUserData(result);
@@ -80,12 +80,12 @@ const UserProfile = (): JSX.Element => {
 
   return (
     <div className="min-h-screen flex flex-col items-center justify-center my-10">
-      <Card className="w-full max-w-screen-md p-6 mb-6">
+      <Card className="w-full max-w-screen-md p-6 mb-6 border-black dark:border-white">
         <CardHeader>
           <CardTitle className="flex items-center gap-4">
-            <Avatar className="w-16 h-16 border-2 border-white p-1">
+            <Avatar className="w-16 h-16 border-2 border-white">
               <AvatarImage
-                src={selectedUser.profile_image || "/default-avatar.png"}
+                src={selectedUser.profile_image || "/user-icon.jpeg"}
               />
               <AvatarFallback>{selectedUser.username.charAt(0)}</AvatarFallback>
             </Avatar>
@@ -97,7 +97,9 @@ const UserProfile = (): JSX.Element => {
             </div>
             <div>
               {user?.id === selectedUser.id ? (
-                <Button>Edit</Button>
+                <Button className="w-28 h-[35px]">
+                  <Link href={`/account/setting/${user.id}`}>Setting</Link>
+                </Button>
               ) : (
                 <FollowButton user_id={selectedUser.id} />
               )}
@@ -110,26 +112,7 @@ const UserProfile = (): JSX.Element => {
         {selectedUser.post.length > 0 ? (
           selectedUser.post.map((post) => (
             <Link href={`/post/${post.id}`} key={post.id}>
-              <Card className="p-4 shadow-md w-full">
-                {post.photo && (
-                  <div className="relative w-full h-64 aspect-[4/3]">
-                    <Image
-                      src={post.photo}
-                      alt="Post"
-                      layout="fill"
-                      objectFit="cover"
-                      className="rounded-lg"
-                    />
-                  </div>
-                )}
-                <CardContent>
-                  <p className="mt-2 text-gray-700">{post.content}</p>
-                  <p className="text-sm text-gray-500">
-                    {new Date(post.created_at).toLocaleDateString()} ・{" "}
-                    {post.likes_count} Likes
-                  </p>
-                </CardContent>
-              </Card>
+              <SmallPostCard post={post} />
             </Link>
           ))
         ) : (

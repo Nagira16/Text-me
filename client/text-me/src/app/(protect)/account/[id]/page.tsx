@@ -1,4 +1,4 @@
-import UserProfile from "@/components/UserProfile";
+import UserProfile from "@/components/Users/UserProfile";
 import { JSX } from "react";
 
 const Account = (): JSX.Element => {

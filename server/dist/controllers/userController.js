@@ -12,9 +12,10 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.findUserByUsername = exports.findUserByEmail = exports.findUserByEmailWithoutPassword = exports.findUserById = exports.deleteUserById = exports.updateUserById = exports.queryUser = exports.getUserById = exports.getUser = void 0;
+exports.findUserByUsername = exports.findUserByEmail = exports.findUserByEmailWithoutPassword = exports.findUserById = exports.updatePasspordById = exports.deleteUserById = exports.updateUserById = exports.queryUser = exports.getUserById = exports.getUser = void 0;
 const prisma_1 = __importDefault(require("../lib/prisma"));
 const authController_1 = require("./authController");
+const bcrypt_1 = __importDefault(require("bcrypt"));
 const getUser = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     var _a;
     try {
@@ -144,7 +145,8 @@ exports.queryUser = queryUser;
 const updateUserById = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     var _b;
     try {
-        const { first_name, last_name, profile_image, username } = req.body;
+        const { first_name, last_name, username } = req.body;
+        const image = req.file;
         const user_id = (_b = req.user) === null || _b === void 0 ? void 0 : _b.id;
         if (!user_id) {
             res.status(401).json({
@@ -183,12 +185,15 @@ const updateUserById = (req, res) => __awaiter(void 0, void 0, void 0, function*
                 return;
             }
         }
+        const image_url = image
+            ? `http://localhost:5001/uploads/${image.filename}`
+            : user.profile_image;
         const updatedUser = yield prisma_1.default.user.update({
             where: { id: user.id },
             data: {
                 first_name: (first_name === null || first_name === void 0 ? void 0 : first_name.trim()) || user.first_name,
                 last_name: (last_name === null || last_name === void 0 ? void 0 : last_name.trim()) || user.last_name,
-                profile_image: (profile_image === null || profile_image === void 0 ? void 0 : profile_image.trim()) || user.profile_image,
+                profile_image: image_url,
                 username: (username === null || username === void 0 ? void 0 : username.trim()) || user.username,
             },
             omit: {
@@ -256,6 +261,70 @@ const deleteUserById = (req, res) => __awaiter(void 0, void 0, void 0, function*
     }
 });
 exports.deleteUserById = deleteUserById;
+const updatePasspordById = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    var _d;
+    try {
+        const { current_password, new_password, confirm_password, } = req.body;
+        const user_id = (_d = req.user) === null || _d === void 0 ? void 0 : _d.id;
+        if (!user_id) {
+            res.status(401).json({
+                success: false,
+                message: "Unauthorized: Invalid or missing token",
+                result: null,
+            });
+            return;
+        }
+        if (new_password !== confirm_password) {
+            res.status(409).json({
+                success: false,
+                message: "Password Not Match",
+                result: null,
+            });
+            return;
+        }
+        const user = yield prisma_1.default.user.findUnique({
+            where: { id: user_id },
+        });
+        if (!user) {
+            res.status(404).json({
+                success: false,
+                message: "User Not Found",
+                result: null,
+            });
+            return;
+        }
+        const isMatch = yield bcrypt_1.default.compare(current_password.trim(), user.password);
+        if (!isMatch) {
+            res.status(404).json({
+                success: false,
+                message: "Current Password Is Wrong",
+                result: null,
+            });
+            return;
+        }
+        const hashedPassword = yield bcrypt_1.default.hash(new_password.trim(), 10);
+        const updatedUser = yield prisma_1.default.user.update({
+            where: { id: user.id },
+            data: {
+                password: hashedPassword,
+            },
+        });
+        res.status(200).json({
+            success: true,
+            message: "Password Updated Successfully",
+            result: updatedUser,
+        });
+    }
+    catch (error) {
+        console.error(error);
+        res.status(500).json({
+            success: false,
+            message: "Server Error: Update Password By Id",
+            result: null,
+        });
+    }
+});
+exports.updatePasspordById = updatePasspordById;
 //Sub Function
 const findUserById = (uuid) => __awaiter(void 0, void 0, void 0, function* () {
     return yield prisma_1.default.user.findUnique({

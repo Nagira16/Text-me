@@ -1,7 +1,7 @@
-import NotificationList from "@/components/NotificationList";
-import React from "react";
+import NotificationList from "@/components/notifications/NotificationList";
+import React, { JSX } from "react";
 
-const Notification = () => {
+const Notification = (): JSX.Element => {
   return (
     <div className="min-h-screen min-w-screen grid place-items-center">
       <NotificationList />

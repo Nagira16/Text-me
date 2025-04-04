@@ -3,22 +3,22 @@
 import { getPostById } from "@/actions";
 import { CommentWithUser, PostWithUser } from "@/types";
 import { useParams } from "next/navigation";
-import { useEffect, useState } from "react";
-import { Card, CardFooter, CardHeader, CardTitle } from "./ui/card";
-import { Avatar, AvatarFallback, AvatarImage } from "./ui/avatar";
+import { JSX, useEffect, useState } from "react";
+import { Card, CardFooter, CardHeader, CardTitle } from "../ui/card";
+import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
 import Image from "next/image";
-import LikeButton from "./LikeButton";
+import LikeButton from "./likes/LikeButton";
 import Link from "next/link";
-import CommentList from "./CommentList";
-import CommentForm from "./CommentForm";
+import CommentList from "./comments/CommentList";
+import CommentForm from "./comments/CommentForm";
 
-const SinglePost = () => {
+const SinglePost = (): JSX.Element => {
   const { postId }: { postId: string } = useParams();
   const [post, setPost] = useState<PostWithUser | null>(null);
   const [allComments, setComments] = useState<CommentWithUser[]>([]);
 
   useEffect(() => {
-    const fetchSinglePost = async () => {
+    const fetchSinglePost = async (): Promise<void> => {
       const { success, result } = await getPostById(postId);
       if (success && result) {
         setPost(result);
@@ -36,7 +36,9 @@ const SinglePost = () => {
             <CardTitle className="flex items-center gap-5 text-lg mb-5">
               <Link href={`/account/${post.author_id}`}>
                 <Avatar className="w-10 h-10 border-2 border-white">
-                  <AvatarImage src={post.author.profile_image} />
+                  <AvatarImage
+                    src={post.author.profile_image || "/user-icon.jpeg"}
+                  />
                   <AvatarFallback>User</AvatarFallback>
                 </Avatar>
               </Link>

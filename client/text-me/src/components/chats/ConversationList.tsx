@@ -1,7 +1,7 @@
 import { Dispatch, JSX, SetStateAction, useEffect, useState } from "react";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { AllConversationData, ConversationWithUser } from "@/types";
-import { useAuth } from "./provider/AuthContent";
+import { useAuth } from "../provider/AuthContent";
 import Link from "next/link";
 
 const ConversationList = ({
@@ -28,7 +28,7 @@ const ConversationList = ({
   }, []);
 
   return (
-    <aside className="w-1/3 p-4 border-r ml-16">
+    <aside className="w-1/4 p-4 border-r ml-16">
       <h2 className="text-lg font-bold mb-4">DM</h2>
       {conversations.map((conv) => {
         const currentUserId = user?.id;
@@ -38,7 +38,7 @@ const ConversationList = ({
         return (
           <div
             key={conv.id}
-            className="flex items-center gap-3 p-3 rounded-lg cursor-pointer hover:bg-gray-200"
+            className="flex items-center gap-3 p-3 rounded-lg cursor-pointer hover:bg-gray-500"
             onClick={() => setSelectedConversation(conv.id)}
           >
             <Link
@@ -46,7 +46,9 @@ const ConversationList = ({
               className="border border-white rounded-full p-1"
             >
               <Avatar className="w-10 h-10">
-                <AvatarImage src={chatPartner.profile_image} />
+                <AvatarImage
+                  src={chatPartner.profile_image || "/user-icon.jpeg"}
+                />
                 <AvatarFallback>{chatPartner.username[0]}</AvatarFallback>
               </Avatar>
             </Link>

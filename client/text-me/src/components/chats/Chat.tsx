@@ -1,8 +1,9 @@
 "use client";
 
 import { JSX, useState } from "react";
-import ConversationList from "./ConversationList";
+
 import ChatWindow from "./ChatWindow";
+import ConversationList from "./ConversationList";
 
 const Chat = (): JSX.Element => {
   const [selectedConversation, setSelectedConversation] = useState<
@@ -13,7 +14,7 @@ const Chat = (): JSX.Element => {
     <div className="flex h-screen w-full">
       <ConversationList setSelectedConversation={setSelectedConversation} />
 
-      <main className="flex-1 flex flex-col p-4">
+      <section className="flex-1 flex flex-col p-4">
         {selectedConversation ? (
           <ChatWindow conversationId={selectedConversation} />
         ) : (
@@ -21,7 +22,7 @@ const Chat = (): JSX.Element => {
             <p>Select A User</p>
           </div>
         )}
-      </main>
+      </section>
     </div>
   );
 };

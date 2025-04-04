@@ -32,7 +32,12 @@ export type UserUpdateInput = {
   first_name?: string;
   last_name?: string;
   username?: string;
-  profile_image?: string;
+};
+
+export type UserUpdatePasswordInput = {
+  current_password: string;
+  new_password: string;
+  confirm_password: string;
 };
 
 export type PostInput = {
@@ -51,9 +56,10 @@ export type UserInfo = { id: string; username: string; profile_image: string };
 type PostInfo = {
   id: string;
   content: string | null;
-  created_at: Date;
   photo: string;
   likes_count: number;
+  created_at: Date;
+  updated_at: Date;
 };
 
 export type CommentWithUser = Comment & {

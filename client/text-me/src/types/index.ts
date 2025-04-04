@@ -38,7 +38,7 @@ type User = {
 
 export type UserWithoutPassword = Omit<User, "password">;
 
-type UserInfo = { id: string; username: string; profile_image: string };
+export type UserInfo = { id: string; username: string; profile_image: string };
 
 export type UsersInfo = {
   id: string;
@@ -56,12 +56,13 @@ type Post = {
   likes_count: number;
 };
 
-type PostInfo = {
+export type PostInfo = {
   id: string;
   content: string | null;
-  created_at: Date;
   photo: string;
   likes_count: number;
+  created_at: Date;
+  updated_at: Date;
 };
 
 export type PostWithUser = Post & {
@@ -92,6 +93,10 @@ type Follow = {
 
 export type FollowingWithUser = Follow & {
   following: UserInfo;
+};
+
+export type FollowerWithUser = Follow & {
+  follower: UserInfo;
 };
 
 type Conversation = {
@@ -193,8 +198,12 @@ export type ToggleLikeData = FetchData & {
   result: null;
 };
 
-export type FollowData = FetchData & {
-  result: FollowingWithUser;
+export type FollowerData = FetchData & {
+  result: FollowerWithUser[];
+};
+
+export type FollowingData = FetchData & {
+  result: FollowingWithUser[];
 };
 
 export type AllConversationData = FetchData & {
@@ -246,19 +255,13 @@ export type NotificationType =
       post: PostWithUser;
     };
 
-// export type CommentNotification = {
-//   type: "Comment";
-//   username: string;
-//   comment: string;
-// };
+export type SettingTitle =
+  | "User_Profile"
+  | "Post"
+  | "Liked_Post"
+  | "Follow"
+  | "Change_Password";
 
-// export type FollowNotification = {
-//   type: "Follow";
-//   username: string;
-// };
-
-// export type LikeNotification = {
-//   type: "Like";
-//   username: string;
-//   post: PostWithUser;
-// };
+export type AllLikeData = FetchData & {
+  result: LikeWithPost[] | null;
+};

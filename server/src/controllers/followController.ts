@@ -246,7 +246,59 @@ export const checkFollowingByUserId = async (
     console.error(error);
     res.status(500).json({
       success: false,
-      message: "Server Error: Check Liked By Post Id",
+      message: "Server Error: Check Following By User Id",
+      result: null,
+    });
+  }
+};
+
+export const checkFollowerByUserId = async (
+  req: Request,
+  res: Response
+): Promise<void> => {
+  try {
+    const follower_user_id: string = req.params.userId;
+
+    const user_id: string | undefined = req.user?.id;
+
+    if (!user_id) {
+      res.status(401).json({
+        success: false,
+        message: "Unauthorized: Invalid or missing token",
+        result: null,
+      });
+      return;
+    }
+
+    const user = (await findUserById(
+      follower_user_id
+    )) as UserWithoutPassword | null;
+    if (!user) {
+      res.status(404).json({
+        success: false,
+        message: "User Not Found",
+        result: null,
+      });
+      return;
+    }
+
+    const follow: Follow | null = await prisma.follow.findFirst({
+      where: {
+        follower_id: user.id,
+        following_id: user_id,
+      },
+    });
+
+    res.status(200).json({
+      success: true,
+      message: follow ? "Is Followed" : "Is Not Followed",
+      result: follow,
+    });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({
+      success: false,
+      message: "Server Error: Check Follower By User Id",
       result: null,
     });
   }

@@ -12,8 +12,9 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.findPostById = exports.deletePostById = exports.updatePostById = exports.createNewPost = exports.getPostById = exports.getFollowingUsersAllPosts = exports.getAllPosts = void 0;
+exports.findPostById = exports.deletePostById = exports.updatePostById = exports.createNewPost = exports.getPostById = exports.getFollowingUsersAllPosts = exports.getAllPostsByUserId = exports.getAllPosts = void 0;
 const prisma_1 = __importDefault(require("../lib/prisma"));
+const userController_1 = require("./userController");
 const getAllPosts = (_, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const posts = yield prisma_1.default.post.findMany({
@@ -44,6 +45,49 @@ const getAllPosts = (_, res) => __awaiter(void 0, void 0, void 0, function* () {
     }
 });
 exports.getAllPosts = getAllPosts;
+const getAllPostsByUserId = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        const user_id = req.params.userId;
+        const user = yield (0, userController_1.findUserById)(user_id);
+        if (!user) {
+            res.status(404).json({
+                success: false,
+                message: "User Not Found",
+                result: null,
+            });
+            return;
+        }
+        const post = yield prisma_1.default.post.findMany({
+            where: {
+                author_id: user.id,
+            },
+            include: {
+                author: {
+                    select: {
+                        id: true,
+                        username: true,
+                        profile_image: true,
+                    },
+                },
+            },
+            orderBy: { created_at: "desc" },
+        });
+        res.status(200).json({
+            success: true,
+            message: "Post Found Successfully",
+            result: post,
+        });
+    }
+    catch (error) {
+        console.error(error);
+        res.status(500).json({
+            success: false,
+            message: "Server Error: Get All Posts By User Id",
+            result: null,
+        });
+    }
+});
+exports.getAllPostsByUserId = getAllPostsByUserId;
 const getFollowingUsersAllPosts = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     var _a;
     try {
@@ -192,7 +236,7 @@ const updatePostById = (req, res) => __awaiter(void 0, void 0, void 0, function*
                 id: post.id,
             },
             data: {
-                content: content || post.content,
+                content: content,
             },
             include: {
                 author: {
@@ -232,6 +276,8 @@ const deletePostById = (req, res) => __awaiter(void 0, void 0, void 0, function*
             });
             return;
         }
+        yield prisma_1.default.like.deleteMany({ where: { post_id: post.id } });
+        yield prisma_1.default.comment.deleteMany({ where: { post_id: post.id } });
         const deletedPost = yield prisma_1.default.post.delete({
             where: {
                 id: post.id,

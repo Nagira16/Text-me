@@ -4,6 +4,7 @@ import "./globals.css";
 import { AuthProvider } from "@/components/provider/AuthContent";
 import { SocketProvider } from "@/components/provider/SocketContext";
 import { ThemeProvider } from "@/components/provider/ThemeProvider";
+import { JSX } from "react";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -24,7 +25,7 @@ export default function MainLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
-}>) {
+}>): JSX.Element {
   return (
     <html lang="en">
       <body

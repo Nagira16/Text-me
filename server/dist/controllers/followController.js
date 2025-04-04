@@ -12,7 +12,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.checkFollowingByUserId = exports.followUserByUserId = exports.getAllFollowingByUserId = exports.getAllFollowerByUserId = void 0;
+exports.checkFollowerByUserId = exports.checkFollowingByUserId = exports.followUserByUserId = exports.getAllFollowingByUserId = exports.getAllFollowerByUserId = void 0;
 const prisma_1 = __importDefault(require("../lib/prisma"));
 const userController_1 = require("./userController");
 const app_1 = require("../app");
@@ -224,9 +224,53 @@ const checkFollowingByUserId = (req, res) => __awaiter(void 0, void 0, void 0, f
         console.error(error);
         res.status(500).json({
             success: false,
-            message: "Server Error: Check Liked By Post Id",
+            message: "Server Error: Check Following By User Id",
             result: null,
         });
     }
 });
 exports.checkFollowingByUserId = checkFollowingByUserId;
+const checkFollowerByUserId = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    var _e;
+    try {
+        const follower_user_id = req.params.userId;
+        const user_id = (_e = req.user) === null || _e === void 0 ? void 0 : _e.id;
+        if (!user_id) {
+            res.status(401).json({
+                success: false,
+                message: "Unauthorized: Invalid or missing token",
+                result: null,
+            });
+            return;
+        }
+        const user = (yield (0, userController_1.findUserById)(follower_user_id));
+        if (!user) {
+            res.status(404).json({
+                success: false,
+                message: "User Not Found",
+                result: null,
+            });
+            return;
+        }
+        const follow = yield prisma_1.default.follow.findFirst({
+            where: {
+                follower_id: user.id,
+                following_id: user_id,
+            },
+        });
+        res.status(200).json({
+            success: true,
+            message: follow ? "Is Followed" : "Is Not Followed",
+            result: follow,
+        });
+    }
+    catch (error) {
+        console.error(error);
+        res.status(500).json({
+            success: false,
+            message: "Server Error: Check Follower By User Id",
+            result: null,
+        });
+    }
+});
+exports.checkFollowerByUserId = checkFollowerByUserId;

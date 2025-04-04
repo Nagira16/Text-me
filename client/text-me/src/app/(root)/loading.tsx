@@ -1,7 +1,7 @@
 import { Skeleton } from "@/components/ui/skeleton";
-import React from "react";
+import React, { JSX } from "react";
 
-const loading = () => {
+const loading = (): JSX.Element => {
   return (
     <div className="min-h-screen w-full grid place-items-center my-14 space-y-3">
       {Array.from({ length: 10 }, (_, i) => (

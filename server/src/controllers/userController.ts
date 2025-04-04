@@ -3,12 +3,13 @@ import prisma from "../lib/prisma";
 import {
   UserInfo,
   UserUpdateInput,
+  UserUpdatePasswordInput,
   UserWithoutPassword,
   UserWithPost,
 } from "../types";
 import { validateUsernameLength } from "./authController";
+import bcrypt from "bcrypt";
 import { User } from "@prisma/client";
-
 export const getUser = async (req: Request, res: Response): Promise<void> => {
   try {
     const user_id: string | undefined = req.user?.id;
@@ -148,8 +149,9 @@ export const updateUserById = async (
   res: Response
 ): Promise<void> => {
   try {
-    const { first_name, last_name, profile_image, username }: UserUpdateInput =
-      req.body;
+    const { first_name, last_name, username }: UserUpdateInput = req.body;
+
+    const image: Express.Multer.File | undefined = req.file;
 
     const user_id: string | undefined = req.user?.id;
     if (!user_id) {
@@ -194,12 +196,16 @@ export const updateUserById = async (
       }
     }
 
+    const image_url = image
+      ? `http://localhost:5001/uploads/${image.filename}`
+      : user.profile_image;
+
     const updatedUser: UserWithoutPassword = await prisma.user.update({
       where: { id: user.id },
       data: {
         first_name: first_name?.trim() || user.first_name,
         last_name: last_name?.trim() || user.last_name,
-        profile_image: profile_image?.trim() || user.profile_image,
+        profile_image: image_url,
         username: username?.trim() || user.username,
       },
       omit: {
@@ -266,6 +272,85 @@ export const deleteUserById = async (
     res.status(500).json({
       success: false,
       message: "Server Error: Delete User By Id",
+      result: null,
+    });
+  }
+};
+
+export const updatePasspordById = async (
+  req: Request,
+  res: Response
+): Promise<void> => {
+  try {
+    const {
+      current_password,
+      new_password,
+      confirm_password,
+    }: UserUpdatePasswordInput = req.body;
+
+    const user_id: string | undefined = req.user?.id;
+    if (!user_id) {
+      res.status(401).json({
+        success: false,
+        message: "Unauthorized: Invalid or missing token",
+        result: null,
+      });
+      return;
+    }
+
+    if (new_password !== confirm_password) {
+      res.status(409).json({
+        success: false,
+        message: "Password Not Match",
+        result: null,
+      });
+      return;
+    }
+
+    const user: User | null = await prisma.user.findUnique({
+      where: { id: user_id },
+    });
+    if (!user) {
+      res.status(404).json({
+        success: false,
+        message: "User Not Found",
+        result: null,
+      });
+      return;
+    }
+
+    const isMatch: boolean = await bcrypt.compare(
+      current_password.trim(),
+      user.password
+    );
+    if (!isMatch) {
+      res.status(404).json({
+        success: false,
+        message: "Current Password Is Wrong",
+        result: null,
+      });
+      return;
+    }
+
+    const hashedPassword: string = await bcrypt.hash(new_password.trim(), 10);
+
+    const updatedUser: UserWithoutPassword = await prisma.user.update({
+      where: { id: user.id },
+      data: {
+        password: hashedPassword,
+      },
+    });
+
+    res.status(200).json({
+      success: true,
+      message: "Password Updated Successfully",
+      result: updatedUser,
+    });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({
+      success: false,
+      message: "Server Error: Update Password By Id",
       result: null,
     });
   }

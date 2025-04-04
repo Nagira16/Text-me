@@ -8,7 +8,6 @@ import {
 } from "../types";
 import { Like, Post } from "@prisma/client";
 import { findPostById } from "./postController";
-import { io } from "../app";
 import { findUserById } from "./userController";
 
 export const getLikedPostByUserId = async (
@@ -36,8 +35,9 @@ export const getLikedPostByUserId = async (
             id: true,
             content: true,
             photo: true,
-            created_at: true,
             likes_count: true,
+            created_at: true,
+            updated_at: true,
           },
         },
       },
