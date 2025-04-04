@@ -9,7 +9,7 @@ import LikeButton from "./likes/LikeButton";
 
 const PostCard = ({ post }: { post: PostWithUser }): JSX.Element => {
   return (
-    <Card className="relative shadow-md border border-black dark:border-white w-[700px] h-[600px] overflow-hidden z-10">
+    <Card className="relative shadow-md border border-foreground w-[calc(100vw-40px)] sm:w-[400px] md:w-[500px] lg:w-[700px] h-[500px] lg:h-[600px] overflow-hidden z-10">
       <CardHeader>
         <CardTitle className="flex items-center gap-5 text-lg mb-5">
           <Link href={`account/${post.author_id}`}>
@@ -25,13 +25,13 @@ const PostCard = ({ post }: { post: PostWithUser }): JSX.Element => {
         </CardTitle>
       </CardHeader>
 
-      <div className="relative w-[700px] h-[400px] overflow-hidden z-0">
+      <div className="relative w-[calc(100vw-40px)] sm:w-[400px] md:w-[500px] lg:w-[700px] h-[300px] md:h-[400px] overflow-hidden z-0">
         <Image
           src={post.photo}
           alt="Post Photo"
-          layout="fill"
-          objectFit="cover"
-          className="absolute"
+          fill
+          priority
+          className="absolute object-cover"
         />
       </div>
 

@@ -48,7 +48,8 @@ const FollowButton = ({ user_id }: { user_id: string }): JSX.Element => {
   else if (!isFollower && isFollowing) buttonText = "Following";
 
   let buttonStyle = "bg-blue-500 hover:bg-blue-700";
-  if (isFollower && isFollowing) buttonStyle = "bg-gray-500 hover:bg-gray-700";
+  if (isFollower && isFollowing)
+    buttonStyle = "bg-green-500 hover:bg-green-700";
   else if ((isFollower && !isFollowing) || (!isFollower && isFollowing))
     buttonStyle = "bg-black hover:bg-gray-700";
 

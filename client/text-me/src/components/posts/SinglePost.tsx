@@ -31,7 +31,7 @@ const SinglePost = (): JSX.Element => {
   return (
     <>
       {post ? (
-        <Card className="relative shadow-md border border-black dark:border-white w-[700px] h-[900px] overflow-hidden z-10">
+        <Card className="relative shadow-md border border-foreground w-[calc(100vw-40px)] sm:w-[500px] md:w-[600px] lg:w-[700px]  h-[900px] overflow-hidden z-10">
           <CardHeader>
             <CardTitle className="flex items-center gap-5 text-lg mb-5">
               <Link href={`/account/${post.author_id}`}>
@@ -47,7 +47,7 @@ const SinglePost = (): JSX.Element => {
             </CardTitle>
           </CardHeader>
 
-          <div className="relative w-[700px] h-[400px] overflow-hidden z-0">
+          <div className="relative w-[calc(100vw-40px)] sm:w-[500px] md:w-[600px] lg:w-[700px] h-[300px] sm:h-[400px] overflow-hidden z-0">
             <Image
               src={post.photo}
               alt="Post Photo"

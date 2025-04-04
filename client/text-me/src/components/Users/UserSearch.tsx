@@ -29,7 +29,7 @@ const UserSearch = (): JSX.Element => {
   };
 
   return (
-    <div className="w-full max-w-md mx-auto">
+    <div className="sm:w-full max-w-md mx-auto">
       <div className="flex gap-2">
         <Input
           type="text"
@@ -39,7 +39,8 @@ const UserSearch = (): JSX.Element => {
         />
         <Button
           onClick={handleSearch}
-          className="dark:bg-white bg-black dark:hover:bg-gray-300 hover:bg-gray-500"
+          type="submit"
+          className="bg-foreground hover:bg-gray-400"
         >
           Search
         </Button>
@@ -57,7 +58,7 @@ const UserSearch = (): JSX.Element => {
 
                 <span className="font-medium">{user.username}</span>
 
-                <hr className="absolute -bottom-3 right-0 left-0 border-black dark:border-white" />
+                <hr className="absolute -bottom-3 right-0 left-0 border-foreground" />
               </li>
             </Link>
           ))

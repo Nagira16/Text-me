@@ -1,5 +1,5 @@
 import UserSearch from "@/components/Users/UserSearch";
-import React, { JSX } from "react";
+import { JSX } from "react";
 
 const Search = (): JSX.Element => {
   return (

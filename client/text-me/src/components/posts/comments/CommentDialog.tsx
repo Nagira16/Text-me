@@ -26,7 +26,7 @@ const CommentDialog = ({ post_id }: { post_id: string }): JSX.Element => {
         <DialogHeader>
           <DialogTitle>Comments</DialogTitle>
         </DialogHeader>
-        <Card className="p-4">
+        <Card className="p-4 w-full">
           <CommentList
             post_id={post_id}
             allComments={allComments}

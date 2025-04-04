@@ -56,7 +56,9 @@ const CommentForm = ({
         <Send
           size={20}
           className={`${
-            isSignedIn ? "dark:text-white hover:text-blue-500" : "text-gray-500"
+            isSignedIn
+              ? "dark:text-white hover:text-blue-500"
+              : "dark:text-gray-500 text-gray-400"
           }`}
         />
       </button>

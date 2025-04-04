@@ -41,7 +41,7 @@ const PostForm = (): JSX.Element => {
 
   return (
     <div className="min-h-screen grid place-items-center">
-      <Form action={addPost} className="space-y-7">
+      <Form action={addPost} className="space-y-7 max-sm:w-[calc(100vw-20px)]">
         <div>
           <Label htmlFor="image">Photo</Label>
           <Input type="file" name="image" required />
@@ -53,7 +53,7 @@ const PostForm = (): JSX.Element => {
 
         <Button
           disabled={isSaving}
-          className={`dark:bg-white bg-black dark:hover:bg-gray-300 hover:bg-gray-500 ${
+          className={`bg-foreground dark:hover:bg-gray-300 hover:bg-gray-500 ${
             isSaving && "bg-gray-500"
           }`}
         >

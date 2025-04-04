@@ -3,7 +3,7 @@
 import { JSX, useState } from "react";
 
 import ChatWindow from "./ChatWindow";
-import ConversationList from "./ConversationList";
+import ChatListSideBar from "../Sidebars/ChatListSidebar";
 
 const Chat = (): JSX.Element => {
   const [selectedConversation, setSelectedConversation] = useState<
@@ -12,7 +12,7 @@ const Chat = (): JSX.Element => {
 
   return (
     <div className="flex h-screen w-full">
-      <ConversationList setSelectedConversation={setSelectedConversation} />
+      <ChatListSideBar setSelectedConversation={setSelectedConversation} />
 
       <section className="flex-1 flex flex-col p-4">
         {selectedConversation ? (
