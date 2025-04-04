@@ -5,6 +5,7 @@ import { AllCommentData, CommentWithUser } from "@/types";
 import { Dispatch, JSX, SetStateAction, useEffect, useState } from "react";
 import { Avatar, AvatarFallback, AvatarImage } from "../../ui/avatar";
 import { Skeleton } from "../../ui/skeleton";
+import { useMediaQuery } from "react-responsive";
 
 const CommentList = ({
   post_id,
@@ -19,6 +20,7 @@ const CommentList = ({
     [key: string]: boolean;
   }>({});
   const [isLoading, setIsLoading] = useState<boolean>(true);
+  const isSmallScreen = useMediaQuery({ query: "(max-width: 640px)" });
 
   useEffect(() => {
     const fetchAllComments = async (): Promise<void> => {
@@ -57,13 +59,13 @@ const CommentList = ({
       {allComments.length === 0 ? (
         <p className="text-gray-500 text-sm">No comments yet.</p>
       ) : (
-        <ul className="space-y-3 overflow-y-scroll h-[200px]">
+        <ul className="space-y-3 overflow-y-scroll h-[200px] sm:h-[300px]">
           {allComments.map((comment) => (
             <li
               key={comment.id}
-              className="flex flex-wrap justify-between items-center gap-4 border-b border-black dark:border-gray-200 pb-2"
+              className="flex flex-wrap justify-between items-start sm:items-center gap-4 border-b border-foreground pb-2"
             >
-              <div className="flex items-center gap-4">
+              <div className="flex flex-col sm:flex-row items-start sm:items-center gap-4">
                 <div className="flex items-center gap-2">
                   <Avatar className="w-7 h-7 border border-white">
                     <AvatarImage
@@ -76,7 +78,7 @@ const CommentList = ({
                   </p>
                 </div>
 
-                <div className="max-w-[400px] text-sm text-gray-400 break-words">
+                <div className="max-w-full sm:max-w-[400px] text-sm text-gray-400 break-words">
                   {expandedComments[comment.id] ? (
                     <span>
                       {comment.content}{" "}
@@ -87,9 +89,9 @@ const CommentList = ({
                         Close
                       </button>
                     </span>
-                  ) : comment.content.length > 35 ? (
+                  ) : comment.content.length > (isSmallScreen ? 25 : 35) ? (
                     <span>
-                      {comment.content.slice(0, 35)}...
+                      {comment.content.slice(0, isSmallScreen ? 25 : 35)}...
                       <button
                         className="text-blue-500 ml-1 hover:underline"
                         onClick={() => toggleExpand(comment.id)}
@@ -103,14 +105,13 @@ const CommentList = ({
                 </div>
               </div>
 
-              <div className="text-xs text-gray-500">
+              <div className="text-xs text-gray-500 sm:text-right">
                 {new Date(comment.created_at).toLocaleString()}
               </div>
             </li>
           ))}
         </ul>
       )}
-      {/* <CommentForm post_id={post_id} setComments={setComments} /> */}
     </>
   );
 };

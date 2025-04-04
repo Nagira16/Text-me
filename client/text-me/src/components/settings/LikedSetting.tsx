@@ -23,11 +23,11 @@ const LikedSetting = (): JSX.Element => {
 
   if (isLoading) {
     return (
-      <div className="flex flex-col justify-center items-center">
+      <div className="flex flex-col justify-center items-center max-sm:space-y-5">
         <p className="text-3xl font-semibold">PostSetting</p>
-        <section className="p-10 flex justify-center items-center flex-wrap ">
+        <section className="sm:p-10 flex justify-center items-center flex-wrap ">
           {Array.from({ length: 10 }, (_, i) => (
-            <Skeleton key={i} className="m-5 size-[360px]" />
+            <Skeleton key={i} className="m-5 size-[300px] sm:size-[360px]" />
           ))}
         </section>
       </div>
@@ -35,9 +35,9 @@ const LikedSetting = (): JSX.Element => {
   }
 
   return (
-    <div className="flex flex-col justify-center items-center">
+    <div className="flex flex-col justify-center items-center max-sm:space-y-5">
       <p className="text-3xl font-semibold">PostSetting</p>
-      <section className="p-10 flex justify-center items-center flex-wrap ">
+      <section className="sm:p-10 flex justify-center items-center flex-wrap ">
         {posts.length === 0 ? (
           <p>No posts found.</p>
         ) : (

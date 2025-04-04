@@ -80,35 +80,33 @@ const UserProfile = (): JSX.Element => {
 
   return (
     <div className="min-h-screen flex flex-col items-center justify-center my-10">
-      <Card className="w-full max-w-screen-md p-6 mb-6 border-black dark:border-white">
-        <CardHeader>
-          <CardTitle className="flex items-center gap-4">
-            <Avatar className="w-16 h-16 border-2 border-white">
-              <AvatarImage
-                src={selectedUser.profile_image || "/user-icon.jpeg"}
-              />
-              <AvatarFallback>{selectedUser.username.charAt(0)}</AvatarFallback>
-            </Avatar>
-            <div>
-              <h2 className="text-xl font-semibold">{selectedUser.username}</h2>
-              <p className="text-sm text-gray-500">
-                {followerCount} Followers ・ {followingCount} Following
-              </p>
-            </div>
-            <div>
-              {user?.id === selectedUser.id ? (
-                <Button className="w-28 h-[35px]">
-                  <Link href={`/account/setting/${user.id}`}>Setting</Link>
-                </Button>
-              ) : (
-                <FollowButton user_id={selectedUser.id} />
-              )}
-            </div>
-          </CardTitle>
-        </CardHeader>
+      <Card className="w-full max-w-screen-md p-6 mb-6 border-foreground">
+        <CardContent className="flex flex-col sm:flex-row items-center gap-4">
+          <Avatar className="w-16 h-16 border-2 border-white">
+            <AvatarImage
+              src={selectedUser.profile_image || "/user-icon.jpeg"}
+            />
+            <AvatarFallback>{selectedUser.username.charAt(0)}</AvatarFallback>
+          </Avatar>
+          <div>
+            <h2 className="text-xl font-semibold">{selectedUser.username}</h2>
+            <p className="text-sm text-gray-500">
+              {followerCount} Followers ・ {followingCount} Following
+            </p>
+          </div>
+          <div>
+            {user?.id === selectedUser.id ? (
+              <Button className="w-28 h-[35px]">
+                <Link href={`/account/setting/${user.id}`}>Setting</Link>
+              </Button>
+            ) : (
+              <FollowButton user_id={selectedUser.id} />
+            )}
+          </div>
+        </CardContent>
       </Card>
 
-      <div className="w-full max-w-screen-lg grid grid-cols-1 md:grid-cols-2 gap-6">
+      <div className="w-full max-w-screen-lg grid grid-cols-1 md:grid-cols-2 gap-6 place-items-center">
         {selectedUser.post.length > 0 ? (
           selectedUser.post.map((post) => (
             <Link href={`/post/${post.id}`} key={post.id}>

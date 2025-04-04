@@ -49,29 +49,29 @@ const ProfileSetting = (): JSX.Element => {
   };
 
   return (
-    <div className="flex flex-col justify-center items-center">
+    <div className="flex flex-col justify-center items-center max-md:space-y-7">
       <p className="text-3xl font-semibold">ProfileSetting</p>
       <form
         action={handleForm}
-        className="p-10 relative flex flex-col space-y-20"
+        className="md:p-10 relative flex flex-col max-md:items-center space-y-20 w-[200px] md:w-[450px] lg:w-[600px]"
       >
         <section className="space-y-6">
-          <div className="flex justify-between items-center gap-10 ">
+          <div className="flex flex-col md:flex-row md:justify-between md:items-center gap-2 md:gap-5 lg:gap-10">
             <Label>UserName</Label>
             <Input
               type="text"
               minLength={4}
               placeholder={user.username}
-              className="w-90"
+              className="w-[260px] md:w-90"
               name="username"
             />
           </div>
-          <div className="flex justify-between items-center gap-10">
+          <div className="flex flex-col md:flex-row md:justify-between md:items-center gap-2 md:gap-5 lg:gap-10">
             <Label>Profile Image</Label>
             <Input
               type="file"
               placeholder={user.profile_image}
-              className="w-90"
+              className="w-[200px] sm:w-[260px] md:w-90"
               name="profile_image"
             />
             <Image
@@ -79,24 +79,24 @@ const ProfileSetting = (): JSX.Element => {
               alt={user.username.charAt(0)}
               width={45}
               height={45}
-              className="absolute -right-5 rounded-full"
+              className="absolute max-sm:top-24 -right-5 rounded-full"
             />
           </div>
-          <div className="flex justify-between items-center gap-10">
+          <div className="flex flex-col md:flex-row md:justify-between md:items-center gap-2 md:gap-5 lg:gap-10">
             <Label>First Name</Label>
             <Input
               type="text"
               placeholder={user.first_name}
-              className="w-90"
+              className="w-[260px] md:w-90"
               name="firstName"
             />
           </div>
-          <div className="flex justify-between items-center gap-10">
+          <div className="flex flex-col md:flex-row md:justify-between md:items-center gap-2 md:gap-5 lg:gap-10">
             <Label>Last Name</Label>
             <Input
               type="text"
               placeholder={user.last_name}
-              className="w-90"
+              className="w-[260px] md:w-90"
               name="lastName"
             />
           </div>
@@ -106,7 +106,7 @@ const ProfileSetting = (): JSX.Element => {
           disabled={isSaving}
           className={`${
             isSaving && "bg-gray-500"
-          } dark:bg-white bg-black dark:hover:bg-gray-300 hover:bg-gray-500 rounded-2xl`}
+          } bg-foreground hover:bg-gray-300 rounded-2xl`}
         >
           Save Change
         </Button>

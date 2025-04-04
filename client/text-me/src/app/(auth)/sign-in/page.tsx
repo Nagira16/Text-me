@@ -1,6 +1,6 @@
 "use client";
 
-import BackButton from "@/components/BackButton";
+import BackButton from "@/components/Buttons/BackButton";
 import { useAuth } from "@/components/provider/AuthContent";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -51,7 +51,7 @@ const SignIn = (): JSX.Element | null => {
     <div className="min-h-screen grid place-items-center p-4">
       <BackButton />
 
-      <Card className="w-full max-w-sm py-10 shadow-lg rounded-lg space-y-5">
+      <Card className="w-full max-w-sm py-10 shadow-lg rounded-lg space-y-5 border-foreground">
         <CardHeader>
           <CardTitle className="text-3xl text-center">Sign In</CardTitle>
         </CardHeader>

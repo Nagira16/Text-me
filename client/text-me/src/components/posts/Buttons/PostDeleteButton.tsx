@@ -1,5 +1,5 @@
 import React, { Dispatch, JSX, SetStateAction, useState } from "react";
-import { Button } from "./ui/button";
+import { Button } from "../../ui/button";
 import Swal from "sweetalert2";
 import { Trash2 } from "lucide-react";
 import { deletePostById } from "@/actions";

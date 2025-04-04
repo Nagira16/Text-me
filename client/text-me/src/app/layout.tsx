@@ -1,19 +1,15 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
+import localFont from "next/font/local";
 import "./globals.css";
 import { AuthProvider } from "@/components/provider/AuthContent";
 import { SocketProvider } from "@/components/provider/SocketContext";
 import { ThemeProvider } from "@/components/provider/ThemeProvider";
 import { JSX } from "react";
 
-const geistSans = Geist({
-  variable: "--font-geist-sans",
-  subsets: ["latin"],
-});
-
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
-  subsets: ["latin"],
+const gidole = localFont({
+  src: "/fonts/Gidole-Regular.ttf",
+  display: "swap",
+  variable: "--font-gidole",
 });
 
 export const metadata: Metadata = {
@@ -28,9 +24,7 @@ export default function MainLayout({
 }>): JSX.Element {
   return (
     <html lang="en">
-      <body
-      // className={`${geistSans.variable} ${geistMono.variable} antialiased`}
-      >
+      <body className={`${gidole.variable} `}>
         <ThemeProvider
           attribute="class"
           defaultTheme="dark"

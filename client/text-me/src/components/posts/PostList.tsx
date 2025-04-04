@@ -24,7 +24,7 @@ const PostList = async (): Promise<JSX.Element> => {
   }
 
   return (
-    <div className="my-14 space-y-3">
+    <div className="mt-10 mb-25 sm:my-10 space-y-3">
       {posts.map((post) => (
         <PostCard key={post.id} post={post} />
       ))}
